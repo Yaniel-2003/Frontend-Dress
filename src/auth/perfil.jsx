@@ -8,17 +8,21 @@ import ModalMensaje from "../components/ModalMensajes";
 import { crearDireccion } from "../services/direcciones.service";
 import { actualizarDireccion } from "../services/direcciones.service";
 import { obtenerTodos } from "../services/direcciones.service";
+import { eliminarDireccion } from "../services/direcciones.service";
 
 function Perfil(){
+
+    // BLOQUE DE MODALES Y MENSAJES
+
     const [openModal, setOpenModal] = useState(false);
     const [mensaje, setMensaje] = useState("");
     const [tipo, setTipo] = useState("");
 
-    const [listaDirecciones, setListaDirecciones] = useState([]);
 
-    const [modalUbicacion, setModalUbicacion] = useState(false);
-    const [desplegarDireccion, setDesplegarDireccion] = useState(false);
+    // BLOQUE DE USUARIO (DATOS Y ACTUALIZACIÓN)
 
+    const [tipoDocumento, setTipoDocumento] = useState([]);
+    
     const [formData, setFormData] = useState({
         idusuario: "",
         email: "",
@@ -33,18 +37,47 @@ function Perfil(){
         perfil: "",
     });
 
-    const [formDirecciones, setFormDirecciones] = useState({
-        usuario: JSON.parse(localStorage.getItem('usuario'))?.idusuario || "",
-        nombre_destinatario: "",
-        direccion: "",
-        residencia: "",
-        barrio: "",
-        ciudad: "",
-        departamento: "",
-        pais: "Colombia",
-        codigo_postal: "",
-        principal: true,
-    });
+    const actualizarFormularioUsuario = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value //Actualiza el campo dinamicamnete
+        });
+    };
+
+    const guardarCambiosPerfil = async (e) => {
+        e.preventDefault();
+        try{
+            const payload = { ...formData, };
+            const actualizar = await actualizarUsuario(formData.idusuario, payload);
+
+            //actualizar el localstorage
+            localStorage.setItem('usuario', JSON.stringify(actualizar));
+
+            setMensaje("Datos actualizados con exito");
+            setTipo("success");
+            setOpenModal(true);
+
+            setTimeout(() => {
+                setOpenModal(false);
+            }, 1000);
+
+        }catch(error){
+            setMensaje("Error al actualizar datos");
+            setTipo("error");
+            setOpenModal(true);
+
+            setTimeout(() => {
+                setOpenModal(false);
+            }, 1000);
+        };
+    };
+
+
+    // BLOQUE DE DIRECCIONES
+
+    const [modalUbicacion, setModalUbicacion] = useState(false);
+    const [desplegarDireccion, setDesplegarDireccion] = useState(false);
+    const [listaDirecciones, setListaDirecciones] = useState([]);
     
     const formDireccionInicial = {
         usuario: JSON.parse(localStorage.getItem('usuario'))?.idusuario || "",
@@ -59,18 +92,116 @@ function Perfil(){
         principal: true,
     };
 
+    const [formDirecciones, setFormDirecciones] = useState({
+        usuario: JSON.parse(localStorage.getItem('usuario'))?.idusuario || "",
+        nombre_destinatario: "",
+        direccion: "",
+        residencia: "",
+        barrio: "",
+        ciudad: "",
+        departamento: "",
+        pais: "Colombia",
+        codigo_postal: "",
+        principal: true,
+    });
+
     const nuevadDireccion = () => {
         setFormDirecciones(formDireccionInicial);
         setDesplegarDireccion(true);
     };
 
-
     const cerrarFormulario = () => {
         setDesplegarDireccion(false);
     };
 
-    const [tipoDocumento, setTipoDocumento] = useState([]);
+    const editarDireccion = (direccion) => {
+        setFormDirecciones({
+            ...direccion,
+            usuario: direccion.usuario.idusuario || direccion.usuario
+        });
+        setDesplegarDireccion(true);
+    };
 
+    const actualizarFormularioDireccion = (e) => {
+        let { name, value, type, checked } = e.target;
+
+        if(value === "true") value = true ;
+        if(value === "false") value = false;
+
+        setFormDirecciones({
+            ...formDirecciones,
+            [name]: type === "checkbox" ? checked : value
+        });
+    };
+
+    const guardarNuevaDireccion = async (e) => {
+        e.preventDefault();
+        try{
+            if(formDirecciones.iddireccion){
+                await actualizarDireccion(formDirecciones.iddireccion, formDirecciones);
+                setMensaje("Direccion actualizada");
+            }else {
+                await crearDireccion(formDirecciones);
+                setMensaje("Direccion creada con exito")
+            }
+
+            const todasLasdirecciones = await obtenerTodos();
+            const usuario = JSON.parse(localStorage.getItem('usuario'));
+            const misDirecciones = todasLasdirecciones.filter((dir) => dir.usuario.idusuario === usuario.idusuario);
+            setListaDirecciones(misDirecciones);
+            
+            setMensaje("Direccion guardada con exito");
+            setTipo("success");
+            setOpenModal(true);
+            setModalUbicacion(false);
+
+            setTimeout(() => {
+                setOpenModal(false)
+            },1000);
+            
+        }catch(error){
+            setMensaje("Error al crear la direccion");
+            setTipo("error");
+            setOpenModal(true);
+
+            setTimeout(() => {
+                setOpenModal(false)
+            },1000);
+        };
+    };
+
+    const borrarDireccion = async (iddireccion) => {
+        const confirmar = window.confirm("¿Estás seguro de que deseas eliminar esta dirección?");
+
+        if(!confirmar) return;
+
+        try{
+            await eliminarDireccion(iddireccion);
+
+            const nuevasDirecciones = listaDirecciones.filter((dir) => String(dir.iddireccion) !== String(iddireccion));
+
+            setListaDirecciones(nuevasDirecciones);
+
+            setMensaje("Dirección eliminada con éxito");
+            setTipo("success");
+            setOpenModal(true);
+
+            setTimeout(() => {
+                setOpenModal(false);
+            },1000);
+        }catch(error){
+            setMensaje("Error al eliminar la dirección");
+            setTipo("error");
+            setOpenModal(true);
+
+            setTimeout(() => {
+                setOpenModal(false);
+            },1000);
+        }
+    };
+
+
+    // EFECTOS (CARGA INICIAL DE LA VISTA)
 
     useEffect(() => {
         const cargarPerfil = async () => {
@@ -105,98 +236,6 @@ function Perfil(){
         cargarPerfil();
     },[]); // Los corchetes significan cargar una vez al abrir la pagina
 
-    const editarDireccion = (direccion) => {
-        setFormDirecciones({
-            ...direccion,
-            usuario: direccion.usuario.idusuario || direccion.usuario
-        });
-        setDesplegarDireccion(true);
-    };
-
-    const handleChangeDirecciones = (e) => {
-        let { name, value, type, checked } = e.target;
-
-        if(value === "true") value = true ;
-        if(value === "false") value = false;
-
-        setFormDirecciones({
-            ...formDirecciones,
-            [name]: type === "checkbox" ? checked : value
-        });
-    };
-
-
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value //Actualiza el campo dinamicamnete
-        });
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try{
-            const payload = { ...formData, };
-
-            const actualizar = await actualizarUsuario(formData.idusuario, payload);
-
-            //actualizar el localstorage
-            localStorage.setItem('usuario', JSON.stringify(actualizar));
-
-            setMensaje("Datos actualizados con exito");
-            setTipo("success");
-            setOpenModal(true);
-
-            setTimeout(() => {
-                setOpenModal(false);
-            }, 1000);
-
-
-        }catch(error){
-            setMensaje("Error al actualizar datos");
-            setTipo("error");
-            setOpenModal(true);
-
-            setTimeout(() => {
-                setOpenModal(false);
-            }, 1000);
-
-        };
-    };
-
-    
-
-    const handleSubmitDireccion = async (e) => {
-        e.preventDefault();
-        try{
-
-            if(formDirecciones.iddireccion){
-                await actualizarDireccion(formDirecciones.iddireccion, formDirecciones);
-                setMensaje("Direccion actualizada");
-            }else {
-                await crearDireccion(formDirecciones);
-                setMensaje("Direccion creada con exito")
-            }
-            
-            setMensaje("Direccion guardada con exito");
-            setTipo("success");
-            setOpenModal(true);
-            setModalUbicacion(false);
-
-            setTimeout(() => {
-                setOpenModal(false)
-            },1000);
-            
-        }catch(error){
-            setMensaje("Error al crear la direccion");
-            setTipo("error");
-            setOpenModal(true);
-
-            setTimeout(() => {
-                setOpenModal(false)
-            },1000);
-        };
-    };
 
     return (
         <div className="flex flex-col min-h-screen gap-4">
@@ -206,8 +245,14 @@ function Perfil(){
                 </div>
             <main className="flex-grow flex items-center justify-center gap-1 w-full">
                 <div className="flex gap-1">
-                    <div className="bg-blue-100 rounded-l-2xl border border-green-100 shadow-xl p-8 text-green-800">
-                        Este div es para la foto del usuario
+                    <div className="bg-blue-100 rounded-l-2xl border border-green-100 shadow-xl p-8 text-green-800 ">
+                        <div className="relative w-40 h-40 rounded-full border-4 border-green-500 bg-gray-100 flex items-center justify-center shadow-lg">
+                            <svg 
+                                viewBox="0 0 640 640">
+                                <path d="M240 192C240 147.8 275.8 112 320 112C364.2 112 400 147.8 400 192C400 236.2 364.2 272 320 272C275.8 272 240 236.2 240 192zM448 192C448 121.3 390.7 64 320 64C249.3 64 192 121.3 192 192C192 262.7 249.3 320 320 320C390.7 320 448 262.7 448 192zM144 544C144 473.3 201.3 416 272 416L368 416C438.7 416 496 473.3 496 544L496 552C496 565.3 506.7 576 520 576C533.3 576 544 565.3 544 552L544 544C544 446.8 465.2 368 368 368L272 368C174.8 368 96 446.8 96 544L96 552C96 565.3 106.7 576 120 576C133.3 576 144 565.3 144 552L144 544z"/>
+                            </svg>
+                        </div>
+                        <span className="flex items-center justify-center text-green-800 uppercase font-extrabold">{formData.nombres} {formData.apellidos}</span>
                     </div>
                     {openModal && (
                         <ModalMensaje 
@@ -224,7 +269,7 @@ function Perfil(){
                                     type="text" 
                                     name="nombres" 
                                     value={formData.nombres}
-                                    onChange={handleChange}
+                                    onChange={actualizarFormularioUsuario}
                                     className="w-full rounded-xl border border-slate-400 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-600/20"
                                     placeholder="Camila "
                                 />
@@ -235,7 +280,7 @@ function Perfil(){
                                     type="text" 
                                     name="apellidos" 
                                     value={formData.apellidos}
-                                    onChange={handleChange}
+                                    onChange={actualizarFormularioUsuario}
                                     className="w-full rounded-xl border border-slate-400 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-600/20"
                                     placeholder="Pardo "
                                 />
@@ -245,7 +290,7 @@ function Perfil(){
                                 <select
                                     name="documento"
                                     value={formData.documento}
-                                    onChange={handleChange}
+                                    onChange={actualizarFormularioUsuario}
                                     className="w-full rounded-xl border border-slate-400 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-600/20"
                                 >
                                     <option value="">Selecciona una opcion...</option>
@@ -262,7 +307,7 @@ function Perfil(){
                                     type="number"
                                     name="numero"
                                     value={formData.numero}
-                                    onChange={handleChange}
+                                    onChange={actualizarFormularioUsuario}
                                     className="w-full rounded-xl border border-slate-400 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-600/20 "
                                     placeholder="1002659847" 
                                 />
@@ -273,7 +318,7 @@ function Perfil(){
                                     type="number"
                                     name="telefono"
                                     value={formData.telefono}
-                                    onChange={handleChange}
+                                    onChange={actualizarFormularioUsuario}
                                     className="w-full rounded-xl border border-slate-400 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-600/20" 
                                     placeholder="3224592478"
                                 /> 
@@ -284,7 +329,7 @@ function Perfil(){
                                     type="email"
                                     name="email"
                                     value={formData.email}
-                                    onChange={handleChange}
+                                    onChange={actualizarFormularioUsuario}
                                     className="w-full rounded-xl border border-slate-400 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-600/20" 
                                 />
                             </div>
@@ -292,7 +337,7 @@ function Perfil(){
                         <div className="flex justify-end mt-4 gap-3">
                             <button
                                 type="button"
-                                onClick={handleSubmit}
+                                onClick={guardarCambiosPerfil}
                                 className="cursor-pointer uppercase bg-white px-3 py-1 rounded-l active:translate-x-0.5 active:translate-y-0.5 hover:shadow-[0.5rem_0.5rem_#3AD22D,-0.5rem_-0.5rem_#00BCD4] transition"
                             >
                                 <span className="inline-block">Editar</span>
@@ -337,7 +382,7 @@ function Perfil(){
                                             <input 
                                                 type="text" 
                                                 name="nombre_destinatario"
-                                                onChange={handleChangeDirecciones}
+                                                onChange={actualizarFormularioDireccion}
                                                 value={formDirecciones.nombre_destinatario}
                                                 className="w-full rounded-xl border border-slate-400 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-600/20"
                                                 placeholder="Ej: Juan Pérez"
@@ -348,7 +393,7 @@ function Perfil(){
                                             <input 
                                                 type="text" 
                                                 name="direccion"
-                                                onChange={handleChangeDirecciones}
+                                                onChange={actualizarFormularioDireccion}
                                                 value={formDirecciones.direccion}
                                                 className="w-full rounded-xl border border-slate-400 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-600/20"
                                                 placeholder="Ej: Calle 123 #45-67"
@@ -359,7 +404,7 @@ function Perfil(){
                                             <input 
                                                 type="text" 
                                                 name="residencia"
-                                                onChange={handleChangeDirecciones}
+                                                onChange={actualizarFormularioDireccion}
                                                 value={formDirecciones.residencia}
                                                 className="w-full rounded-xl border border-slate-400 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-600/20"
                                                 placeholder="Ej: Apto 401, Conjunto Los Pinos"
@@ -370,7 +415,7 @@ function Perfil(){
                                             <input 
                                                 type="text" 
                                                 name="barrio"
-                                                onChange={handleChangeDirecciones}
+                                                onChange={actualizarFormularioDireccion}
                                                 value={formDirecciones.barrio}
                                                 className="w-full rounded-xl border border-slate-400 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-600/20"
                                                 placeholder="Ej: El Poblado"
@@ -381,7 +426,7 @@ function Perfil(){
                                             <input 
                                                 type="text" 
                                                 name="ciudad"
-                                                onChange={handleChangeDirecciones}
+                                                onChange={actualizarFormularioDireccion}
                                                 value={formDirecciones.ciudad}
                                                 className="w-full rounded-xl border border-slate-400 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-600/20"
                                                 placeholder="Ej: Medellín"
@@ -392,7 +437,7 @@ function Perfil(){
                                             <input 
                                                 type="text" 
                                                 name="departamento"
-                                                onChange={handleChangeDirecciones}
+                                                onChange={actualizarFormularioDireccion}
                                                 value={formDirecciones.departamento}
                                                 className="w-full rounded-xl border border-slate-400 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-600/20"
                                                 placeholder="Ej: Antioquia"
@@ -403,7 +448,7 @@ function Perfil(){
                                             <input 
                                                 type="text" 
                                                 name="pais"
-                                                onChange={handleChangeDirecciones}
+                                                onChange={actualizarFormularioDireccion}
                                                 value={formDirecciones.pais}
                                                 className="w-full rounded-xl border border-slate-400 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-600/20"
                                                 placeholder="Ej: Colombia"
@@ -414,7 +459,7 @@ function Perfil(){
                                             <input 
                                                 type="number" 
                                                 name="codigo_postal"
-                                                onChange={handleChangeDirecciones}
+                                                onChange={actualizarFormularioDireccion}
                                                 value={formDirecciones.codigo_postal}
                                                 className="w-full rounded-xl border border-slate-400 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-600/20"
                                                 placeholder="Ej: 050022"
@@ -425,7 +470,7 @@ function Perfil(){
                                                     type="checkbox" 
                                                     name="principal"
                                                     id="principal_check"
-                                                    onChange={handleChangeDirecciones}
+                                                    onChange={actualizarFormularioDireccion}
                                                     checked={formDirecciones.principal}
                                                     className="w-5 h-5 text-green-600 bg-white border-slate-400 rounded focus:ring-green-600 focus:ring-2"
                                                 />
@@ -454,12 +499,18 @@ function Perfil(){
                                             <div key={dir.iddireccion} className="bg-white p-4 rounded-xl shadow border border-slate-200 flex justify-between items-center">
                                                 <div>
                                                     <p className="font-bold text-gray-800">{dir.nombre_destinatario}</p>
-                                                    <p className="text-sm text-gray-600">{dir.direccion}, {dir.ciudad}</p>
+                                                    <p className="text-sm text-gray-600">{dir.direccion}, {dir.ciudad}, {dir.departamento}</p>
+                                                    <p className="text-sm text-gray-600"><span className="text-gray-800 font-bold">Barrio:</span>  {dir.barrio}, {dir.codigo_postal} </p>
                                                     {dir.principal && <span className="text-xs bg-green-200 text-green-800 px-2 py-1 rounded mt-1 inline-block">Principal</span>}
                                                 </div>
-                                                <button onClick={() => editarDireccion(dir)} className="text-blue-600 hover:underline text-sm font-bold">
-                                                    Editar
-                                                </button>
+                                                <div className="flex flex-col gap-2 items-end">
+                                                    <button onClick={() => editarDireccion(dir)} className="text-blue-600 hover:underline text-sm font-bold">
+                                                        Editar
+                                                    </button>
+                                                    <button onClick={() => borrarDireccion(dir.iddireccion)} className="text-red-600 hover:underline text-sm font-bold">
+                                                        Eliminar
+                                                    </button>
+                                                </div>
                                             </div>
                                         ))
                                     )}
@@ -469,7 +520,7 @@ function Perfil(){
                             <footer className="px-6 py-4 border-t border-gray-200 bg-blue-200 flex justify-end gap-2">
                                 <button 
                                     type="button" 
-                                    onClick={handleSubmitDireccion}
+                                    onClick={guardarNuevaDireccion}
                                     className="cursor-pointer uppercase bg-white px-3 py-1 rounded-l active:translate-x-0.5 active:translate-y-0.5 hover:shadow-[0.5rem_0.5rem_#3AD22D,-0.5rem_-0.5rem_#00BCD4] transition"
                                 >
                                     Guardar

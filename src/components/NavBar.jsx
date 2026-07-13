@@ -11,13 +11,13 @@ const NavBar = () => {
                 </Link>
 
                 <div className="space-x-6">
-                    <Link to="/" className="text-gray-600 hover:text-green-500 transition-color">
+                    <Link to="/" className="relative text-gray-600 hover:text-green-500 transition-colors after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-green-500 after:transition-transform after:duration-300 after:ease-in-out hover:after:origin-bottom-left hover:after:scale-x-100">
                         Inicio
                     </Link>
-                    <Link to="/catalogo" className="text-gray-600 hover:text-green-500 transition-color">
+                    <Link to="/catalogo" className="relative text-gray-600 hover:text-green-500 transition-colors after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-green-500 after:transition-transform after:duration-300 after:ease-in-out hover:after:origin-bottom-left hover:after:scale-x-100">
                         Catálogo
                     </Link>
-                    <Link to="/perfil" className="text-gray-600 hover:text-green-500 transition-colors">
+                    <Link to="/perfil" className="relative text-gray-600 hover:text-green-500 transition-colors after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-green-500 after:transition-transform after:duration-300 after:ease-in-out hover:after:origin-bottom-left hover:after:scale-x-100 ">
                         Perfil
                     </Link>
                 </div>
@@ -25,7 +25,7 @@ const NavBar = () => {
                 <div className="space-x-4">
                     <button
                         onClick={cerrarSesion}
-                        className="bg-red-500 shadow-red-600 text-black px-3 py-1 rounded-xl hover:bg-red-600 transition-color hover:text-white"
+                        className="relative bg-red-50 shadow-red-100 text-black px-3 py-1 rounded-xl hover:bg-red-100 transition-colors hover:text-red-700 after:absolute after:bottom-1 after:left-3 after:w-[calc(100%-24px)] after:h-[2px] after:origin-bottom-right after:scale-x-0 after:bg-red-700 after:transition-transform after:duration-300 after:ease-in-out hover:after:origin-bottom-left hover:after:scale-x-100"
                     >
                         Cerrar sesión
                     </button>
