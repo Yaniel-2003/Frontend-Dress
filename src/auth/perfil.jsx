@@ -243,7 +243,7 @@ function Perfil(){
                 <div className="text-green-800">
                     <h2 className="text-center font-black text-[30px]">Hola {formData.nombres}, esta es la vista de perfil</h2>
                 </div>
-            <main className="flex-grow flex items-center justify-center gap-1 w-full">
+            <main className="grow flex items-center justify-center gap-1 w-full">
                 <div className="flex gap-1">
                     <div className="bg-blue-100 rounded-l-2xl border border-green-100 shadow-xl p-8 text-green-800 ">
                         <div className="relative w-40 h-40 rounded-full border-4 border-green-500 bg-gray-100 flex items-center justify-center shadow-lg">
