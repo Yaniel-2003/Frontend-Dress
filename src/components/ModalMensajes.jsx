@@ -47,9 +47,10 @@ function ModalMensaje({ abierto, mensaje, tipo = "success" }) {
       >
         <div className={`absolute inset-x-0 top-0 h-1.5 rounded-t-2xl ${v.barra}`} />
 
-        <div className={`mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-white ring-8 ${v.anillo}`}>
+        <div className={`relative mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-white ring-8 ${v.anillo}`}>
+          <div className={`absolute top-1/2 left-1/2 h-16 w-16 -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-transparent border-t-current animate-spin ${v.icono}`}></div>
           <svg
-            className={`h-7 w-7 ${v.icono}`}
+            className={`relative z-10 h-7 w-7 ${v.icono}`}
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"

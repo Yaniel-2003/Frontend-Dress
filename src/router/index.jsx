@@ -4,6 +4,7 @@ import Login from '../auth/login'
 import Registro from '../auth/registro'
 import Home  from '../pages/home';
 import Perfil from '../auth/perfil';
+import Articulos from '../pages/articulos';
 
 // ESTE COMPONENTE PROTEJE LAS RUTAS PARA QUE SOLO EMTREN LOS USUARIOS LOGUEADOS 
 
@@ -35,10 +36,12 @@ const AppRouter = () => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path='/' element={<Home />} />
+                <Route path='/' element={<Navigate to='/Login' replace />} />
+                <Route path='/home' element={<Home />} />
                 <Route path='/Login' element={<Login  />} />
                 <Route path='/registro' element={<Registro />} />
                 <Route path='/perfil' element={<Perfil />} />
+                <Route path='/articulos' element={<Articulos />} />
             </Routes>
         </BrowserRouter>
     );

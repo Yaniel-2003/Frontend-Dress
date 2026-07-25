@@ -1,9 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { registrarNuevoUsuario } from './services/Registro.service';
 import { getTipoDoc } from "../services/catalogo.service";
-import { useEffect } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { UserIcon, IdCardIcon, PhoneIcon, MailIcon, LockIcon, EyeIcon, EyeOffIcon } from "../components/Icons";
 
 function Registro(){
     const navigate = useNavigate();
@@ -17,6 +16,7 @@ function Registro(){
         telefono: ""
     });
     const [tiposDocumento, setTiposDocumento] = useState([]);
+    const [mostrarPassword, setMostrarPassword] = useState(false);
 
     useEffect(() => {
         const cargarDocumentos = async () => {
@@ -60,89 +60,100 @@ function Registro(){
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 to-gray-100 p-4 font-sans">
-            <div className="bg-white w-full max-w-2xl p-8 rounded-2xl shadow-xl border border-pink-50">
-                <div className="text-center mb-8">
-                   <Link
-                        to="/login"
-                        className="absolute top-6 left-6 font-sans flex justify-center gap-2 items-center shadow-xl text-sm text-gray-50 bg-gradient-to-r from-green-500 from-50%  to-blue-500 to-100% backdrop-blur-md font-semibold isolation-auto border-gray-50 before:absolute before:w-full before:transition-all before:duration-900 before:hover:w-full before:-left-full before:hover:left-0 before:rounded-full before:bg-white hover:text-black before:-z-10 before:aspect-square before:hover:scale-200 before:hover:duration-500 relative z-10 px-4 py-2 overflow-hidden border-2 rounded-full group w-fit"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 16 19"
-                            className="w-6 h-6 justify-end bg-gray-50 group-hover:-rotate-90 group-hover:bg-gray-50 text-gray-50 ease-linear duration-300 rounded-full border border-gray-700 group-hover:border-gray-700 p-1.5 -rotate-90"
-                        >
-                            <path
-                                className="fill-gray-800 group-hover:fill-gray-800"
-                                d="M7 18C7 18.5523 7.44772 19 8 19C8.55228 19 9 18.5523 9 18H7ZM8.70711 0.292893C8.31658 -0.0976311 7.68342 -0.0976311 7.29289 0.292893L0.928932 6.65685C0.538408 7.04738 0.538408 7.68054 0.928932 8.07107C1.31946 8.46159 1.95262 8.46159 2.34315 8.07107L8 2.41421L13.6569 8.07107C14.0474 8.46159 14.6805 8.46159 15.0711 8.07107C15.4616 7.68054 15.4616 7.04738 15.0711 6.65685L8.70711 0.292893ZM9 18L9 1H7L7 18H9Z"
-                            ></path>
-                        </svg>
-                        Volver
-                    </Link>
-                    
-                    <h1 className="text-3xl font-extrabold text-gray-800 tracking-tight">
-                        Únete a <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-blue-500">Dress Shopy</span>
-                    </h1>
-                    <p className="text-gray-500 mt-2 text-sm">Crea tu cuenta y descubre las mejores colecciones.</p>
-                </div>
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-gray-100 p-4 font-sans">
+            <div className="w-full max-w-3xl rounded-xl shadow-2xl overflow-hidden z-[100] relative snap-start shrink-0 py-8 pl-8 pr-16 bg-white flex flex-col gap-3 transition-all duration-300 border border-green-100">
+                
+                <p className="text-green-600/15 hover:text-green-600/40 translate-x-[46%] -rotate-90 tracking-[15px] transition-all duration-500 -translate-y-1/2 font-semibold text-5xl absolute right-0 top-1/2 select-none cursor-default">
+                    Regístrate
+                </p>
 
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-1">Nombre</label>
-                            <input type="text" name="nombres" onChange={handleChange} required className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all outline-none text-gray-700 bg-gray-50 hover:bg-white" placeholder="Tus nombres" />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-1">Apellidos</label>
-                            <input type="text" name="apellidos" onChange={handleChange} required className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all outline-none text-gray-700 bg-gray-50 hover:bg-white" placeholder="Tus apellidos" />
-                        </div>
+                <div className="w-full z-10 relative">
+                    <div className="mb-2">
+                        <Link
+                            to="/login"
+                            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-gray-600 bg-white border border-gray-200 rounded-full shadow-sm hover:bg-gray-50 hover:text-gray-900 hover:shadow transition-all duration-200 w-fit"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="m15 18-6-6 6-6"/>
+                            </svg>
+                            Volver
+                        </Link>
                     </div>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-1">Tipo documento</label>
-                            <div className="relative">
-                                <select name="documento" id="documento" onChange={handleChange} value={formData.documento} required className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all outline-none text-gray-700 bg-gray-50 hover:bg-white appearance-none cursor-pointer">
-                                    <option value="" disabled>Seleccione un tipo ...</option>
-                                    {tiposDocumento.map((tipo) => (
-                                        <option key={tipo.idnumero} value={tipo.idnumero}>
-                                            {tipo.sigla}
-                                        </option>
-                                    ))}
-                                </select>
-                                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
-                                    <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                                </div>
+
+                    <div className="text-center mb-6">
+                        <h1 className="text-4xl font-extrabold tracking-tight pb-1 text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-blue-500">
+                            Únete a Dress Shopy
+                        </h1>
+                        <p className="text-sm text-gray-500 pb-2">Crea tu cuenta y descubre las mejores colecciones.</p>
+                    </div>
+
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-6 w-full">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="flex flex-col items-start w-full relative">
+                                <label className="text-sm text-green-800 font-bold flex items-center gap-1"><UserIcon className="w-4 h-4" /> Nombre</label>
+                                <input type="text" name="nombres" onChange={handleChange} required className="w-full py-2 pl-0 bg-transparent outline-none focus:ring-0 border-0 border-b-2 border-green-300 focus:border-green-600 placeholder:text-gray-400 text-gray-800 placeholder:text-sm transition-colors" placeholder="Tus nombres" />
+                            </div>
+                            <div className="flex flex-col items-start w-full relative">
+                                <label className="text-sm text-green-800 font-bold flex items-center gap-1"><UserIcon className="w-4 h-4" /> Apellidos</label>
+                                <input type="text" name="apellidos" onChange={handleChange} required className="w-full py-2 pl-0 bg-transparent outline-none focus:ring-0 border-0 border-b-2 border-green-300 focus:border-green-600 placeholder:text-gray-400 text-gray-800 placeholder:text-sm transition-colors" placeholder="Tus apellidos" />
                             </div>
                         </div>
-                        <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-1">Número documento</label>
-                            <input type="text" name="numero" onChange={handleChange} required className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all outline-none text-gray-700 bg-gray-50 hover:bg-white" placeholder="Ej: 1023456789" />
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="flex flex-col items-start w-full relative">
+                                <label className="text-sm text-green-800 font-bold flex items-center gap-1"><IdCardIcon className="w-4 h-4" /> Tipo documento</label>
+                                <div className="relative w-full">
+                                    <select name="documento" id="documento" onChange={handleChange} value={formData.documento} required className="w-full py-2 pl-0 bg-transparent outline-none focus:ring-0 border-0 border-b-2 border-green-300 focus:border-green-600 text-gray-800 transition-colors appearance-none cursor-pointer">
+                                        <option value="" disabled className="text-gray-400">Seleccione un tipo ...</option>
+                                        {tiposDocumento.map((tipo) => (
+                                            <option key={tipo.idnumero} value={tipo.idnumero} className="text-gray-800 bg-white">
+                                                {tipo.sigla}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-gray-500">
+                                        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="flex flex-col items-start w-full relative">
+                                <label className="text-sm text-green-800 font-bold flex items-center gap-1"><IdCardIcon className="w-4 h-4" /> Número documento</label>
+                                <input type="text" name="numero" onChange={handleChange} required className="w-full py-2 pl-0 bg-transparent outline-none focus:ring-0 border-0 border-b-2 border-green-300 focus:border-green-600 placeholder:text-gray-400 text-gray-800 placeholder:text-sm transition-colors" placeholder="Ej: 1023456789" />
+                            </div>
                         </div>
-                    </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-1">Teléfono</label>
-                            <input type="text" name="telefono" onChange={handleChange} required className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all outline-none text-gray-700 bg-gray-50 hover:bg-white" placeholder="Tu número de contacto" />
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="flex flex-col items-start w-full relative">
+                                <label className="text-sm text-green-800 font-bold flex items-center gap-1"><PhoneIcon className="w-4 h-4" /> Teléfono</label>
+                                <input type="text" name="telefono" onChange={handleChange} required className="w-full py-2 pl-0 bg-transparent outline-none focus:ring-0 border-0 border-b-2 border-green-300 focus:border-green-600 placeholder:text-gray-400 text-gray-800 placeholder:text-sm transition-colors" placeholder="Tu número de contacto" />
+                            </div>
+                            <div className="flex flex-col items-start w-full relative">
+                                <label className="text-sm text-green-800 font-bold flex items-center gap-1"><MailIcon className="w-4 h-4" /> Correo Electrónico</label>
+                                <input type="email" name="email" onChange={handleChange} required className="w-full py-2 pl-0 bg-transparent outline-none focus:ring-0 border-0 border-b-2 border-green-300 focus:border-green-600 placeholder:text-gray-400 text-gray-800 placeholder:text-sm transition-colors" placeholder="correo@ejemplo.com" />
+                            </div>
                         </div>
-                        <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-1">Correo Electrónico</label>
-                            <input type="email" name="email" onChange={handleChange} required className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all outline-none text-gray-700 bg-gray-50 hover:bg-white" placeholder="correo@ejemplo.com" />
+
+                        <div className="flex flex-col items-start w-full relative">
+                            <label className="text-sm text-green-800 font-bold flex items-center gap-1"><LockIcon className="w-4 h-4" /> Contraseña</label>
+                            <div className="relative w-full">
+                                <input type={mostrarPassword ? "text" : "password"} name="password_hash" onChange={handleChange} required className="w-full py-2 pl-0 pr-8 bg-transparent outline-none focus:ring-0 border-0 border-b-2 border-green-300 focus:border-green-600 placeholder:text-gray-400 text-gray-800 placeholder:text-sm transition-colors" placeholder="Crea una contraseña segura" />
+                                <button 
+                                    type="button" 
+                                    onClick={() => setMostrarPassword(!mostrarPassword)}
+                                    className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-400 hover:text-green-600 transition-colors focus:outline-none pr-2"
+                                >
+                                    {mostrarPassword ? <EyeOffIcon className="w-5 h-5"/> : <EyeIcon className="w-5 h-5"/>}
+                                </button>
+                            </div>
                         </div>
-                    </div>
 
-                    <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-1">Contraseña</label>
-                        <input type="password" name="password_hash" onChange={handleChange} required className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all outline-none text-gray-700 bg-gray-50 hover:bg-white" placeholder="Crea una contraseña segura" />
-                    </div>
-
-                    <div className="pt-4">
-                        <button type="submit" className="w-full py-3 px-4 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white font-bold rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-                            Crear cuenta
-                        </button>
-                    </div>
-                </form>
+                        <div className="pt-2">
+                            <button type="submit" className="w-full px-2 focus:outline-none focus:scale-105 font-bold text-sm py-3 rounded-lg hover:scale-105 transition-all text-white bg-green-600 shadow-green-600/30 shadow-lg text-center">
+                                Crear cuenta
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     );

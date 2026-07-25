@@ -4,11 +4,13 @@ import { Link } from "react-router-dom";
 import ModalMensaje from "../components/ModalMensajes";
 
 import { postUsuario } from "./services/Login.service";
+import { MailIcon, LockIcon, EyeIcon, EyeOffIcon } from "../components/Icons";
 
 function Login(){
     const [mostrarModal, SetMostrarModal] = useState(false);
     const [mensaje, setMensaje] = useState("");
     const [tipo, setTipo] = useState("");
+    const [mostrarPassword, setMostrarPassword] = useState(false);
 
     const navigate = useNavigate();
     const [formData, setFormDat] = useState({
@@ -49,7 +51,7 @@ function Login(){
             // Redireccionamos a la pagina principal 
             setTimeout(() => {
                 SetMostrarModal(false);
-                navigate('/');
+                navigate('/home');
             },1000);
         }catch(err){
             setMensaje("Usuario o contraseña incorrectos");
@@ -63,62 +65,87 @@ function Login(){
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center from-green-50 to-gray-100 p-4 font-sans">
-            <div className="bg-gray-100 w-full max-w-md p-8 rounded-2xl shadow-xl border border-green-100">
-                <div className="text-center mb-8">
-                    <h1 className="text-3xl font-extrabold text-black tracking-tight">
-                        Bienvenido a <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-blue-500">Dress shopy </span>
-                    </h1>
-                    <p className="text-black mt-2 text-sm">Ingresa a tu cuenta para continuar.</p>
-                </div>
-                <form onSubmit={handleSubmit} className="apace-y-6">
-                    {mostrarModal && (
-                        <ModalMensaje 
-                            abierto={mostrarModal}
-                            mensaje={mensaje}
-                            tipo={tipo}
-                        />
-                    )}
-                    <div>
-                        <label className="block text-sm font-semibold text-black mb-1"> Correo electronico</label>
-                        <input 
-                            type="email"
-                            name="email"
-                            onChange={handleChange}
-                            value={formData.email}
-                            required
-                            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all outline-none text-gray-700 bg-gray-50 hover:bg-white" 
-                            placeholder="Correo@gmail.com"
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-semibold text-black mb-1">Contraseña</label>
-                        <input 
-                            type="password"
-                            name="password_hash"
-                            onChange={handleChange} 
-                            value={formData.password_hash}
-                            required
-                            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all outline-none text-gray-700 bg-gray-50 hover:bg.white"
-                            placeholder="*********"
-                        />
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-gray-100 p-4 font-sans">
+            <div className="w-[420px] rounded-xl shadow-2xl overflow-hidden z-[100] relative snap-start shrink-0 py-8 pl-8 pr-14 bg-white flex flex-col items-center justify-center gap-3 transition-all duration-300 border border-green-100">
+                
+                <p className="text-green-600/15 hover:text-green-600/40 translate-x-[46%] -rotate-90 tracking-[15px] transition-all duration-500 -translate-y-1/2 font-semibold text-5xl absolute right-0 top-1/2 select-none cursor-default">
+                    Bienvenido
+                </p>
 
-                    </div>
-                    <div className="pt-4 mt-3">
-                        <button 
-                            type="submit"
-                            className="w-full py-3 px-4 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white font-bold rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                        >
-                            Iniciar Sesión
-                        </button>
-                    </div>
-                    <div>
-                        <p className="text-black text-[14px] mt-8">
-                            No tienes cuenta registrate <span className="text-[14px] text-blue-500"><Link to="/registro" >aquí →</Link> </span>
-                            
-                        </p>
-                    </div>
-                </form>
+                <div className="w-full z-10 relative">
+                    <h1 className="text-4xl font-extrabold tracking-tight pb-1 text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-blue-500">
+                        Dress shopy
+                    </h1>
+                    <p className="text-sm text-gray-500 pb-8">Ingresa a tu cuenta para continuar.</p>
+                    
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-6 w-full">
+                        {mostrarModal && (
+                            <div className="absolute top-0 left-0 w-full z-50">
+                                <ModalMensaje 
+                                    abierto={mostrarModal}
+                                    mensaje={mensaje}
+                                    tipo={tipo}
+                                />
+                            </div>
+                        )}
+
+                        <div className="flex flex-col items-start w-full relative">
+                            <label htmlFor="email" className="text-sm text-green-800 font-bold flex items-center gap-1">
+                                <MailIcon className="w-4 h-4"/> Correo
+                            </label>
+                            <input
+                                type="email"
+                                name="email"
+                                id="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                required
+                                placeholder="correo@ejemplo.com"
+                                className="w-full py-2 pl-0 bg-transparent outline-none focus:ring-0 border-0 border-b-2 border-green-300 focus:border-green-600 placeholder:text-gray-400 text-gray-800 placeholder:text-sm transition-colors"
+                            />
+                        </div>
+
+                        <div className="flex flex-col items-start w-full relative">
+                            <label htmlFor="password_hash" className="text-sm text-green-800 font-bold flex items-center gap-1">
+                                <LockIcon className="w-4 h-4"/> Contraseña
+                            </label>
+                            <div className="relative w-full">
+                                <input
+                                    type={mostrarPassword ? "text" : "password"}
+                                    name="password_hash"
+                                    id="password_hash"
+                                    value={formData.password_hash}
+                                    onChange={handleChange}
+                                    required
+                                    placeholder="********"
+                                    className="w-full py-2 pl-0 pr-8 bg-transparent outline-none focus:ring-0 border-0 border-b-2 border-green-300 focus:border-green-600 placeholder:text-gray-400 text-gray-800 placeholder:text-sm transition-colors"
+                                />
+                                <button 
+                                    type="button" 
+                                    onClick={() => setMostrarPassword(!mostrarPassword)}
+                                    className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-400 hover:text-green-600 transition-colors focus:outline-none"
+                                >
+                                    {mostrarPassword ? <EyeOffIcon className="w-5 h-5"/> : <EyeIcon className="w-5 h-5"/>}
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="flex justify-start w-full mt-2">
+                            <p className="text-gray-700 text-[13px]">
+                                No tienes cuenta registrate <span className="font-semibold text-blue-600 hover:text-blue-700 hover:underline"><Link to="/registro" >aquí →</Link> </span>
+                            </p>
+                        </div>
+
+                        <div className="mt-4 w-full">
+                            <button
+                                type="submit"
+                                className="w-full px-2 focus:outline-none focus:scale-105 font-bold text-sm py-3 rounded-lg hover:scale-105 transition-all text-white bg-green-600 shadow-green-600/30 shadow-lg text-center"
+                            >
+                                Iniciar Sesión
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     );

@@ -6,9 +6,11 @@ const api = {
 
         // CONFIGURAMOS POR DEFECTO COMO ENVIAR EL JSON
 
-        const defaultHeaders = {
-            'Content-type': 'application/json',
-        };
+        const defaultHeaders = {};
+
+        if(!(options.body instanceof FormData)){
+            defaultHeaders['Content-type'] = 'application/json';
+        }
 
         const token = localStorage.getItem('access_token');
 

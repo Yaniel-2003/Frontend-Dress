@@ -12,8 +12,8 @@ export const getTipoDoc = async () => {
         method: 'GET'
     });
 }
-export const getMatca = async () => {
-    return await api.request('/marca7',{
+export const getMarca = async () => {
+    return await api.request('/marca/',{
         method: 'GET'
     });
 }
