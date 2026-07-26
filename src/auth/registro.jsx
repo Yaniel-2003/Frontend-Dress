@@ -61,9 +61,9 @@ function Registro(){
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-gray-100 p-4 font-sans">
-            <div className="w-full max-w-3xl rounded-xl shadow-2xl overflow-hidden z-[100] relative snap-start shrink-0 py-8 pl-8 pr-16 bg-white flex flex-col gap-3 transition-all duration-300 border border-green-100">
+            <div className="w-full max-w-3xl rounded-xl shadow-2xl overflow-hidden z-[100] relative shrink-0 py-8 px-5 sm:pl-8 sm:pr-16 bg-white flex flex-col gap-3 transition-all duration-300 border border-green-100">
                 
-                <p className="text-green-600/15 hover:text-green-600/40 translate-x-[46%] -rotate-90 tracking-[15px] transition-all duration-500 -translate-y-1/2 font-semibold text-5xl absolute right-0 top-1/2 select-none cursor-default">
+                <p className="hidden sm:block text-green-600/15 hover:text-green-600/40 translate-x-[46%] -rotate-90 tracking-[15px] transition-all duration-500 -translate-y-1/2 font-semibold text-5xl absolute right-0 top-1/2 select-none cursor-default">
                     Regístrate
                 </p>
 
@@ -71,9 +71,9 @@ function Registro(){
                     <div className="mb-2">
                         <Link
                             to="/login"
-                            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-gray-600 bg-white border border-gray-200 rounded-full shadow-sm hover:bg-gray-50 hover:text-gray-900 hover:shadow transition-all duration-200 w-fit"
+                            className="group inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors duration-200 w-fit"
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover:-translate-x-1">
                                 <path d="m15 18-6-6 6-6"/>
                             </svg>
                             Volver
@@ -81,7 +81,7 @@ function Registro(){
                     </div>
 
                     <div className="text-center mb-6">
-                        <h1 className="text-4xl font-extrabold tracking-tight pb-1 text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-blue-500">
+                        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight pb-1 text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-blue-500">
                             Únete a Dress Shopy
                         </h1>
                         <p className="text-sm text-gray-500 pb-2">Crea tu cuenta y descubre las mejores colecciones.</p>
@@ -148,7 +148,7 @@ function Registro(){
                         </div>
 
                         <div className="pt-2">
-                            <button type="submit" className="w-full px-2 focus:outline-none focus:scale-105 font-bold text-sm py-3 rounded-lg hover:scale-105 transition-all text-white bg-green-600 shadow-green-600/30 shadow-lg text-center">
+                            <button type="submit" className="w-full py-2.5 rounded-lg text-sm font-medium bg-green-700 text-white hover:bg-green-800 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 text-center">
                                 Crear cuenta
                             </button>
                         </div>

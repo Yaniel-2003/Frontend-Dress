@@ -65,15 +65,15 @@ function Login(){
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-gray-100 p-4 font-sans">
-            <div className="w-[420px] rounded-xl shadow-2xl overflow-hidden z-[100] relative snap-start shrink-0 py-8 pl-8 pr-14 bg-white flex flex-col items-center justify-center gap-3 transition-all duration-300 border border-green-100">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-gray-100 p-4 sm:p-6 md:p-8 font-sans">
+            <div className="w-full max-w-[420px] rounded-xl shadow-2xl overflow-hidden z-[100] relative snap-start shrink-0 p-6 sm:py-8 sm:pl-8 sm:pr-14 bg-white flex flex-col items-center justify-center gap-3 transition-all duration-300 border border-green-100">
                 
-                <p className="text-green-600/15 hover:text-green-600/40 translate-x-[46%] -rotate-90 tracking-[15px] transition-all duration-500 -translate-y-1/2 font-semibold text-5xl absolute right-0 top-1/2 select-none cursor-default">
+                <p className="hidden sm:block text-green-600/15 hover:text-green-600/40 translate-x-[46%] -rotate-90 tracking-[15px] transition-all duration-500 -translate-y-1/2 font-semibold text-5xl absolute right-0 top-1/2 select-none cursor-default">
                     Bienvenido
                 </p>
 
                 <div className="w-full z-10 relative">
-                    <h1 className="text-4xl font-extrabold tracking-tight pb-1 text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-blue-500">
+                    <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight pb-1 text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-blue-500">
                         Dress shopy
                     </h1>
                     <p className="text-sm text-gray-500 pb-8">Ingresa a tu cuenta para continuar.</p>

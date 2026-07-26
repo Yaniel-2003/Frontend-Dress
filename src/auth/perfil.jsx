@@ -261,7 +261,7 @@ function Perfil(){
             <NavBar />
                 <div className="py-6 px-4">
                     <h2 className="text-center font-bold text-2xl tracking-tight text-slate-800">
-                        Hola <span className="text-blue-600 font-extrabold">{formData.nombres}</span>, esta es la vista de perfil
+                        Hola <span className="text-blue-600 font-extrabold">{formData.nombres}{" "}{formData.apellidos}</span>, esta es la vista de perfil
                     </h2>
                     <p className="text-center text-xs text-slate-500 mt-1">
                         Gestiona tu información personal y datos de contacto de la cuenta.

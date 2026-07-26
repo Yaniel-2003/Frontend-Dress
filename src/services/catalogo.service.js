@@ -53,3 +53,10 @@ export const getCategoria = async () => {
         method: 'GET'
     });
 }
+
+
+export const getPrendas = async () => {
+    return await api.request('/prendas/', {
+        method: 'GET'
+    });
+}
