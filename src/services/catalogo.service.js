@@ -24,8 +24,12 @@ export const getColor = async () => {
     });
 }
 
-export const getTalla = async () => {
-    return await api.request('/talla/',{
+export const getTalla = async (filtro={}) => {
+    const params = new URLSearchParams(filtro).toString();
+
+    const url = params ? `/talla/?${params}`: '/talla/';
+
+    return await api.request(url,{
         method: 'GET'
     });
 }
