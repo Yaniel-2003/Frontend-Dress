@@ -46,11 +46,20 @@ export const getDescuento = async ()=> {
     });
 }
 
+//CUPONES 
 export const getCupon = async () => {
     return await api.request('/cupon/', {
         method: 'GET'
     });
 } 
+
+// SAVE CUPONES 
+export const saveCupones = async (datosCupones) => {
+    return await api.request('/cupon/', {
+        method: 'POST',
+        body: JSON.stringify(datosCupones)
+    });
+}
 
 export const getCategoria = async () => {
     return await api.request('/categoria/', {

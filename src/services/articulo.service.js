@@ -89,3 +89,33 @@ export const deleteVariante = async (idvariante) => {
     })
 
 }
+
+
+
+// TABLA DE DESCUENTOS 
+export const getDescuentos = async () => {
+    return await api.request('/descuento-articulos/',{
+        method: 'GET'
+    });
+}
+
+export const saveDescuentos = async (datoDescuento) => {
+    return await api.request(`/descuento-articulos/`,{
+        method: 'POST',
+        body: JSON.stringify(datoDescuento)
+    });
+}
+
+export const updateDescuento = async (iddescuento, datoDescuento) => {
+    return await api.request(`/descuento-articulos/${iddescuento}/`,{
+        method: 'PUT',
+        body: JSON.stringify(datoDescuento)
+    });
+}
+
+
+export const deleteDescuento = async (iddescuento) => {
+    return await api.request(`/descuento-articulos/${iddescuento}`,{
+        method: 'DELETE'
+    })
+}

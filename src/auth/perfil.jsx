@@ -5,7 +5,7 @@ import Footer from "../components/Footer";
 import { obtenerUsuario, actualizarUsuario } from "./services/Registro.service";
 import { getTipoDoc } from "../services/catalogo.service";
 import ModalMensaje from "../components/ModalMensajes";
-import ModalConfimar from "../components/confrimarEliminar";
+import ModalConfirmar from "../components/ConfirmarEliminar";
 import { crearDireccion } from "../services/direcciones.service";
 import { actualizarDireccion } from "../services/direcciones.service";
 import { obtenerTodos } from "../services/direcciones.service";
@@ -429,7 +429,7 @@ function Perfil(){
                             </div>
 
                             {openModalConfirmar && (
-                                <ModalConfimar
+                                <ModalConfirmar
                                     datosAMostrar={itemEliminar ? itemEliminar.direccion : ""}
                                     onCancelar={() => setOpenModalConfirmar(false)}
                                     onConfirmar={borrarDireccion}

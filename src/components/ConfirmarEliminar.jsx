@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 
-function ModalConfimar({datosAMostrar, onConfirmar, onCancelar, cargando = false}){
+function ModalConfirmar({datosAMostrar, onConfirmar, onCancelar, cargando = false}){
     return (
         <div className="fixed inset-0 z-100 flex items-center justify-center  bg-black/40 backdrop-blur-sm transition-opacity duration-200">
             <div className="group select-none w-[400px] flex flex-col p-4 relative items-center justify-center bg-red-50 border border-red-50 shadow-lg rounded-2xl">
@@ -47,4 +47,4 @@ function ModalConfimar({datosAMostrar, onConfirmar, onCancelar, cargando = false
     )
 }
 
-export default ModalConfimar;
+export default ModalConfirmar;
