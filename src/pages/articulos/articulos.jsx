@@ -1,18 +1,18 @@
 import { useState, useEffect } from "react";
-import NavBar from "../components/NavBar";
-import Footer from "../components/Footer";
-import ModalMensaje from "../components/ModalMensajes";
-import ModalConfirmar from "../components/ConfirmarEliminar";
+import NavBar from "../../components/NavBar";
+import Footer from "../../components/Footer";
+import ModalMensaje from "../../components/ModalMensajes";
+import ModalConfirmar from "../../components/ConfirmarEliminar";
 import {
   TagIcon, AlignLeftIcon, DollarIcon, BookmarkIcon, FolderIcon, ScaleIcon,
   BarcodeIcon, BoxIcon, RulerIcon, PaletteIcon, ImageIcon, EditIcon, TrashIcon, SaveIcon, HashIcon
-} from "../components/Icons";
+} from "../../components/Icons";
 
 import {
   saveVariante, updateVariante, deleteArticulo, getAllVariante,
   deleteDescuento, updateDescuento, saveDescuentos
-} from "../services/articulo.service";
-import { getMarca, getCategoria, getImpuesto, getTalla, getColor, getPrendas } from "../services/catalogo.service";
+} from "../../services/articulo.service";
+import { getMarca, getCategoria, getImpuesto, getTalla, getColor, getPrendas } from "../../services/catalogo.service";
 
 // BLOQUE 1 CONFIGURACION Y UTILIDADES
 //ESTADO INICIAL DEL FORMULARIO DE ARTICULO
@@ -96,7 +96,7 @@ function useCatalogos() {
     const cargarCatalogos = async () => {
       try {
         const [dataMarcas, dataCategoria, dataImpuestos, dataTalla, dataColor, dataPrendas] =
-          await Promise.all([getMarca(), getCategoria(), getImpuesto(), getTalla(), getColor(), getPrendas()]);
+        await Promise.all([getMarca(), getCategoria(), getImpuesto(), getTalla(), getColor(), getPrendas()]);
 
         setMarca(dataMarcas);
         setCategoria(dataCategoria);
@@ -816,7 +816,11 @@ function Articulos() {
         )}
 
         {/* BARRA DE FILTROS */}
-        <FiltrosBar filtros={filtros} onChange={actualizarFiltro} catalogos={catalogos} />
+        <FiltrosBar 
+          filtros={filtros} 
+          onChange={actualizarFiltro} 
+          catalogos={catalogos} 
+        />
 
         {seleccionados.length > 0 &&(
           <div className="px-6 pb-2">
@@ -1207,20 +1211,35 @@ function FiltrosBar({ filtros, onChange, catalogos }) {
         {mostrarAvanzados && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mt-5 pt-5 border-t border-slate-100">
             <SelectFiltro
-              label="Marca" name="marca" value={filtros.marca} onChange={onChange}
-              opciones={catalogos.marca} getId={(m) => m.idmarca} getLabel={(m) => m.nombre}
+              label="Marca" 
+              name="marca" 
+              value={filtros.marca} 
+              onChange={onChange}
+              opciones={catalogos.marca} 
+              getId={(m) => m.idmarca} 
+              getLabel={(m) => m.nombre}
               placeholderTodos="Todas las marcas"
             />
 
             <SelectFiltro
-              label="Prendas" name="prendas" value={filtros.prendas} onChange={onChange}
-              opciones={catalogos.prenda} getId={(p) => p.idprenda} getLabel={(p) => p.nombre}
+              label="Prendas" 
+              name="prendas" 
+              value={filtros.prendas} 
+              onChange={onChange}
+              opciones={catalogos.prenda} 
+              getId={(p) => p.idprenda} 
+              getLabel={(p) => p.nombre}
               placeholderTodos="Todas las prendas"
             />
 
             <SelectFiltro
-              label="Categoría" name="categoria" value={filtros.categoria} onChange={onChange}
-              opciones={catalogos.categoria} getId={(c) => c.idcategoria} getLabel={(c) => c.nombre}
+              label="Categoría" 
+              name="categoria" 
+              value={filtros.categoria} 
+              onChange={onChange}
+              opciones={catalogos.categoria} 
+              getId={(c) => c.idcategoria} 
+              getLabel={(c) => c.nombre}
               placeholderTodos="Todas las cat."
             />
 
@@ -1228,7 +1247,9 @@ function FiltrosBar({ filtros, onChange, catalogos }) {
               <label className="block text-xs font-semibold text-slate-500 mb-1.5 ml-1">Color / Talla</label>
               <div className="flex gap-2">
                 <select
-                  name="color" value={filtros.color} onChange={onChange}
+                  name="color" 
+                  value={filtros.color} 
+                  onChange={onChange}
                   className="w-1/2 px-2 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:bg-white focus:border-emerald-500"
                 >
                   <option value="">Color</option>
@@ -1236,7 +1257,9 @@ function FiltrosBar({ filtros, onChange, catalogos }) {
                 </select>
 
                 <select
-                  name="talla" value={filtros.talla} onChange={onChange}
+                  name="talla" 
+                  value={filtros.talla} 
+                  onChange={onChange}
                   className="w-1/2 px-2 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:bg-white focus:border-emerald-500"
                 >
                   <option value="">Talla</option>
@@ -1248,7 +1271,9 @@ function FiltrosBar({ filtros, onChange, catalogos }) {
             <div>
               <label className="block text-xs font-semibold text-slate-500 mb-1.5 ml-1">Estado</label>
               <select
-                name="estado" value={filtros.estado} onChange={onChange}
+                name="estado" 
+                value={filtros.estado} 
+                onChange={onChange}
                 className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:bg-white focus:border-emerald-500"
               >
                 <option value="">Cualquiera</option>
@@ -1269,7 +1294,9 @@ function SelectFiltro({ label, name, value, onChange, opciones, getId, getLabel,
     <div>
       <label className="block text-xs font-semibold text-slate-500 mb-1.5 ml-1">{label}</label>
       <select
-        name={name} value={value} onChange={onChange}
+        name={name} 
+        value={value} 
+        onChange={onChange}
         className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:bg-white focus:border-emerald-500"
       >
         <option value="">{placeholderTodos}</option>

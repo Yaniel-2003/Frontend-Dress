@@ -2,9 +2,9 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 // TODAS LAS RUTAS DE TODOS ARCHIVOS QUE SEAN VIEWS
 import Login from '../auth/login'
 import Registro from '../auth/registro'
-import Home  from '../pages/home';
+import Home  from '../pages/home/home';
 import Perfil from '../auth/perfil';
-import Articulos from '../pages/articulos';
+import Articulos from '../pages/articulos/articulos';
 
 // ESTE COMPONENTE PROTEJE LAS RUTAS PARA QUE SOLO EMTREN LOS USUARIOS LOGUEADOS 
 

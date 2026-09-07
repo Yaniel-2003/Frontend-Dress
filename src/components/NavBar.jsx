@@ -33,16 +33,16 @@ const NavBar = () => {
                 {/* Menú de Desktop */}
                 <div className="hidden md:flex space-x-6 items-center">
                     <Link 
-                        to="/" 
+                        to="/home" 
                         className="relative text-gray-600 hover:text-green-500 transition-colors after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-full after:origin-bottom-right after:scale-x-0 after:bg-green-500 after:transition-transform after:duration-300 after:ease-in-out hover:after:origin-bottom-left hover:after:scale-x-100"
                     >
                         Inicio
                     </Link>
                     <Link 
-                        to="/catalogo" 
+                        to="/producto" 
                         className="relative text-gray-600 hover:text-green-500 transition-colors after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-full after:origin-bottom-right after:scale-x-0 after:bg-green-500 after:transition-transform after:duration-300 after:ease-in-out hover:after:origin-bottom-left hover:after:scale-x-100"
                     >
-                        Catálogo
+                        Productos
                     </Link>
                     <Link 
                         to="/perfil" 
