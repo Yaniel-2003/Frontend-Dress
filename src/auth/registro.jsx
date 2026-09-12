@@ -9,7 +9,7 @@ function Registro(){
     const [formData, setFormDat] = useState({
         documento: "",
         email: "",
-        password_hash: "",
+        password: "",
         nombres: "",
         apellidos: "",
         numero: "",
@@ -47,7 +47,7 @@ function Registro(){
             // ANTES DE ENVIAR PREPARAMOS LOS DATOS 
             const payload = {
                 ...formData,
-                activo: true
+                is_active: true
             };
 
             const respuesta = await registrarNuevoUsuario(payload);
@@ -136,7 +136,7 @@ function Registro(){
                         <div className="flex flex-col items-start w-full relative">
                             <label className="text-sm text-green-800 font-bold flex items-center gap-1"><LockIcon className="w-4 h-4" /> Contraseña</label>
                             <div className="relative w-full">
-                                <input type={mostrarPassword ? "text" : "password"} name="password_hash" onChange={handleChange} required className="w-full py-2 pl-0 pr-8 bg-transparent outline-none focus:ring-0 border-0 border-b-2 border-green-300 focus:border-green-600 placeholder:text-gray-400 text-gray-800 placeholder:text-sm transition-colors" placeholder="Crea una contraseña segura" />
+                                <input type={mostrarPassword ? "text" : "password"} name="password" onChange={handleChange} required className="w-full py-2 pl-0 pr-8 bg-transparent outline-none focus:ring-0 border-0 border-b-2 border-green-300 focus:border-green-600 placeholder:text-gray-400 text-gray-800 placeholder:text-sm transition-colors" placeholder="Crea una contraseña segura" />
                                 <button 
                                     type="button" 
                                     onClick={() => setMostrarPassword(!mostrarPassword)}

@@ -15,7 +15,7 @@ function Login(){
     const navigate = useNavigate();
     const [formData, setFormDat] = useState({
         email: "",
-        password_hash: ""
+        password: ""
     });
     const [error, setError] = useState("");
 
@@ -106,15 +106,15 @@ function Login(){
                         </div>
 
                         <div className="flex flex-col items-start w-full relative">
-                            <label htmlFor="password_hash" className="text-sm text-green-800 font-bold flex items-center gap-1">
+                            <label htmlFor="password" className="text-sm text-green-800 font-bold flex items-center gap-1">
                                 <LockIcon className="w-4 h-4"/> Contraseña
                             </label>
                             <div className="relative w-full">
                                 <input
                                     type={mostrarPassword ? "text" : "password"}
-                                    name="password_hash"
-                                    id="password_hash"
-                                    value={formData.password_hash}
+                                    name="password"
+                                    id="password"
+                                    value={formData.password}
                                     onChange={handleChange}
                                     required
                                     placeholder="********"

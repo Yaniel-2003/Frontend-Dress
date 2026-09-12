@@ -30,12 +30,12 @@ function Perfil(){
     const [formData, setFormData] = useState({
         idusuario: "",
         email: "",
-        password_hash: "",
+        password: "",
         nombres: "",
         apellidos: "",
         numero: "",
         telefono: "",
-        activo: true,
+        is_active: true,
         fecha_creacion: "",
         documento: "",
         perfil: "",
@@ -53,6 +53,7 @@ function Perfil(){
         setCargando(true);
         try{
             const payload = { ...formData, };
+            if(!payload.password) delete payload.password;
             const actualizar = await actualizarUsuario(formData.idusuario, payload);
 
             //actualizar el localstorage
