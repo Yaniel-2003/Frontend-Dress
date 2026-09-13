@@ -2,11 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import ModalMensaje from "../components/ModalMensajes";
+import { useAuth } from "../context/AuthContext";
 
 import { postUsuario } from "./services/Login.service";
 import { MailIcon, LockIcon, EyeIcon, EyeOffIcon } from "../components/Icons";
 
 function Login(){
+    const { login } = useAuth();
     const [mostrarModal, SetMostrarModal] = useState(false);
     const [mensaje, setMensaje] = useState("");
     const [tipo, setTipo] = useState("");
@@ -37,12 +39,7 @@ function Login(){
 
             // Guadamos los token en el navegador para poder mantener la sesion
 
-            localStorage.setItem('access_token', respuesta.access);
-            localStorage.setItem('refresh_token', respuesta.refresh);
-
-            // Guardamos los datos del usuario 
-
-            localStorage.setItem('usuario', JSON.stringify(respuesta.usuario));
+            login(respuesta)
 
             setMensaje("Inicio de sesión exitoso.\n¡Bienvenido! al sistema");
             setTipo("success");

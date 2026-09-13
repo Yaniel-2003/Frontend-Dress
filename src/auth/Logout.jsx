@@ -1,8 +1,10 @@
 import { cerrarSesion } from "./services/Logout.service"
+import { useAuth } from "../context/AuthContext";
 import { Navigate, useNavigate } from "react-router-dom"
 
 function useLogout(){
     const navigate = useNavigate();
+    const { logout } = useAuth();
 
     const cerrarSesionLocal = async () => {
         try{
@@ -10,9 +12,7 @@ function useLogout(){
         }catch(error){
             console.error("El token ya estaba muerto o hubo un error, pero igual cerramos sesión localmente", error);
         }finally {
-            localStorage.removeItem('access_token');
-            localStorage.removeItem('refresh_token');
-            localStorage.removeItem('usuario');
+            logout();
 
             navigate('/login');
         }
