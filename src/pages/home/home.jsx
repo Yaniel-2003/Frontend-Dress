@@ -4,16 +4,10 @@ import { useState, useEffect } from "react";
 import { GetTiendaPublica } from "../../services/home.services";
 import { getTalla, getCategoria, getColor, getCupon, getDescuento, getMarca, getGenero, getImpuesto, getPrendas } from "../../services/catalogo.service";
 import { getAllVariante } from "../../services/articulo.service";
-import { use } from "react";
+import { Navigate, Link, useNavigate } from "react-router-dom";
+import { SearchIcon, SlidersIcon, PercentIcon, ShoppingBagIcon, ChevronLeftIcon, ChevronRightIcon, BoxIcon, FolderIcon, BookmarkIcon, RulerIcon, TagIcon, PaletteIcon } from "../../components/Icons";
 
 
-
-//CONST FORMATO MILES
-const formatoMiles = (numero) => {
-    if(!numero) return "";
-    const numLimpio = numero.toString().replace(/\D/g, "");
-    return numLimpio.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-}
 
 //FUNCION PARA TRAER LOS CATALOGOS (MARCAS, TALLAS Y DEMAS )
 function useCatalogo(){
@@ -126,20 +120,25 @@ function Home() {
     const { datosArticulos } = useTiendaPublica(filtros);
     const { marca, categoria, impuesto, talla, color, prendas} = useCatalogo();
 
-    const articulosConDescuento = datosArticulos.filter((art) => {
-        return art.descuentos_activos?.find(
-            (desc) => desc.precio_con_descuento < art.precio_final
-        );
-    });
-
-    const articulosSinDescuento = datosArticulos.filter((art) => {
-        return !articulosConDescuento.includes(art);
-    })
+    const [conDescuento, sinDescuento] = datosArticulos.reduce(
+        (acumulador, art) => {
+            const tieneDescuento = art.descuentos_activos?.find(
+                (desc) => desc.precio_con_descuento < art.precio_final
+            );
+            if(tieneDescuento){
+                acumulador[0].push({ ...art, tieneDescuento });
+            }else {
+                acumulador[1].push(art);
+            }
+            return acumulador;
+        },
+        [[],[]]
+    );
 
     const [indiceCarrusel, setIndiceCarrusel] = useState(0);
 
     const irSiguiente = () => {
-        if(indiceCarrusel < articulosConDescuento.length - 1){
+        if(indiceCarrusel < conDescuento.length - 1){
             setIndiceCarrusel(indiceCarrusel + 1);
         }
     };
@@ -157,29 +156,33 @@ function Home() {
         <div className="flex flex-col min-h-screen">
             <NavBar />
             <main>
-                <div className="grow p-4 flex flex-col justify-center items-center text-center bg-emerald-700">
-                    <h1 className="text-3xl font-bold text-gray-100">
+                <div className="relative grow p-4 h-70 flex flex-col justify-center items-center text-center bg-gradient-to-br from-emerald-600 to-emerald-800 overflow-hidden">
+                    <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
                         Bienvenido a Dress Shopy
                     </h1>
-                    <p className="mt-2 text-gray-100">
+                    <p className="mt-2 text-emerald-50">
                         Encuentra la mejor ropa aquí.
                     </p>
                     <div className="w-full max-w-2xl mt-10 grid grid-cols-[1fr_auto] gap-3 items-center">
-                        <input 
-                            type="text"
-                            name="buscar"
-                            value={filtros.buscar}
-                            onChange={actualizarFiltro}
-                            className="w-full px-4 py-2 text-white border border-white rounded-2xl text-sm outline-none focus:border-white focus:ring-1 focus:ring-white transition-colors" 
-                            placeholder="Buscar articulos"
-                        />
+                        <div className="relative">
+                            <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/70 pointer-events-none" />
+                            <input
+                                type="text"
+                                name="buscar"
+                                value={filtros.buscar}
+                                onChange={actualizarFiltro}
+                                className="w-full pl-11 pr-4 py-2.5 text-white bg-white/10 border border-white/30 rounded-2xl text-sm outline-none placeholder:text-white/60 focus:border-white focus:ring-1 focus:ring-white transition-colors"
+                                placeholder="Buscar articulos"
+                            />
+                        </div>
 
                         <button
                             type="button"
                             onClick={() => setModalFiltrosAbierto(true)}
-                            className="text-white border border-white rounded-xl py-1.5 px-4 cursor-pointer hover:bg-white/10 hover:border-white transition-all duration-200"
+                            className="flex items-center gap-2 text-white border border-white/30 bg-white/10 rounded-2xl py-2.5 px-4 cursor-pointer hover:bg-white/20 transition-all duration-200"
                         >
-                            Filtros
+                            <SlidersIcon className="w-4 h-4" />
+                            <span className="hidden sm:inline">Filtros</span>
                         </button>
                         {modalFiltrosAbierto && (
                             <ModalFiltros 
@@ -195,52 +198,60 @@ function Home() {
                             />
                         )}
                     </div>
+                    <div className="absolute bottom-0 left-0 right-0 h-36 bg-gradient-to-b from-transparent via-white/60 to-white pointer-events-none" />
+                </div>
+                <div className="w-full max-w-7xl mx-auto px-4 mt-10 mb-3 flex items-center gap-2">
+                    <PercentIcon className="w-5 h-5 text-emerald-600" />
+                    <h2 className="text-lg font-bold text-slate-800">Ofertas especiales</h2>
                 </div>
                 <div className="relative overflow-hidden w-full max-w-7xl flex justify-center items-center">
-                    <div 
+                    <div
                         className="flex gap-6 px-4 transition-transform duration-500 ease-in-out"
                         style={{transform: `translateX(-${indiceCarrusel * 312}px)`}}
                     >
-                        {articulosConDescuento && articulosConDescuento.length > 0 ? (
-                            articulosConDescuento.map((art) => (
+                        {conDescuento && conDescuento.length > 0 ? (
+                            conDescuento.map((art) => (
                                 <div
                                     key={art.idvararticulo}
                                     className="shrink-0 w-72"
                                 >
-                                    <CarruselArticulosDesceunto 
-                                        datos={art} 
+                                    <CarruselArticulosDesceunto
+                                        datos={art}
                                     />
                                 </div>
                             ))
                         ) : (
-                            <p className="text-green-800 font-semibold">No hay artículos con descuento</p>
+                            <div className="flex flex-col items-center gap-2 text-slate-400 py-10 w-full">
+                                <ShoppingBagIcon className="w-8 h-8" />
+                                <p className="font-medium text-sm">No hay artículos con descuento</p>
+                            </div>
                         )}
                     </div>
                     <button
                         type="button"
                         onClick={irAnterior}
                         disabled={indiceCarrusel === 0}
-                        className={`absolute left-0 top-1/2 -translate-y-1/2 p-3 bg-white/80 rounded-full shadow-lg ${indiceCarrusel === 0 ? `opacity-50 cursor-not-allowed` : `hover:bg-white cursor-pointer`}`}
+                        className={`absolute left-2 top-1/2 -translate-y-1/2 p-2.5 bg-white rounded-full shadow-lg border border-slate-100 ${indiceCarrusel === 0 ? `opacity-40 cursor-not-allowed` : `hover:bg-slate-50 cursor-pointer`}`}
                     >
-                        <svg xmlns="http://w3.org" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5 text-gray-700">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                        </svg>
+                        <ChevronLeftIcon className="w-5 h-5 text-slate-700" />
                     </button>
                     <button
                         type="button"
                         onClick={irSiguiente}
-                        disabled={indiceCarrusel >= datosArticulos.length - 1}
-                        className={`absolute right-0 top-1/2 p-3 -translate-y-1/2 bg-white/80 rounded-full shadow-lg ${indiceCarrusel >= indiceCarrusel.length - 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-white cursor-pointer'}`}
+                        disabled={indiceCarrusel >= conDescuento.length - 1}
+                        className={`absolute right-2 top-1/2 -translate-y-1/2 p-2.5 bg-white rounded-full shadow-lg border border-slate-100 ${indiceCarrusel >= conDescuento.length - 1 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-50 cursor-pointer'}`}
                     >
-                         <svg xmlns="http://w3.org" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5 text-gray-700">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                        </svg>
+                        <ChevronRightIcon className="w-5 h-5 text-slate-700" />
                     </button>
                 </div>
-                <div className="relative overflow-hidden w-full max-w-7xl mx-auto mt-10">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-2">
-                        {articulosSinDescuento && articulosSinDescuento.length > 0 ? (
-                            articulosSinDescuento.map((art2) => (
+                <div className="w-full max-w-7xl mx-auto px-4 mt-10 mb-3 flex items-center gap-2">
+                    <BoxIcon className="w-5 h-5 text-emerald-600" />
+                    <h2 className="text-lg font-bold text-slate-800">Todos los artículos</h2>
+                </div>
+                <div className="relative overflow-hidden w-full max-w-7xl mx-auto">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-2 px-4">
+                        {sinDescuento && sinDescuento.length > 0 ? (
+                            sinDescuento.map((art2) => (
                                 <div
                                     key={art2.idvararticulo}
                                     className="shrink-0 w-72"
@@ -251,7 +262,10 @@ function Home() {
                                 </div>
                             ))
                         ): (
-                            <p className="text-green-800 font-semibold">No hay artículos</p>
+                            <div className="col-span-full flex flex-col items-center gap-2 text-slate-400 py-10">
+                                <ShoppingBagIcon className="w-8 h-8" />
+                                <p className="font-medium text-sm">No hay artículos</p>
+                            </div>
                         )}
                     </div>
                 </div>
@@ -262,93 +276,98 @@ function Home() {
 };
 
 function CarruselArticulosDesceunto({ datos }){
+    const descuento = datos.tieneDescuento;
+    const porcentaje = descuento
+        ? Math.round((1 - Number(descuento.precio_con_descuento) / Number(datos.precio_final)) * 100)
+        : null;
+
     return(
-        <div className="shadow-2xl rounded-xl py-6 px-4 w-full bg-green-50 flex flex-col h-full">
-            <div className="">
-                <h3 className="text-green-950 font-semibold text-center uppercase mb-3">
+        <Link
+            to={`/detalles-articulos/${datos.idvararticulo}`}
+            title="Detalles articulo"
+            className="group block w-full overflow-hidden bg-white shadow-sm hover:shadow-xl transition-shadow duration-300 flex flex-col h-full mt-10"
+        >
+            <div className="relative overflow-hidden">
+                <img
+                    src={datos.foto}
+                    alt={datos.articulos_nombre}
+                    className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                {porcentaje !== null && porcentaje > 0 && (
+                    <span className="absolute top-3 left-3 flex items-center gap-1 bg-emerald-600 text-white text-xs font-bold px-2.5 py-1 rounded-full shadow">
+                        <PercentIcon className="w-3 h-3" />
+                        -{porcentaje}%
+                    </span>
+                )}
+            </div>
+            <div className="p-4 flex flex-col flex-1">
+                <h3 className="text-slate-800 font-semibold uppercase text-sm mb-1 truncate">
                     {datos.articulos_nombre}
                 </h3>
-                <div className=" shadow-xl p-2 w-full flex justify-center items-center">
-                    <img 
-                        src={datos.foto} 
-                        alt={datos.articulos_nombre} 
-                        className="w-full h-64 object-cover "
-                    />
-                </div>
-                <div className="mt-auto pt-4">
-                    <div className="flex text-start">
-                        <p className="font-semibold text-gray-800">{datos.descripcion}</p>
-                    </div>
-                    <div className="flex justify-between mt-5">
-                        <p className="font-semibold text-gray-500">Color: <span className="text-black">{datos.color_nombre}</span> </p>
-                        <p className="font-semibold text-gray-500">Talla: <span className="text-black">{datos.tallas_nombre}</span> </p>
-                    </div>
-                </div>
-                <div className="mt-2">
+                <p className="text-slate-500 text-sm line-clamp-2 flex-1">{datos.descripcion}</p>
+                <div className="mt-3">
                     {datos.descuentos_activos && datos.descuentos_activos.length > 0 ? (
-                        <div className="flex items-center gap-2">
-                            <p className="font-semibold text-gray-500">
-                                Precio: 
-                                <span className="text-gray-400 line-through text-sm ml-1">
-                                    $ {Number(datos.precio_final).toLocaleString()}
-                                </span>
-                            </p>
-                            <span className="text-green-700 font-bold text-lg">
-                                $ {Number(datos.descuentos_activos[0].precio_con_descuento).toLocaleString()}
+                        <div className="flex items-center gap-2 flex-wrap">
+                            <span className="text-emerald-700 font-bold text-lg">
+                                $ {Number(datos.tieneDescuento.precio_con_descuento).toLocaleString()}
+                            </span>
+                            <span className="text-slate-400 line-through text-sm">
+                                $ {Number(datos.precio_final).toLocaleString()}
                             </span>
                         </div>
                     ) : (
-                        <p className="font-semibold text-gray-500">Precio: <span className="text-green-700">$ {Number(datos.precio_con_descuento_activo).toLocaleString()}</span></p>
+                        <span className="text-emerald-700 font-bold text-lg">$ {Number(datos.precio_con_descuento_activo).toLocaleString()}</span>
                     )}
                 </div>
             </div>
-
-        </div>
+        </Link>
     )
 }
 
 function CardsArticulos({ datos }){
     return (
-        <div className="shadow-2xl rounded-xl py-6 px-4 w-full bg-green-50 flex flex-col h-full">
-            <div className="">
-                <h3 className="text-green-950 font-semibold text-center uppercase mb-3">
+        <Link
+            to={`/detalles-articulos/${datos.idvararticulo}`}
+            title="Detalles articulos"
+            className="group block w-full overflow-hidden bg-white shadow-sm hover:shadow-xl transition-shadow duration-300 flex flex-col h-full"
+        >
+            <div className="overflow-hidden">
+                <img
+                    src={datos.foto}
+                    alt={datos.articulos_nombre}
+                    className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+            </div>
+            <div className="p-4 flex flex-col flex-1">
+                <h3 className="text-slate-800 font-semibold uppercase text-sm mb-1 truncate">
                     {datos.articulos_nombre}
                 </h3>
-                <div className=" shadow-xl p-2 w-full flex justify-center items-center">
-                    <img 
-                        src={datos.foto} 
-                        alt={datos.articulos_nombre} 
-                        className="w-full h-64 object-cover "
-                    />
-                </div>
-                <div className="mt-auto pt-4">
-                    <div className="flex text-start">
-                        <p className="font-semibold text-gray-800">{datos.descripcion}</p>
-                    </div>
-                    <div className="flex justify-between mt-5">
-                        <p className="font-semibold text-gray-500">
-                            Color: <span className="text-black">{datos.color_nombre}</span> 
-                        </p>
-                        <p className="font-semibold text-gray-500">
-                            Talla: <span className="text-black">{datos.tallas_nombre}</span> 
-                        </p>
-                    </div>
-                </div>
-                <div className="mt-2">
+                <p className="text-slate-500 text-sm line-clamp-2 flex-1">{datos.descripcion}</p>
+                <div className="mt-3">
                     {datos && (
-                        <div className="flex items-center gap-2">
-                            <p className="font-semibold text-gray-500">
-                                Precio: 
-                                <span className="text-green-700 text-lg ml-1 font-bold">
-                                    $ {Number(datos.precio_final).toLocaleString()}
-                                </span>
-                            </p>
-                        </div>
+                        <span className="text-emerald-700 font-bold text-lg">
+                            $ {Number(datos.precio_final).toLocaleString()}
+                        </span>
                     )}
                 </div>
             </div>
+        </Link>
+    )
+}
 
-        </div>
+function CampoCheck({ label, name, value, onChange, checked }){
+    return (
+        <label className="flex items-center gap-2 cursor-pointer hover:bg-gray-200/20 p-1 rounded-md transition-colors">
+            <input 
+                type="checkbox"
+                name={name}
+                value={value}
+                checked={checked}
+                onChange={onChange}
+                className="rounded border-gray-300 text-emerald-600 focus:ring-emerald-500" 
+            />
+            <span className="text-[14px] text-gray-700">{label}</span>
+        </label>
     )
 }
 
@@ -357,7 +376,10 @@ function ModalFiltros({ onClose, filtros, onChange,  marca, categoria, impuesto,
         <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex justify-center items-center p-3">
             <div className="bg-white rounded-xl w-full max-w-3xl p-6 max-h-[90vh] flex flex-col">
                 <header className="flex justify-between items-center mb-4 shrink-0">
-                    <h3 className="text-green-900 uppercase font-bold text-[20px]">Filtros de busqueda</h3>
+                    <h3 className="flex items-center gap-2 text-emerald-900 uppercase font-bold text-[20px]">
+                        <SlidersIcon className="w-5 h-5" />
+                        Filtros de busqueda
+                    </h3>
                     <button
                         type="button"
                         onClick={onClose}
@@ -375,127 +397,101 @@ function ModalFiltros({ onClose, filtros, onChange,  marca, categoria, impuesto,
                 </header>
                 <div className="overflow-y-auto flex-1 pr-1 space-y-4">
                     <div className="relative">
-                        <h3 className="flex justify-start text-[20px] font-semibold text-green-900 cursor-pointer hover:text-green-600">
+                        <h3 className="flex items-center gap-2 text-[20px] font-semibold text-emerald-900">
+                            <FolderIcon className="w-4 h-4 text-emerald-600" />
                             Categorias
                         </h3>
                         <div className="bg-gray-100 rounded-xl p-2 border border-gray-200 mt-2 flex flex-col gap-2">
                             <div className="flex flex-row flex-wrap gap-2">
                                 {categoria?.map((cat) => (
-                                    <label 
+                                    <CampoCheck 
                                         key={cat.idcategoria}
-                                        className="flex items-center gap-2 cursor-pointer hover:bg-gray-200/20 p-1 rounded-md transition-colors"
-                                    >
-                                        <input 
-                                            type="checkbox" 
-                                            name="categoria"
-                                            value={cat.idcategoria}
-                                            checked={filtros.categoria.includes(String(cat.idcategoria))}
-                                            onChange={onChange}
-                                            className="rounded border-gray-300 text-green-600 focus:ring-green-500"
-                                        />
-                                        <span className="text-[14px] text-gray-700">{cat.nombre}</span>
-
-                                    </label>
+                                        label={cat.nombre}
+                                        name="categoria"
+                                        value={cat.idcategoria}
+                                        checked={filtros.categoria.includes(String(cat.idcategoria))}
+                                        onChange={onChange}
+                                    />
                                 ))}
                             </div>
                         </div>
                     </div>
                     <div className="relative">
-                        <h3 className="flex justify-start text-[20px] font-semibold text-green-900 cursor-pointer hover:text-green-600">
+                        <h3 className="flex items-center gap-2 text-[20px] font-semibold text-emerald-900">
+                            <BookmarkIcon className="w-4 h-4 text-emerald-600" />
                             Prendas
                         </h3>
                             <div className=" bg-gray-100 rounded-xl p-2 border border-gray-200 mt-2 flex flex-col gap-2">
                                 <div className="flex flex-row flex-wrap gap-2">
                                     {prendas?.map((prenda) => (
-                                        <label 
+                                        <CampoCheck 
                                             key={prenda.idprenda}
-                                            className="flex items-center gap-2 cursor-pointer hover:bg-gray-200/50 p-1 rounded-md transition-colors"
-                                        >
-                                            <input 
-                                                type="checkbox"
-                                                name="prendas"
-                                                value={prenda.idprenda}
-                                                checked={filtros.prendas.includes(String(prenda.idprenda))}
-                                                onChange={onChange} 
-                                                className="rounded border-gray-300 text-green-600 focus:ring-green-500"
-                                            />
-                                            <span className="text-[14px] text-gray-700">{prenda.nombre}</span>
-                                        </label>
+                                            label={prenda.nombre}
+                                            name="prendas"
+                                            value={prenda.idprenda}
+                                            checked={filtros.prendas.includes(String(prenda.idprenda))}
+                                            onChange={onChange}
+                                        />
                                     ))}
                                 </div>
                             </div>
                     </div>
                     <div className="relative">
-                        <h3 className="flex justify-start text-[20px] font-semibold text-green-900 cursor-pointer hover:text-green-600">
+                        <h3 className="flex items-center gap-2 text-[20px] font-semibold text-emerald-900">
+                            <RulerIcon className="w-4 h-4 text-emerald-600" />
                             Tallas
                         </h3>
                             <div className=" bg-gray-100 rounded-xl p-2 border border-gray-200 mt-2 flex flex-col gap-2">
                                 <div className="flex flex-row flex-wrap gap-2">
                                     {talla?.map((tallas) => (
-                                        <label
+                                        <CampoCheck 
                                             key={tallas.idtalla}
-                                            className="flex items-center gap-2 cursor-pointer hover:bg-gray-200/20 p-1 rounded-md transition-colors"
-                                        >
-                                            <input
-                                                type="checkbox"
-                                                name="talla"
-                                                value={tallas.idtalla}
-                                                checked={filtros.talla.includes(String(tallas.idtalla))}
-                                                onChange={onChange}
-                                                className="rounded border-gray-300 text-green-600 focus:ring-green-500"
-                                            />
-                                            <span className="text-[14px] text-gray-700">{tallas.codigo}</span>
-                                        </label>
+                                            label={tallas.codigo}
+                                            name="talla"
+                                            value={tallas.idtalla}
+                                            checked={filtros.talla.includes(String(tallas.idtalla))}
+                                            onChange={onChange}
+                                        />
                                     ))}
                                 </div>
                             </div>
                     </div>
                     <div className="relative">
-                        <h3 className="flex justify-start text-[20px] font-semibold text-green-900 cursor-pointer hover:text-green-600">
+                        <h3 className="flex items-center gap-2 text-[20px] font-semibold text-emerald-900">
+                            <TagIcon className="w-4 h-4 text-emerald-600" />
                             Marcas
                         </h3>
                             <div className="w-[270] bg-gray-100 rounded-xl p-2 border border-gray-200 mt-2 flex flex-col gap-2">
                                 <div className="flex flex-row flex-wrap gap-2">
                                     {marca?.map((marcas) => (
-                                        <label 
+                                        <CampoCheck 
                                             key={marcas.idmarca}
-                                            className="flex items-center gap-2 cursor-pointer hover:bg-gray-200/20 p-1 rounded-md transition-colors"
-                                        >
-                                            <input
-                                                type="checkbox"
-                                                name="marca"
-                                                value={marcas.idmarca}
-                                                checked={filtros.marca.includes(String(marcas.idmarca))}
-                                                onChange={onChange}
-                                                className="rounded border-gray-300 text-green-600 focus:ring-green-500"
-                                            />
-                                                <span className="text-[14px] text-gray-700">{marcas.nombre}</span>
-                                        </label>
+                                            label={marcas.nombre}
+                                            name="marca"
+                                            value={marcas.idmarca}
+                                            checked={filtros.marca.includes(String(marcas.idmarca))}
+                                            onChange={onChange}
+                                        />
                                     ))}
                                 </div>
                             </div>
                     </div>
                     <div className="relative">
-                        <h3 className="flex justify-start text-[20px] font-semibold text-green-900 cursor-pointer hover:text-green-600">
+                        <h3 className="flex items-center gap-2 text-[20px] font-semibold text-emerald-900">
+                            <PaletteIcon className="w-4 h-4 text-emerald-600" />
                             Color
                         </h3>
                             <div className="bg-gray-100 rounded-xl p-2 border border-gray-200 mt-2 flex flex-col gap-2">
                                 <div className="flex flex-row flex-wrap gap-2">
                                     {color?.map((colores) => (
-                                        <label 
+                                        <CampoCheck 
                                             key={colores.idcolor}
-                                            className="flex items-center gap-2 cursor-pointer hover:bg-gray-200/20 p-1 rounded-md transition-colors"
-                                        >
-                                            <input
-                                                type="checkbox"
-                                                name="color"
-                                                value={colores.idcolor}
-                                                checked={filtros.color.includes(String(colores.idcolor))}
-                                                onChange={onChange}
-                                                className="rounded border-gray-300 text-green-600 focus:ring-green-500"
-                                            />
-                                                <span className="text-[14px] text-gray-700">{colores.nombre}</span>
-                                        </label>
+                                            label={colores.nombre}
+                                            name="color"
+                                            value={colores.idcolor}
+                                            checked={filtros.color.includes(String(colores.idcolor))}
+                                            onChange={onChange}
+                                        />
                                     ))}
                                 </div>
                             </div>
@@ -506,7 +502,7 @@ function ModalFiltros({ onClose, filtros, onChange,  marca, categoria, impuesto,
                         <button
                             type="button"
                             onClick={onClose}
-                            className="text-green-200 font-semibold bg-green-800 rounded-xl py-1 px-4 border-green-900 hover:text-green-900 hover:bg-green-300 cursor-pointer"
+                            className="px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-700 shadow-sm hover:shadow transition-all cursor-pointer"
                         >
                             Aplicar filtros
                         </button>

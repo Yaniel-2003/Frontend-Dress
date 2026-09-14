@@ -5,12 +5,13 @@ import Registro from '../auth/registro'
 import Home  from '../pages/home/home';
 import Perfil from '../auth/perfil';
 import Articulos from '../pages/articulos/articulos';
+import DetallesArticulos from '../pages/home/detallesArticulo';
 
 // ESTE COMPONENTE PROTEJE LAS RUTAS PARA QUE SOLO EMTREN LOS USUARIOS LOGUEADOS 
 
 const ProtecttedRoute = ({ children, requiredPermission }) => {
     //BUSCAMOS EL TOKEN EN EL ALMACENAMIENTO DEL NAVEGADOR
-    const token = localStorage.getItem('access-token');
+    const token = localStorage.getItem('access_token');
 
     // SI NO HAY TOKEN LO ENVIAMOS AL LOGIN
 
@@ -36,12 +37,32 @@ const AppRouter = () => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path='/' element={<Navigate to='/Login' replace />} />
-                <Route path='/home' element={<Home />} />
-                <Route path='/Login' element={<Login  />} />
+                <Route path='/' element={<Navigate to='/login' replace />} />
+                
+                <Route path='/login' element={<Login  />} />
                 <Route path='/registro' element={<Registro />} />
-                <Route path='/perfil' element={<Perfil />} />
-                <Route path='/articulos' element={<Articulos />} />
+
+                <Route path='/home' element={
+                    <ProtecttedRoute>
+                        <Home />
+                    </ProtecttedRoute>
+                } />
+                <Route path='/perfil' element={
+                    <ProtecttedRoute>
+                        <Perfil />
+                    </ProtecttedRoute>
+                } />
+                <Route path='/articulos' element={
+                    <ProtecttedRoute>
+                        <Articulos />
+                    </ProtecttedRoute>
+                } />
+                <Route path='/detalles-articulos/:id' element={
+                    <ProtecttedRoute>
+                        <DetallesArticulos />
+                    </ProtecttedRoute>
+                } />
+
             </Routes>
         </BrowserRouter>
     );

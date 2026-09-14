@@ -9,8 +9,8 @@ const NavBar = () => {
     return (
         <nav className="bg-white shadow-md p-4 relative z-50">
             <div className="container mx-auto flex justify-between items-center">
-                <Link 
-                    to="/" 
+                <Link
+                    to="/home"
                     className="text-2xl font-bold text-green-500"
                 >
                     Dress Shopy
@@ -38,8 +38,8 @@ const NavBar = () => {
                     >
                         Inicio
                     </Link>
-                    <Link 
-                        to="/producto" 
+                    <Link
+                        to="/home"
                         className="relative text-gray-600 hover:text-green-500 transition-colors after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-full after:origin-bottom-right after:scale-x-0 after:bg-green-500 after:transition-transform after:duration-300 after:ease-in-out hover:after:origin-bottom-left hover:after:scale-x-100"
                     >
                         Productos
@@ -84,16 +84,16 @@ const NavBar = () => {
             {/* Menú Desplegable para Móviles */}
             <div className={`md:hidden absolute top-full left-0 w-full bg-white shadow-xl border-t border-gray-100 flex flex-col overflow-hidden transition-all duration-300 ${menuAbierto ? "max-h-64 py-4" : "max-h-0"}`}>
                 <div className="flex flex-col px-6 space-y-4">
-                    <Link 
-                        to="/" 
-                        onClick={() => setMenuAbierto(false)} 
+                    <Link
+                        to="/home"
+                        onClick={() => setMenuAbierto(false)}
                         className="text-gray-600 hover:text-green-500 font-medium transition-colors"
                     >
                         Inicio
                     </Link>
-                    <Link 
-                        to="/catalogo" 
-                        onClick={() => setMenuAbierto(false)} 
+                    <Link
+                        to="/home"
+                        onClick={() => setMenuAbierto(false)}
                         className="text-gray-600 hover:text-green-500 font-medium transition-colors"
                     >
                         Catálogo

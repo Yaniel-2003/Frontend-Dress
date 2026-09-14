@@ -439,8 +439,7 @@ function useFormularioDescuento({ onGuardadoExitoso, mostrarMensaje }) {
 
     setDescuento((prev) => ({
       ...prev,
-      vararticulo: listaIds,
-      vararticulo: "",
+      vararticulos: listaIds
     }));
     setModalAbierto(true);
   }
@@ -535,7 +534,6 @@ function useFormularioDescuento({ onGuardadoExitoso, mostrarMensaje }) {
 
     try {
       const payload = {
-        vararticulo: descuento.vararticulo,
         cantidad_inicial: descuento.cantidad_inicial,
         cantidad_restante: descuento.idartdescuento ? descuento.cantidad_restante : descuento.cantidad_inicial,
         descuento: {

@@ -119,3 +119,11 @@ export const deleteDescuento = async (iddescuento) => {
         method: 'DELETE'
     })
 }
+
+
+// FOTOS DE ARTICULOS 
+export const getFotosVAriantes = async (idvariante) => {
+    return await api.request(`/variantes/${idvariante}/fotos/`,{
+        method: 'GET'
+    });
+}
