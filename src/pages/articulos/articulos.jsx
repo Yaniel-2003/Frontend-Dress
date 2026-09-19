@@ -10,7 +10,7 @@ import {
 
 import {
   saveVariante, updateVariante, deleteArticulo, getAllVariante,
-  deleteDescuento, updateDescuento, saveDescuentos
+  deleteDescuento, updateDescuento, saveDescuentos, getFotosVAriantes
 } from "../../services/articulo.service";
 import { getMarca, getCategoria, getImpuesto, getTalla, getColor, getPrendas } from "../../services/catalogo.service";
 
@@ -255,11 +255,13 @@ function useFormularioArticulo({ onGuardadoExitoso, mostrarMensaje }) {
   const [cargando, setCargando] = useState(false);
   const [fotos, setFotos] = useState([]);
   const [dataArticulos, setDataArticulos] = useState(ESTADO_INICIAL_ARTICULO);
+  const [fotosExistentes, setFotosExistentes] = useState([]);
 
   //DEJA EL FORMULARIO COMO RECIEN MONTADO
   const resetear = () => {
     setDataArticulos(ESTADO_INICIAL_ARTICULO);
     setFotos([]);
+    setFotosExistentes([]);
   };
 
   //ABRE EL MODAL PARA CREAR UN ARTICULO NUEVO
@@ -354,19 +356,33 @@ function useFormularioArticulo({ onGuardadoExitoso, mostrarMensaje }) {
     setModalAbierto(true);
   };
 
+        
+  useEffect(() => {
+    const cargarFotos = async () => {
+      if(!dataArticulos.idvararticulo) return;
+      try{
+        const dataFotos = await getFotosVAriantes(dataArticulos.idvararticulo);
+        setFotosExistentes(dataFotos);
+      }catch(error){
+        console.log("Error al cargar fotos ", error);
+      }
+    }
+    cargarFotos();
+  },[dataArticulos.idvararticulo]);
+  
   //SAVE ARTICULO AND UPDATE ARTICULO
   const guardar = async (e) => {
     e.preventDefault();
-
+    
     const varianteArray = Object.entries(dataArticulos.variantesPorTalla).map(
       ([idTalla, datos]) => ({ talla: idTalla, ...datos })
     );
-
+    
     if (varianteArray.length === 0) {
       alert("Selecciona al menos una talla");
       return;
     }
-
+    
     setCargando(true);
     try {
       const formData = construirFormDataVariante(dataArticulos, varianteArray, fotos);
@@ -393,7 +409,7 @@ function useFormularioArticulo({ onGuardadoExitoso, mostrarMensaje }) {
     modalAbierto, cargando, fotos, dataArticulos,
     abrirParaCrear, abrirParaEditar, cerrar,
     actualizarCampo, alternarTalla, actualizarCampoVariante,
-    seleccionarFotos, guardar,
+    seleccionarFotos, guardar, fotosExistentes, setFotosExistentes
   };
 }
 
@@ -794,6 +810,30 @@ function Articulos() {
                         onChange={form.seleccionarFotos}
                         className="w-full bg-slate-50/30 rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-4 focus:ring-emerald-500/10 focus:bg-white"
                       />
+                      {form.fotosExistentes.length > 0 && (
+                        <div className="flex flex-wrap gap-3 mt-3">
+                          {form.fotosExistentes.map((f, indice)=> (
+                            <img  
+                              key={f.idfoto}
+                              src={f.urlfoto}
+                              alt={`Foto existente ${indice + 1}`}
+                              className="w-20 h-20 object-cover rounded-lg border border-slate-200 shadow-sm"
+                            />
+                          ))}
+                        </div>
+                      )}
+                      {form.fotos.length > 0 && (
+                        <div className="flex flex-wrap gap-3 mt-3">
+                          {form.fotos.map((file, indice) => (
+                            <img
+                              key={indice}
+                              src={URL.createObjectURL(file)}
+                              alt={`Foto seleccionada ${indice + 1}`}
+                              className="w-20 h-20 object-cover rounded-lg border border-slate-200 shadow-sm"
+                            />
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -1322,6 +1362,7 @@ function TablaVariantes({ variantes, onEditar, onEliminar, onAgregarDescuento, s
                 title="Seleccionar todos"
               />
             </th>
+            <th className="px-5 py-3.5 text-left font-semibold border-b-2 border-slate-200">Foto</th>
             <th className="px-5 py-3.5 text-left font-semibold border-b-2 border-slate-200">Nombre / Variante</th>
             <th className="px-5 py-3.5 text-left font-semibold border-b-2 border-slate-200">Clasificación</th>
             <th className="px-5 py-3.5 text-left font-semibold border-b-2 border-slate-200">Descripción</th>
@@ -1359,6 +1400,13 @@ function FilaVariante({ data, index, onEditar, onEliminar, onAgregarDescuento, s
           checked={seleccionados}
           onChange={onToggleSeleccionado}
           className="w-4 h-4 text-emerald-600 rounded border-slate-300 cursor-pointer"
+        />
+      </td>
+      <td className="px-4 py-2">
+        <img
+          src={data.foto}
+          alt={data.urlfoto}
+          className="w-16 h-16 object-cover rounded-lg border border-slate-200 shadow-sm"
         />
       </td>
       <td className="px-4 py-2 align-top">
