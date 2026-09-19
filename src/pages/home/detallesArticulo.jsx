@@ -36,6 +36,7 @@ function useDetalleArticulo(id){
 function DetallesArticulos(){
     const {id} = useParams();
     const {articulo, cargando, varFotos} = useDetalleArticulo(id); 
+    const [fotoSelecionada, setFotoSelecionada] = useState(null);
     if(!articulo) return (
         <div className="flex flex-col min-h-screen">
             <NavBar/>
@@ -46,34 +47,45 @@ function DetallesArticulos(){
         </div>
     );
 
+    
+    
     const {articulo: producto, color, talla, sku, historial_descuentos, stock, foto, precio_final} = articulo
     const {marca, categoria, descripcion, nombre } = producto;
     const { genero } = categoria;
-
+    
     const hayDescuento = articulo.precio_con_descuento_activo && Number(articulo.precio_con_descuento_activo) < Number(precio_final);
-
+    
     return (
         <div className="flex flex-col min-h-screen">
             <NavBar/>
             <main className="flex-1 w-full max-w-5xl mx-auto px-4 py-10">
                 <div className="flex flex-col sm:flex-row gap-8 items-center sm:items-start justify-center">
-                    <div className="flex flex-row sm:flex-col gap-4 order-2 sm:order-1">
+                    <div className="flex flex-row sm:flex-col gap-4 order-2 sm:order-1 flex-wrap sm:flex-nowrap justify-center sm:max-h-96 sm:overflow-y-auto sm:pr-1">
                         {varFotos.map((f) => (
                             <img
                                 key={f.idfoto}
                                 src={f.urlfoto}
                                 alt={nombre}
-                                className="w-20 h-20 rounded-2xl object-cover cursor-pointer hover:opacity-80 transition-opacity"
+                                onClick={() => setFotoSelecionada(f.urlfoto)}
+                                className={`w-20 h-20 rounded-2xl object-cover cursor-pointer border-2 hover:opacity-80 transition-all duration-200 ${fotoSelecionada === f.urlfoto ? "border-emerald-600" : "border-transparent"}`}
                             />
                         ))}
                     </div>
 
                     <div className="order-1 sm:order-2 w-full max-w-md rounded-2xl overflow-hidden shadow-xl bg-white">
-                        <img
-                            src={foto}
-                            alt={nombre}
-                            className="w-full h-96 object-cover"
-                        />
+                        {fotoSelecionada ? (
+                            <img
+                                src={fotoSelecionada}
+                                alt={nombre}
+                                className="w-full h-96 object-cover transition-opacity duration-300"
+                            />
+                        ):(
+                            <img
+                                src={foto}
+                                alt={nombre}
+                                className="w-full h-96 object-cover transition-opacity duration-300"
+                            />
+                        )}
                     </div>
                 </div>
 

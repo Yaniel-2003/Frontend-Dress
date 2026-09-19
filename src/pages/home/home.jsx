@@ -285,7 +285,7 @@ function CarruselArticulosDesceunto({ datos }){
         <Link
             to={`/detalles-articulos/${datos.idvararticulo}`}
             title="Detalles articulo"
-            className="group block w-full overflow-hidden bg-white shadow-sm hover:shadow-xl transition-shadow duration-300 flex flex-col h-full mt-10"
+            className="group block w-full overflow-hidden bg-white shadow-sm hover:shadow-xl transition-shadow duration-300 flex flex-col h-full"
         >
             <div className="relative overflow-hidden">
                 <img
@@ -309,7 +309,7 @@ function CarruselArticulosDesceunto({ datos }){
                     {datos.descuentos_activos && datos.descuentos_activos.length > 0 ? (
                         <div className="flex items-center gap-2 flex-wrap">
                             <span className="text-emerald-700 font-bold text-lg">
-                                $ {Number(datos.tieneDescuento.precio_con_descuento).toLocaleString()}
+                                $ {Number(descuento.precio_con_descuento).toLocaleString()}
                             </span>
                             <span className="text-slate-400 line-through text-sm">
                                 $ {Number(datos.precio_final).toLocaleString()}
