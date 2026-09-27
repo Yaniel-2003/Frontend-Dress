@@ -74,21 +74,31 @@ function useVariantesCarrito(){
         carrito();
     },[]);
 
+    const actualizarCantidad = (iditmcarrito, nuevaCantidad) => {
+        setDatosCarrito(prev => 
+            prev.map(item =>
+                item.iditmcarrito === iditmcarrito ? { ...item, cantidad: nuevaCantidad } : item
+            )
+        );
+    }
+
     // CONSTANTE PARA ELIMINAR UN ITEM DEL CARRITO
 
     const eliminarItem = (iditmcarrito) => 
         setDatosCarrito((prev) => prev.filter((item) => item.iditmcarrito !== iditmcarrito));
 
-    return { datosCarrito, cargando, eliminarItem }
+    return { datosCarrito, cargando, eliminarItem, actualizarCantidad }
 }
 
 
 function Carrito() {
-    const {datosCarrito, cargando, eliminarItem} = useVariantesCarrito();
+    const {datosCarrito, cargando, eliminarItem, actualizarCantidad} = useVariantesCarrito();
     const notificacion = useMensajeTemporal();
     const check = useCheckbox();
     const [itemEliminar, setItemEliminar] = useState(null);
     const [modalConfirmarAbierto, setModalConfirmarAbierto] = useState(false);
+
+    const [cantidadCarrito, setCantidaCarrito] = useState();
 
     const { cantidadCar } = useCarrito();
 
@@ -131,6 +141,24 @@ function Carrito() {
         }
     }
 
+    
+    const masCantidad = async (item) => {
+        const nuevaCantidad = item.cantidad + 1;
+        const cantidades = await actualizarParcial(item.iditmcarrito, {cantidad: nuevaCantidad});
+        await cantidadCar();
+        actualizarCantidad(item.iditmcarrito, nuevaCantidad);
+    } 
+    const menosCantidad = async (item) => {
+        const nuevaCantida = item.cantidad - 1;
+        if(nuevaCantida < 1) {
+            prepararEliminarItem(item);
+            return;
+        }
+        const cantidades = await actualizarParcial(item.iditmcarrito, {cantidad: nuevaCantida});
+        await cantidadCar();
+        actualizarCantidad(item.iditmcarrito, nuevaCantida)
+    }
+
     return (
         <div className="flex flex-col min-h-screen">
             <NavBar />
@@ -144,6 +172,8 @@ function Carrito() {
                                 key={item.iditmcarrito}
                                 item={item}
                                 prepararEliminarItem={prepararEliminarItem}
+                                masCantidad={masCantidad}
+                                menosCantidad={menosCantidad}
                             />
                         ))}
                     </div>
@@ -174,7 +204,7 @@ function Carrito() {
     )
 }
 
-function FilaCarrito({ item, prepararEliminarItem }){
+function FilaCarrito({ item, prepararEliminarItem, masCantidad, menosCantidad }){
     const { articulo: producto, foto, precio_con_descuento_activo, precio_final } = item.vararticulo;
     const { color, talla, historial_descuentos } = item.vararticulo
 
@@ -234,7 +264,26 @@ function FilaCarrito({ item, prepararEliminarItem }){
             </div>
 
             <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-2 sm:gap-1">
-                <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">Cantidad: {item.cantidad}</span>
+                <div className="flex items-center gap-2">
+                    <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">Cantidad</span>
+                    <div className="flex items-center gap-1 rounded-full border border-slate-200 bg-slate-50 px-1 py-1">
+                        <button
+                            type="button"
+                            onClick={() => menosCantidad(item)}
+                            className="w-6 h-6 flex items-center justify-center rounded-full text-slate-500 hover:bg-white hover:text-emerald-700 hover:shadow-sm transition-colors cursor-pointer"
+                        >
+                            −
+                        </button>
+                        <span className="w-5 text-center text-sm font-semibold text-slate-800">{item.cantidad}</span>
+                        <button
+                            type="button"
+                            onClick={() => masCantidad(item)}
+                            className="w-6 h-6 flex items-center justify-center rounded-full text-slate-500 hover:bg-white hover:text-emerald-700 hover:shadow-sm transition-colors cursor-pointer"
+                        >
+                            +
+                        </button>
+                    </div>
+                </div>
                 
                 {precio_con_descuento_activo && Number(precio_con_descuento_activo) < Number(precio_final) ? (
                     <div className="flex flex-col items-center sm:items-end">

@@ -8,8 +8,8 @@ export const obtenerCarrito = async () => {
 }
 
 // PATCH / CARRITO-COMPRAS / ID ARTICULO
-export const actualizarParcial = async (idvariante, dataCarrito) => {
-    return api.request(`/carritos-compras/${idvariante}/`,{
+export const actualizarParcial = async (iditmcarrito, dataCarrito) => {
+    return api.request(`/carritos-compras/${iditmcarrito}/`,{
         method: 'PATCH',
         body: JSON.stringify(dataCarrito)
     });
