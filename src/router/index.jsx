@@ -6,6 +6,7 @@ import Home  from '../pages/home/home';
 import Perfil from '../auth/perfil';
 import Articulos from '../pages/articulos/articulos';
 import DetallesArticulos from '../pages/home/detallesArticulo';
+import Carrito from '../pages/carrito/carrito';
 
 // ESTE COMPONENTE PROTEJE LAS RUTAS PARA QUE SOLO EMTREN LOS USUARIOS LOGUEADOS 
 
@@ -60,6 +61,12 @@ const AppRouter = () => {
                 <Route path='/detalles-articulos/:id' element={
                     <ProtecttedRoute>
                         <DetallesArticulos />
+                    </ProtecttedRoute>
+                } />
+
+                <Route path='/carrito' element={
+                    <ProtecttedRoute>
+                        <Carrito />
                     </ProtecttedRoute>
                 } />
 

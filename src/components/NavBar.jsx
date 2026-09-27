@@ -1,12 +1,42 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import useLogout from "../auth/Logout";
+import { useCarrito } from "../context/CarritoContext";
+
+const BotonCarritoFlotante = () => {
+    const { cantidad } = useCarrito();
+
+    return (
+        <Link
+            to="/carrito"
+            className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 rounded-full bg-emerald-600 text-white shadow-lg hover:bg-emerald-700 hover:shadow-xl hover:scale-105 transition-all duration-200"
+        >
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+                <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 1.87-4.788 2.202-7.402.052-.406-.278-.75-.687-.75H5.106M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
+                />
+            </svg>
+
+            {cantidad > 0 && (
+                <span className="absolute -top-1 -right-1 flex items-center justify-center min-w-[20px] h-5 px-1 rounded-full bg-red-500 text-white text-xs font-bold ring-2 ring-white">
+                    {cantidad}
+                </span>
+            )}
+        </Link>
+    );
+};
 
 const NavBar = () => {
     const cerrarSesion = useLogout();
     const [menuAbierto, setMenuAbierto] = useState(false);
 
+    const botonMenuWeb = 'relative text-gray-600 hover:text-green-500 transition-colors after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-full after:origin-bottom-right after:scale-x-0 after:bg-green-500 after:transition-transform after:duration-300 after:ease-in-out hover:after:origin-bottom-left hover:after:scale-x-100';
+    const botonMenuMovil = 'relative text-gray-600 hover:text-green-500 transition-colors after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-full after:origin-bottom-right after:scale-x-0 after:bg-green-500 after:transition-transform after:duration-300 after:ease-in-out hover:after:origin-bottom-left hover:after:scale-x-100';
+
     return (
+        <>
         <nav className="bg-white shadow-md p-4 relative z-50">
             <div className="container mx-auto flex justify-between items-center">
                 <Link
@@ -34,27 +64,34 @@ const NavBar = () => {
                 <div className="hidden md:flex space-x-6 items-center">
                     <Link 
                         to="/home" 
-                        className="relative text-gray-600 hover:text-green-500 transition-colors after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-full after:origin-bottom-right after:scale-x-0 after:bg-green-500 after:transition-transform after:duration-300 after:ease-in-out hover:after:origin-bottom-left hover:after:scale-x-100"
+                        className={botonMenuWeb}
                     >
                         Inicio
                     </Link>
                     <Link
                         to="/home"
-                        className="relative text-gray-600 hover:text-green-500 transition-colors after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-full after:origin-bottom-right after:scale-x-0 after:bg-green-500 after:transition-transform after:duration-300 after:ease-in-out hover:after:origin-bottom-left hover:after:scale-x-100"
+                        className={botonMenuWeb}
                     >
                         Productos
                     </Link>
                     <Link 
                         to="/perfil" 
-                        className="relative text-gray-600 hover:text-green-500 transition-colors after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-full after:origin-bottom-right after:scale-x-0 after:bg-green-500 after:transition-transform after:duration-300 after:ease-in-out hover:after:origin-bottom-left hover:after:scale-x-100 "
+                        className={botonMenuWeb}
                     >
                         Perfil
                     </Link>
                     <Link 
                         to="/articulos" 
-                        className="relative text-gray-600 hover:text-green-500 transition-colors after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-full after:origin-bottom-right after:scale-x-0 after:bg-green-500 after:transition-transform after:duration-300 after:ease-in-out hover:after:origin-bottom-left hover:after:scale-x-100 "
+                        className={botonMenuWeb}
                     >
                         Articulos
+                    </Link>
+
+                    <Link 
+                        to="/carrito"
+                        className={botonMenuWeb}
+                        >
+                        Carrito
                     </Link>
                 </div>
 
@@ -87,30 +124,37 @@ const NavBar = () => {
                     <Link
                         to="/home"
                         onClick={() => setMenuAbierto(false)}
-                        className="text-gray-600 hover:text-green-500 font-medium transition-colors"
+                        className={botonMenuMovil}
                     >
                         Inicio
                     </Link>
                     <Link
                         to="/home"
                         onClick={() => setMenuAbierto(false)}
-                        className="text-gray-600 hover:text-green-500 font-medium transition-colors"
+                        className={botonMenuMovil}
                     >
                         Catálogo
                     </Link>
                     <Link 
                         to="/perfil" 
                         onClick={() => setMenuAbierto(false)} 
-                        className="text-gray-600 hover:text-green-500 font-medium transition-colors"
+                        className={botonMenuMovil}
                     >
                         Perfil
                     </Link>
                     <Link 
                         to="/articulos" 
                         onClick={() => setMenuAbierto(false)} 
-                        className="text-gray-600 hover:text-green-500 font-medium transition-colors"
+                        className={botonMenuMovil}
                     >
                         Articulos
+                    </Link>
+                    <Link
+                        to="/carrito"
+                        onClick={() => setMenuAbierto(false)}
+                        className={botonMenuMovil}
+                    >
+                        Carrito
                     </Link>
                     <div className="pt-2 border-t border-gray-100">
                         <button 
@@ -126,6 +170,8 @@ const NavBar = () => {
                 </div>
             </div>
         </nav>
+        <BotonCarritoFlotante />
+        </>
     );
 };
 

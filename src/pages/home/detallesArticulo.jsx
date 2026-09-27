@@ -1,10 +1,29 @@
 import { useState, useEffect } from "react";
 import NavBar from "../../components/NavBar";
 import Footer from "../../components/Footer";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useCarrito } from "../../context/CarritoContext";
 
 import { getOneVariante, getFotosVAriantes } from "../../services/articulo.service";
 import ModalMensaje from "../../components/ModalMensajes";
+import { agregarCarrito } from "../../services/carrito.service";
+
+function useMensajeTemporal(duracionMs = 1000) {
+    const [abierto, setAbierto] = useState(false);
+    const [mensaje, setMensaje] = useState("");
+    const [tipo, setTipo] = useState("success");
+
+    const mostrar = (texto, tipoMensaje) => {
+    setMensaje(texto);
+    setTipo(tipoMensaje);
+    setAbierto(true);
+    setTimeout(() => setAbierto(false), duracionMs);
+    };
+
+    return { abierto, mensaje, tipo, mostrar };
+}
+
 
 function useDetalleArticulo(id){
     const [articulo, setArticulo] = useState(null);
@@ -20,7 +39,6 @@ function useDetalleArticulo(id){
                 setvarFotos(dataFotos);
                 setArticulo(datosArticulos);
             }catch(error){
-                console.log("Error al cargar articulo ", error);
             }finally{
                 setCargando(false);
             }
@@ -35,8 +53,21 @@ function useDetalleArticulo(id){
 
 function DetallesArticulos(){
     const {id} = useParams();
-    const {articulo, cargando, varFotos} = useDetalleArticulo(id); 
+    const {articulo, cargando, varFotos} = useDetalleArticulo(id);
     const [fotoSelecionada, setFotoSelecionada] = useState(null);
+    const notificacion = useMensajeTemporal();
+    const { cantidadCar } = useCarrito();
+
+    const agregarALCarrito = async () => {
+        try {
+            await agregarCarrito(articulo.idvararticulo);
+            await cantidadCar();
+            notificacion.mostrar("Articulo agregado al carrito.", "success");
+        } catch (error) {
+            notificacion.mostrar("Error al agregar al carrito.", "error");
+        }
+    };
+
     if(!articulo) return (
         <div className="flex flex-col min-h-screen">
             <NavBar/>
@@ -46,7 +77,7 @@ function DetallesArticulos(){
             <Footer/>
         </div>
     );
-
+    
     
     
     const {articulo: producto, color, talla, sku, historial_descuentos, stock, foto, precio_final} = articulo
@@ -140,6 +171,7 @@ function DetallesArticulos(){
                     <div className="flex gap-3 mt-8 justify-center sm:justify-start">
                         <button
                             type="button"
+                            onClick={() => agregarALCarrito()}
                             className="px-5 py-2.5 rounded-lg text-sm font-semibold text-emerald-700 bg-white border border-emerald-600 hover:bg-emerald-50 transition-all cursor-pointer"
                         >
                             Agregar al carrito
@@ -159,6 +191,14 @@ function DetallesArticulos(){
                 </div>
             </main>
             <Footer/>
+
+            {notificacion.abierto && (
+                <ModalMensaje
+                    abierto={notificacion.abierto}
+                    mensaje={notificacion.mensaje}
+                    tipo={notificacion.tipo}
+                />
+            )}
         </div>
     )
 }

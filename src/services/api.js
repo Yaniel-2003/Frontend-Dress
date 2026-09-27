@@ -25,19 +25,25 @@ const api = {
                 ...options.headers,
             },
         };
+        try{
+            const response = await fetch(url, config);
+    
+            if(response.status === 204){
+                return null;
+            }
+            const data = await response.json();
+            if(!response.ok){
+                throw new Error(data.message || 'Error en la peticion');
+            }
 
-        const response = await fetch(url, config);
-
-        if(response.status === 204){
-            return null;
+            return data;
+        }catch (error){
+            console.error('Error capturado en api.request:', error.message);
+            throw error;
         }
 
-        const data = await response.json();
+
         
-        if(!response.ok){
-            throw new Error(data.message || 'Error en la peticion');
-        }
-        return data;
     }
 };
 

@@ -19,7 +19,7 @@ const VARIANTES = {
 
 function ModalMensaje({ abierto, mensaje, tipo = "success" }) {
   const [visible, setVisible] = useState(false);
-  
+
   useEffect(() => {
     if (abierto) {
       const raf = requestAnimationFrame(() => setVisible(true));
