@@ -33,7 +33,9 @@ const api = {
             }
             const data = await response.json();
             if(!response.ok){
-                throw new Error(data.message || 'Error en la peticion');
+                const error = new Error(data.error || data.message || 'Error en la peticion');
+                error.data = data;
+                throw error;
             }
 
             return data;

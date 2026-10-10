@@ -113,6 +113,14 @@ function Login(){
                             }
                         />
                     </div>
+                    <div className="-mt-2 flex justify-end">
+                        <Link
+                            to='/olvideContraseña'
+                            className="text-sm font-medium text-emerald-700 underline-offset-4 hover:underline"
+                        >
+                            ¿Olvidaste tu contraseña?
+                        </Link>
+                    </div>
 
                     <Button type="submit" size="lg" className="mt-2 w-full hover:bg-emerald-700">
                         Iniciar sesión
