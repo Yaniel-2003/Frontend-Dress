@@ -10,23 +10,13 @@ import Carrito from '../pages/carrito/carrito';
 
 // ESTE COMPONENTE PROTEJE LAS RUTAS PARA QUE SOLO EMTREN LOS USUARIOS LOGUEADOS 
 
-const ProtecttedRoute = ({ children, requiredPermission }) => {
+const ProtecttedRoute = ({ children }) => {
     //BUSCAMOS EL TOKEN EN EL ALMACENAMIENTO DEL NAVEGADOR
     const token = localStorage.getItem('access_token');
 
     // SI NO HAY TOKEN LO ENVIAMOS AL LOGIN
 
     if(!token) return <Navigate to='/Login' replace />;
-
-    //OBTENEMOS EL USUARIOS DE MANERA SEGURA
-
-    const usuario = (() => {
-        try{
-            return JSON.parse(localStorage.getItem('usuario'));
-        }catch {
-            return null;
-        }
-    })();
 
     // SI TODO SALIO BIEN MOSTRAMOS LA PAGINA QUE EL USUARIO SELECIONO
     return children;

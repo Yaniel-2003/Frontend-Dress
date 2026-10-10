@@ -126,10 +126,7 @@ function useTallasPorPrenda(prendaId) {
 
   //FILTRO DE LAS TALLAS POR MEDIO DE LAS PRENDAS
   useEffect(() => {
-    if (!prendaId) {
-      setTallasDisponibles([]);
-      return;
-    }
+    if (!prendaId) return;
     let cancelado = false;
 
     getTalla({ prenda: prendaId }).then((data) => {
@@ -139,7 +136,8 @@ function useTallasPorPrenda(prendaId) {
     return () => { cancelado = true; };
   }, [prendaId]);
 
-  return tallasDisponibles;
+  // sin prenda seleccionada no hay tallas que mostrar
+  return prendaId ? tallasDisponibles : [];
 }
 
 //BLOQUE VARIANTES / TABLA / FILTROS
@@ -1483,7 +1481,7 @@ function FiltrosBar({ filtros, onChange, catalogos }) {
 }
 
 //SELECT REUSABLE PARA LA BARRA DE FILTROS
-function SelectFiltro({ label, icon, name, value, onChange, opciones, getId, getLabel, placeholderTodos }) {
+function SelectFiltro({ label, name, value, onChange, opciones, getId, getLabel, placeholderTodos }) {
   return (
     <div className="grid gap-2">
       <Label>{label}</Label>
@@ -1527,11 +1525,10 @@ function TablaVariantes({ variantes, onEditar, onEliminar, onAgregarDescuento, s
           </tr>
         </thead>
         <tbody>
-          {variantes.map((data, index) => (
+          {variantes.map((data) => (
             <FilaVariante
               key={data.idvararticulo}
               data={data}
-              index={index}
               onEditar={onEditar}
               onEliminar={onEliminar}
               onAgregarDescuento={onAgregarDescuento}
@@ -1549,7 +1546,7 @@ function TablaVariantes({ variantes, onEditar, onEliminar, onAgregarDescuento, s
 }
 
 //FILA INDIVIDUAL DE LA TABLA DE VARIANTES
-function FilaVariante({ data, index, onEditar, onEliminar, onAgregarDescuento, seleccionados, onToggleSeleccionado }) {
+function FilaVariante({ data, onEditar, onEliminar, onAgregarDescuento, seleccionados, onToggleSeleccionado }) {
   const celda = "border-b border-zinc-100 px-4 py-3";
   return (
     <tr className={`transition-colors hover:bg-zinc-50 ${seleccionados ? "bg-emerald-50/50" : "bg-white"}`}>

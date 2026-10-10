@@ -2,9 +2,8 @@ import NavBar from "../../components/NavBar";
 import Footer from "../../components/Footer";
 import { useState, useEffect } from "react";
 import { GetTiendaPublica } from "../../services/home.services";
-import { getTalla, getCategoria, getColor, getCupon, getDescuento, getMarca, getGenero, getImpuesto, getPrendas } from "../../services/catalogo.service";
-import { getAllVariante } from "../../services/articulo.service";
-import { Navigate, Link, useNavigate } from "react-router-dom";
+import { getTalla, getCategoria, getColor, getMarca, getPrendas } from "../../services/catalogo.service";
+import { Link } from "react-router-dom";
 import { SearchIcon, SlidersIcon, PercentIcon, ShoppingBagIcon, ChevronLeftIcon, ChevronRightIcon, BoxIcon, FolderIcon, BookmarkIcon, RulerIcon, TagIcon, PaletteIcon } from "../../components/Icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,11 +16,9 @@ import { VestidoIcono } from "../../components/Logo";
 function useCatalogo(){
     const [marca, setMarca] = useState([]);
     const [categoria, setCategoria] = useState([]);
-    const [impuesto, setImpuesto] = useState([]);
     const [talla, setTalla] = useState([]);
     const [color, setColor] = useState([]);
     const [prendas, setPrendas] = useState([]);
-    const [cargando, setCargando] = useState(true);
 
     //FUNCION PARA TRAER LOS DATOS
     useEffect(() =>{
@@ -30,14 +27,12 @@ function useCatalogo(){
                const [
                     dataMarca,
                     dataCategoria,
-                    dataImpuesto,
                     dataTalla,
                     dataColor,
                     dataPrendas
                 ] = await Promise.all([
                     getMarca(),
                     getCategoria(),
-                    getImpuesto(),
                     getTalla(),
                     getColor(),
                     getPrendas()
@@ -45,20 +40,17 @@ function useCatalogo(){
 
                 setMarca(dataMarca || []);
                 setCategoria(dataCategoria || []);
-                setImpuesto(dataImpuesto || []);
                 setTalla(dataTalla || []);
                 setColor(dataColor || []);
                 setPrendas(dataPrendas || []);
             }catch(error){
                 console.log("Error al cargar los catalogos", error);
-            }finally{
-                setCargando(false);
             }
         };
         catalogo();
     },[]);
 
-    return { marca, categoria, impuesto, talla, color, prendas };
+    return { marca, categoria, talla, color, prendas };
 
 }
 
@@ -88,8 +80,6 @@ function useTiendaPublica(filtros){
 
 
 function useFiltrosBusqueda(){
-    const [variantes, setVariantes] = useState([]);
-    const [selecionar, setSeleccionar] = useState([]);
     //FILTROS DINAMICOS
     const [filtros, setFiltros] = useState({
         buscar: "",
@@ -122,7 +112,7 @@ function Home() {
     const [modalFiltrosAbierto, setModalFiltrosAbierto] = useState(false);
     const {filtros, actualizarFiltro} = useFiltrosBusqueda();
     const { datosArticulos } = useTiendaPublica(filtros);
-    const { marca, categoria, impuesto, talla, color, prendas} = useCatalogo();
+    const { marca, categoria, talla, color, prendas} = useCatalogo();
 
     const [conDescuento, sinDescuento] = datosArticulos.reduce(
         (acumulador, art) => {
@@ -216,7 +206,6 @@ function Home() {
                                             onChange={actualizarFiltro}
                                             marca={marca}
                                             categoria={categoria}
-                                            impuesto={impuesto}
                                             talla={talla}
                                             color={color}
                                             prendas={prendas}
@@ -537,7 +526,7 @@ function SeccionFiltro({ icono, titulo, children }){
     )
 }
 
-function ModalFiltros({ onClose, filtros, onChange,  marca, categoria, impuesto, talla, color, prendas }){
+function ModalFiltros({ onClose, filtros, onChange,  marca, categoria, talla, color, prendas }){
     return(
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-zinc-950/40 p-3 text-left text-foreground backdrop-blur-sm">
             <div className="flex max-h-[90vh] w-full max-w-2xl flex-col rounded-2xl border border-zinc-200 bg-white p-6 shadow-xl">

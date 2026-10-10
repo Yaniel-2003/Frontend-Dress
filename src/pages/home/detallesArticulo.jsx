@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import NavBar from "../../components/NavBar";
 import Footer from "../../components/Footer";
 import { Link, useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import { useCarrito } from "../../context/CarritoContext";
 
 import { getOneVariante, getFotosVAriantes } from "../../services/articulo.service";
@@ -12,7 +11,6 @@ import { ChevronLeftIcon, ChevronRightIcon, PercentIcon, TagIcon, RulerIcon, Pal
 import { ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 
 function useMensajeTemporal(duracionMs = 1000) {
     const [abierto, setAbierto] = useState(false);
@@ -43,7 +41,8 @@ function useDetalleArticulo(id){
                 const [dataFotos, datosArticulos] = await Promise.all([getFotosVAriantes(id), getOneVariante(id)]);
                 setvarFotos(dataFotos);
                 setArticulo(datosArticulos);
-            }catch(error){
+            }catch{
+                // sin datos del articulo: se mantiene el estado de carga
             }finally{
                 setCargando(false);
             }
@@ -58,7 +57,7 @@ function useDetalleArticulo(id){
 
 function DetallesArticulos(){
     const {id} = useParams();
-    const {articulo, cargando, varFotos} = useDetalleArticulo(id);
+    const {articulo, varFotos} = useDetalleArticulo(id);
     const [fotoSelecionada, setFotoSelecionada] = useState(null);
     const notificacion = useMensajeTemporal();
     const { cantidadCar } = useCarrito();
@@ -68,7 +67,7 @@ function DetallesArticulos(){
             await agregarCarrito(articulo.idvararticulo);
             await cantidadCar();
             notificacion.mostrar("Articulo agregado al carrito.", "success");
-        } catch (error) {
+        } catch {
             notificacion.mostrar("Error al agregar al carrito.", "error");
         }
     };

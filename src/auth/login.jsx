@@ -24,7 +24,6 @@ function Login(){
         email: "",
         password: ""
     });
-    const [error, setError] = useState("");
 
 
     const handleChange = (e) => {
@@ -33,7 +32,6 @@ function Login(){
             ...formData,
             [name] : value
         });  
-        setError("");
     };
 
     const handleSubmit = async (e) => {
@@ -55,7 +53,7 @@ function Login(){
                 SetMostrarModal(false);
                 navigate('/home');
             },1000);
-        }catch(err){
+        }catch{
             setMensaje("Usuario o contraseña incorrectos");
             setTipo("error");
             SetMostrarModal(true);

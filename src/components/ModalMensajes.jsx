@@ -21,11 +21,8 @@ function ModalMensaje({ abierto, mensaje, tipo = "success" }) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    if (abierto) {
-      const raf = requestAnimationFrame(() => setVisible(true));
-      return () => cancelAnimationFrame(raf);
-    }
-    setVisible(false);
+    const raf = requestAnimationFrame(() => setVisible(abierto));
+    return () => cancelAnimationFrame(raf);
   }, [abierto]);
 
   if (!abierto) return null;

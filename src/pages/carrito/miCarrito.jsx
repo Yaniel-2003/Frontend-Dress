@@ -1,17 +1,15 @@
-import { useEffect, useState } from "react";
 import { useCarrito } from "@/context/CarritoContext";
 
 import { Link } from "react-router-dom";
-import { ShoppingCart, Trash2 } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { SheetTitle, SheetDescription, SheetClose } from "@/components/ui/sheet";
 import { PercentIcon, ChevronRightIcon } from "../../components/Icons";
 
 
 function MiCarrito(){
-    const { miCarrito, cantidadCar } = useCarrito();
+    const { miCarrito } = useCarrito();
 
     // Valores derivados solo para mostrar en el resumen
     const total = miCarrito.reduce((acumulador, item) => {

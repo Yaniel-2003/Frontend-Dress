@@ -18,12 +18,14 @@ export function CarritoProvider({ children }){
             },0);
             setCantidad(cantidadItems)
             setMiCarrito(respuesta)
-        }catch(error){
+        }catch{
+            // si falla la consulta se conserva el ultimo carrito conocido
         }
     };
 
     useEffect(() => {
         if(usuario?.idusuario){
+            // eslint-disable-next-line react-hooks/set-state-in-effect -- carga del carrito al iniciar sesion
             cantidadCar();
         }
         

@@ -29,38 +29,6 @@ function useMensajeTemporal(duracionMs = 1000){
     return { abierto, mensaje, tipo, mostrar };
 }
 
-// HOOCK PARA SELECIONAR TODO EL CARRITO
-function useCheckbox(){
-    const [selecionar, setSeleccionar] = useState([]);
-
-    // CONSTANTE PARA MARCAR Y DESMARCAR
-    const seleccion = (idcarrito) => {
-        setSeleccionar((prev) => {
-            if(prev.includes(idcarrito)){
-                return prev.filter(id => id !== idcarrito);
-            }else{
-                return [ ...prev, idcarrito];
-            }
-        });
-    };
-
-    const limpiarTodo = () => setSeleccionar([]);
-
-    const seleccionarTodo = () => {
-        if(selecionar.length === dataCarrito.length && dataCarrito.length > 0){
-            limpiarTodo();
-        }else {
-            const todosLosIds = dataCarrito.map(v => v.idcarrito);
-            setSeleccionar(todosLosIds);
-        }
-    }
-
-    return {
-        selecionar, seleccion, limpiarTodo, seleccionarTodo
-    }
-}
-
-
 // HOOK PARA OBTENER LOS ARTICULOS
 function useVariantesCarrito(){
     const [datosCarrito, setDatosCarrito] = useState([]);
@@ -72,7 +40,8 @@ function useVariantesCarrito(){
                 setCargando(true);
                 const dataCarrito = await obtenerCarrito();
                 setDatosCarrito(dataCarrito);
-            }catch(error){
+            }catch{
+                // sin carrito disponible: se deja la lista vacia
             }finally{
                 setCargando(false);
             }
@@ -100,11 +69,8 @@ function useVariantesCarrito(){
 function Carrito() {
     const {datosCarrito, cargando, eliminarItem, actualizarCantidad} = useVariantesCarrito();
     const notificacion = useMensajeTemporal();
-    const check = useCheckbox();
     const [itemEliminar, setItemEliminar] = useState(null);
     const [modalConfirmarAbierto, setModalConfirmarAbierto] = useState(false);
-
-    const [cantidadCarrito, setCantidaCarrito] = useState();
 
     const { cantidadCar } = useCarrito();
 
@@ -140,7 +106,7 @@ function Carrito() {
             eliminarItem(itemEliminar.iditmcarrito)
             await cantidadCar();
             notificacion.mostrar("Item eliminado del carrito", "success");
-        }catch(error){
+        }catch{
             notificacion.mostrar("Error al eliminar item del carriot", "error");
         }finally{
             setModalConfirmarAbierto(false);
@@ -150,7 +116,7 @@ function Carrito() {
     
     const masCantidad = async (item) => {
         const nuevaCantidad = item.cantidad + 1;
-        const cantidades = await actualizarParcial(item.iditmcarrito, {cantidad: nuevaCantidad});
+        await actualizarParcial(item.iditmcarrito, {cantidad: nuevaCantidad});
         await cantidadCar();
         actualizarCantidad(item.iditmcarrito, nuevaCantidad);
     } 
@@ -160,7 +126,7 @@ function Carrito() {
             prepararEliminarItem(item);
             return;
         }
-        const cantidades = await actualizarParcial(item.iditmcarrito, {cantidad: nuevaCantida});
+        await actualizarParcial(item.iditmcarrito, {cantidad: nuevaCantida});
         await cantidadCar();
         actualizarCantidad(item.iditmcarrito, nuevaCantida)
     }

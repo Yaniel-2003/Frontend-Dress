@@ -98,7 +98,7 @@ function useDatosUsuario({ mostrarMensaje }){
 
             localStorage.setItem('usuario', JSON.stringify(actualizado));
             mostrarMensaje("Datos actualizados con exito", "success");
-        }catch(error){
+        }catch{
             mostrarMensaje("Error al actualizar datos", "error");
         }finally{
             setCargando(false);
@@ -123,6 +123,7 @@ function useDirecciones({ mostrarMensaje }){
     }
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- carga inicial de direcciones
         cargarDirecciones().catch((error)=>
             console.error("Error al cargar las direcciones: ", error)
         );
@@ -168,7 +169,7 @@ function useDirecciones({ mostrarMensaje }){
             await cargarDirecciones();
             mostrarMensaje("Direccion guardada con exito", "success");
             setDesplegarForm(false);
-        }catch(error){
+        }catch{
             mostrarMensaje("Error al guardar direcciones", "error"),
             setDesplegarForm(false);
         }finally{
@@ -182,7 +183,7 @@ function useDirecciones({ mostrarMensaje }){
             await eliminarDireccion(iddireccion);
             setListaDirecciones((prev) => prev.filter((dir) => dir.iddireccion !== iddireccion));
             mostrarMensaje("Direccion eliminada con exito", "success");
-        }catch(error){
+        }catch{
             mostrarMensaje("Error al eliminar direccion", "error");
         }finally{
             setCargando(false);

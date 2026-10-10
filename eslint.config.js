@@ -18,4 +18,14 @@ export default defineConfig([
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
   },
+  {
+    // shadcn/ui y los contextos exportan componentes junto a variantes/hooks por diseno
+    files: ['src/components/ui/**/*.{js,jsx}', 'src/context/**/*.{js,jsx}'],
+    rules: { 'react-refresh/only-export-components': 'off' },
+  },
+  {
+    // la config de Vite corre en Node, no en el navegador
+    files: ['vite.config.js'],
+    languageOptions: { globals: globals.node },
+  },
 ])
