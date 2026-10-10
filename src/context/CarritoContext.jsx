@@ -7,6 +7,7 @@ const CarritoContext = createContext(null);
 
 export function CarritoProvider({ children }){
     const [cantidad, setCantidad] = useState(0);
+    const [miCarrito, setMiCarrito] = useState([]);
     const { usuario } = useAuth();
     
     const cantidadCar = async () => {
@@ -16,9 +17,9 @@ export function CarritoProvider({ children }){
                 return acumulador + items.cantidad
             },0);
             setCantidad(cantidadItems)
+            setMiCarrito(respuesta)
         }catch(error){
         }
-
     };
 
     useEffect(() => {
@@ -28,8 +29,9 @@ export function CarritoProvider({ children }){
         
     },[usuario])
 
+
     return (
-        <CarritoContext.Provider value={{cantidad ,cantidadCar}}>
+        <CarritoContext.Provider value={{cantidad ,cantidadCar, miCarrito}}>
             {children}
         </CarritoContext.Provider>
     )

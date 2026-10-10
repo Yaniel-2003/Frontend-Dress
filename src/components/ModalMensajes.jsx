@@ -2,17 +2,17 @@ import { useEffect, useState } from "react";
 
 const VARIANTES = {
   success: {
-    icono: "text-green-500",
-    anillo: "ring-green-100",
-    texto: "text-green-700",
-    barra: "from-green-500 to-blue-500",
+    icono: "text-emerald-600",
+    fondoIcono: "bg-emerald-50",
+    pista: "border-emerald-100",
+    texto: "text-emerald-700",
     dibSvg: <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"  />
   },
   error: {
-    icono: "text-red-500",
-    anillo: "ring-red-100",
+    icono: "text-red-600",
+    fondoIcono: "bg-red-50",
+    pista: "border-red-100",
     texto: "text-red-700",
-    barra: "from-red-500 to-emerald-500",
     dibSvg: <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
   },
 };
@@ -34,33 +34,47 @@ function ModalMensaje({ abierto, mensaje, tipo = "success" }) {
 
   return (
     <div
-      className={`fixed inset-0 z-100 flex items-center justify-center bg-black/40 backdrop-blur-sm transition-opacity duration-200 ${
+      className={`fixed inset-0 z-100 flex items-center justify-center bg-zinc-950/30 backdrop-blur-[3px] transition-opacity duration-300 ease-out ${
         visible ? "opacity-100" : "opacity-0"
       }`}
     >
       <div
         role="alert"
         aria-live="polite"
-        className={`relative w-72 rounded-2xl bg-white p-8 text-center shadow-xl transition-all duration-200 ${
-          visible ? "scale-100 opacity-100" : "scale-95 opacity-0"
+        className={`w-72 max-w-[calc(100vw-2rem)] rounded-2xl bg-white px-8 py-9 text-center shadow-2xl shadow-zinc-900/15 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          visible ? "translate-y-0 scale-100 opacity-100" : "translate-y-3 scale-95 opacity-0"
         }`}
       >
-        <div className={`absolute inset-x-0 top-0 h-1.5 rounded-t-2xl ${v.barra}`} />
-
-        <div className={`relative mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-white ring-8 ${v.anillo}`}>
-          <div className={`absolute top-1/2 left-1/2 h-16 w-16 -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-transparent border-t-current animate-spin ${v.icono}`}></div>
-          <svg
-            className={`relative z-10 h-7 w-7 ${v.icono}`}
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2.5}
-          >
-            {v.dibSvg}
-          </svg>
+        {/* icono con la ruedita girando alrededor */}
+        <div className="relative mx-auto mb-5 flex size-[4.5rem] items-center justify-center">
+          <div className={`absolute inset-0 rounded-full border-[3px] ${v.pista}`} />
+          <div
+            className={`absolute inset-0 animate-spin rounded-full border-[3px] border-transparent border-t-current [animation-duration:1.1s] ${v.icono}`}
+          />
+          <div className={`flex size-12 items-center justify-center rounded-full ${v.fondoIcono}`}>
+            <svg
+              className={`size-6 ${v.icono}`}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2.5}
+              style={{
+                strokeDasharray: 1,
+                strokeDashoffset: visible ? 0 : 1,
+                transition: "stroke-dashoffset 450ms cubic-bezier(0.65, 0, 0.35, 1) 200ms",
+              }}
+            >
+              {/* pathLength=1 permite dibujar el trazo de forma uniforme */}
+              {tipo === "error" ? (
+                <path pathLength="1" strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path pathLength="1" strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              )}
+            </svg>
+          </div>
         </div>
 
-        <h2 className={`text-base font-semibold ${v.texto}`}>{mensaje}</h2>
+        <h2 className={`whitespace-pre-line text-[15px] font-semibold leading-snug ${v.texto}`}>{mensaje}</h2>
       </div>
     </div>
   );

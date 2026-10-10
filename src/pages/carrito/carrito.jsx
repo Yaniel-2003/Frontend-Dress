@@ -6,6 +6,12 @@ import { useCarrito } from "../../context/CarritoContext";
 
 import { obtenerCarrito, actualizarParcial, eliminarItemCarrito } from "../../services/carrito.service";
 import ModalMensaje from "../../components/ModalMensajes";
+import { Link } from "react-router-dom";
+import { ShoppingCart, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { PercentIcon, ChevronRightIcon } from "../../components/Icons";
 
 
 function useMensajeTemporal(duracionMs = 1000){
@@ -162,11 +168,28 @@ function Carrito() {
     return (
         <div className="flex flex-col min-h-screen">
             <NavBar />
-            <main className="flex-1 w-full max-w-5xl mx-auto px-4 py-10">
-                <h1 className="text-2xl font-bold text-slate-800 mb-6">Mi carrito</h1>
+            <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6 sm:py-10">
+                <div className="mb-8">
+                    <h1 className="text-3xl font-bold tracking-tight">Mi carrito</h1>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                        {cantidadItems} {cantidadItems === 1 ? "producto" : "productos"} en tu carrito
+                    </p>
+                </div>
 
-                <div className="flex flex-col lg:flex-row gap-6 items-start">
-                    <div className="flex flex-col gap-4 flex-1 w-full">
+                <div className="flex flex-col items-start gap-8 lg:flex-row">
+                    <div className="flex w-full flex-1 flex-col gap-4">
+                        {datosCarrito.length === 0 && !cargando && (
+                            <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-zinc-300 bg-white/60 py-16 text-center">
+                                <span className="flex size-12 items-center justify-center rounded-full bg-zinc-100 text-zinc-500">
+                                    <ShoppingCart className="size-5" />
+                                </span>
+                                <p className="font-medium">Tu carrito está vacío</p>
+                                <p className="text-sm text-muted-foreground">Explora el catálogo y agrega lo que más te guste.</p>
+                                <Button asChild className="mt-2 hover:bg-emerald-700">
+                                    <Link to="/home">Ver artículos</Link>
+                                </Button>
+                            </div>
+                        )}
                         {datosCarrito.map((item) => (
                             <FilaCarrito
                                 key={item.iditmcarrito}
@@ -193,7 +216,7 @@ function Carrito() {
                 />
             )}
             {notificacion.abierto && (
-                <ModalMensaje 
+                <ModalMensaje
                     abierto={notificacion.abierto}
                     mensaje={notificacion.mensaje}
                     tipo={notificacion.tipo}
@@ -209,89 +232,81 @@ function FilaCarrito({ item, prepararEliminarItem, masCantidad, menosCantidad })
     const { color, talla, historial_descuentos } = item.vararticulo
 
     return (
-        <div className="flex flex-col sm:flex-row gap-4 sm:items-center bg-white rounded-2xl shadow-sm border border-slate-100 p-4">
+        <div className="flex flex-col gap-4 rounded-xl border border-zinc-200 bg-white p-4 shadow-sm sm:flex-row sm:items-center">
             <img
                 src={foto}
                 alt={producto.nombre}
-                className="w-20 h-20 object-cover rounded-lg border border-slate-200 shadow-sm shrink-0 mx-auto sm:mx-0"
+                className="mx-auto size-24 shrink-0 rounded-xl border border-zinc-200 bg-zinc-100 object-cover sm:mx-0"
             />
 
-            <div className="flex-1 min-w-0">
-                <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">{producto.marca.nombre}</p>
+            <div className="min-w-0 flex-1">
+                <p className="text-xs font-medium text-muted-foreground">{producto.marca.nombre}</p>
                 <div className="flex items-center gap-2">
-                    <p className="text-base font-bold text-slate-800 truncate">{producto.nombre}</p>
+                    <p className="truncate text-base font-semibold tracking-tight">{producto.nombre}</p>
                     <button
                         type="button"
                         onClick={() => prepararEliminarItem(item)}
                         title="Eliminar del carrito"
-                        className="shrink-0 p-1 rounded-full text-slate-300 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
+                        aria-label="Eliminar del carrito"
+                        className="shrink-0 cursor-pointer rounded-lg p-1.5 text-zinc-400 transition-colors hover:bg-red-50 hover:text-red-600"
                     >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={2}
-                            stroke="currentColor"
-                            className="w-4 h-4"
-                        >
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
+                        <Trash2 className="size-4" />
                     </button>
                 </div>
 
-                <div className="flex flex-wrap gap-2 mt-2">
-                    <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-200">
+                <div className="mt-2 flex flex-wrap gap-2">
+                    <Badge variant="secondary" className="px-2.5 py-1">
                         Talla {talla.codigo}
-                    </span>
-                    <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-200">
-                        <span className="w-3 h-3 rounded-full border border-slate-300" style={{ backgroundColor: color.hex_code }} />
+                    </Badge>
+                    <Badge variant="secondary" className="gap-1.5 px-2.5 py-1">
+                        <span className="size-3 rounded-full border border-zinc-300" style={{ backgroundColor: color.hex_code }} />
                         {color.nombre}
-                    </span>
+                    </Badge>
                 </div>
 
                 {historial_descuentos.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mt-2">
+                    <div className="mt-2 flex flex-wrap gap-2">
                         {historial_descuentos.map((h) => (
-                            <span
+                            <Badge
                                 key={h.idartdescuento}
-                                className="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200"
+                                variant="outline"
+                                className="border-emerald-200 bg-emerald-50 px-2.5 py-1 text-emerald-700"
                             >
                                 Quedan {h.cantidad_restante}/{h.cantidad_inicial} con descuento
-                            </span>
+                            </Badge>
                         ))}
                     </div>
                 )}
             </div>
 
-            <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-2 sm:gap-1">
-                <div className="flex items-center gap-2">
-                    <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">Cantidad</span>
-                    <div className="flex items-center gap-1 rounded-full border border-slate-200 bg-slate-50 px-1 py-1">
-                        <button
-                            type="button"
-                            onClick={() => menosCantidad(item)}
-                            className="w-6 h-6 flex items-center justify-center rounded-full text-slate-500 hover:bg-white hover:text-emerald-700 hover:shadow-sm transition-colors cursor-pointer"
-                        >
-                            −
-                        </button>
-                        <span className="w-5 text-center text-sm font-semibold text-slate-800">{item.cantidad}</span>
-                        <button
-                            type="button"
-                            onClick={() => masCantidad(item)}
-                            className="w-6 h-6 flex items-center justify-center rounded-full text-slate-500 hover:bg-white hover:text-emerald-700 hover:shadow-sm transition-colors cursor-pointer"
-                        >
-                            +
-                        </button>
-                    </div>
+            <div className="flex items-center justify-between gap-3 sm:flex-col sm:items-end sm:justify-center">
+                <div className="flex items-center gap-1 rounded-xl border border-zinc-200 bg-zinc-50 p-1">
+                    <button
+                        type="button"
+                        onClick={() => menosCantidad(item)}
+                        aria-label="Quitar uno"
+                        className="flex size-8 cursor-pointer items-center justify-center rounded-lg text-zinc-600 transition-colors hover:bg-white hover:text-emerald-700 hover:shadow-sm"
+                    >
+                        −
+                    </button>
+                    <span className="w-7 text-center text-sm font-semibold tabular-nums">{item.cantidad}</span>
+                    <button
+                        type="button"
+                        onClick={() => masCantidad(item)}
+                        aria-label="Agregar uno"
+                        className="flex size-8 cursor-pointer items-center justify-center rounded-lg text-zinc-600 transition-colors hover:bg-white hover:text-emerald-700 hover:shadow-sm"
+                    >
+                        +
+                    </button>
                 </div>
-                
+
                 {precio_con_descuento_activo && Number(precio_con_descuento_activo) < Number(precio_final) ? (
-                    <div className="flex flex-col items-center sm:items-end">
-                        <span className="text-lg font-bold text-emerald-700">$ {Number(precio_con_descuento_activo).toLocaleString()}</span>
-                        <span className="text-sm font-medium text-slate-400 line-through">$ {Number(precio_final).toLocaleString()}</span>
+                    <div className="flex flex-col items-end">
+                        <span className="text-lg font-bold tracking-tight tabular-nums text-emerald-700">$ {Number(precio_con_descuento_activo).toLocaleString()}</span>
+                        <span className="text-sm tabular-nums text-zinc-400 line-through">$ {Number(precio_final).toLocaleString()}</span>
                     </div>
                 ):(
-                    <span className="text-lg font-bold text-slate-800">$ {Number(precio_final).toLocaleString()}</span>
+                    <span className="text-lg font-bold tracking-tight tabular-nums">$ {Number(precio_final).toLocaleString()}</span>
                 )}
             </div>
         </div>
@@ -302,32 +317,54 @@ function FilaCarrito({ item, prepararEliminarItem, masCantidad, menosCantidad })
 function ResumenItemsCarrito({ producto, descuenoTotal, total, onClick }){
 
     return (
-        <div className="w-full lg:w-80 shrink-0 bg-white rounded-2xl shadow-sm border border-slate-100 p-6 lg:sticky lg:top-10">
-            <h3 className="text-lg font-bold text-slate-800 mb-4">Resumen carrito</h3>
+        <aside className="w-full shrink-0 overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm lg:sticky lg:top-24 lg:w-96">
+            <div className="p-6">
+                <h3 className="flex items-center gap-2 text-lg font-semibold tracking-tight">
+                    <ShoppingCart className="size-5 text-emerald-600" />
+                    Resumen del pedido
+                </h3>
 
-            <div className="space-y-2 text-sm">
-                <div className="flex justify-between text-slate-600">
-                    <span>Productos</span>
-                    <span className="font-semibold text-slate-800">{producto}</span>
+                {descuenoTotal !== "0" && (
+                    <div className="mt-4 flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-3.5 py-2.5 text-sm font-medium text-emerald-800">
+                        <PercentIcon className="size-4 shrink-0" />
+                        Estás ahorrando $ {descuenoTotal} en este pedido
+                    </div>
+                )}
+
+                <div className="mt-5 space-y-3 text-sm">
+                    <div className="flex justify-between text-muted-foreground">
+                        <span>Productos</span>
+                        <span className="font-medium text-foreground tabular-nums">{producto}</span>
+                    </div>
+                    <div className="flex justify-between text-muted-foreground">
+                        <span>Descuentos</span>
+                        <span className="font-medium text-emerald-700 tabular-nums">- $ {descuenoTotal}</span>
+                    </div>
                 </div>
-                <div className="flex justify-between text-slate-600">
-                    <span>Descuentos</span>
-                    <span className="font-semibold text-emerald-700">- $ {descuenoTotal}</span>
+
+                <Separator className="my-5" />
+
+                <div className="flex items-end justify-between">
+                    <span className="text-sm font-medium text-muted-foreground">Total</span>
+                    <span className="text-3xl font-bold tracking-tight tabular-nums">$ {total}</span>
                 </div>
-            </div>
 
-            <div className="flex justify-between items-baseline mt-4 pt-4 border-t border-slate-100">
-                <span className="text-sm font-semibold text-slate-500">Total</span>
-                <span className="text-xl font-bold text-slate-800">$ {total}</span>
+                <Button
+                    onClick={onClick}
+                    size="lg"
+                    className="mt-6 h-12 w-full text-base hover:bg-emerald-700"
+                >
+                    Continuar con la compra
+                    <ChevronRightIcon className="size-5" />
+                </Button>
+                <Link
+                    to="/home"
+                    className="mt-3 block text-center text-sm font-medium text-muted-foreground underline-offset-4 transition-colors hover:text-emerald-700 hover:underline"
+                >
+                    Seguir comprando
+                </Link>
             </div>
-
-            <button
-                onClick={onClick}
-                className="w-full mt-6 px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-700 shadow-sm hover:shadow transition-all cursor-pointer"
-            >
-                Continuar
-            </button>
-        </div>
+        </aside>
     )
 }
 

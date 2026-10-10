@@ -5,8 +5,12 @@ import ModalMensaje from "../../components/ModalMensajes";
 import ModalConfirmar from "../../components/ConfirmarEliminar";
 import {
   TagIcon, AlignLeftIcon, DollarIcon, BookmarkIcon, FolderIcon, ScaleIcon,
-  BarcodeIcon, BoxIcon, RulerIcon, PaletteIcon, ImageIcon, EditIcon, TrashIcon, SaveIcon, HashIcon
+  BarcodeIcon, BoxIcon, RulerIcon, PaletteIcon, ImageIcon, EditIcon, TrashIcon, SaveIcon, HashIcon, SearchIcon, SlidersIcon, CheckIcon
 } from "../../components/Icons";
+import { InputIcono, SelectIcono as SelectNativo } from "../../components/CamposConIcono";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 import {
   saveVariante, updateVariante, deleteArticulo, getAllVariante,
@@ -655,19 +659,22 @@ function Articulos() {
   return (
     <div className="flex flex-col min-h-screen">
       <NavBar />
-      <main className="flex-1 w-full max-w-[1400px] mx-auto">
-        <h2 className="text-center font-bold text-2xl tracking-tight text-slate-800 mt-6">
-          Artículos
-        </h2>
-
-        <div className="flex items-center justify-center sm:justify-end mt-5 px-4 sm:px-6">
-          <button
+      <main className="mx-auto w-full max-w-[1400px] flex-1 px-4 py-8 sm:px-6 sm:py-10">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight">Artículos</h1>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Crea, edita y administra el inventario y los descuentos de tu tienda.
+            </p>
+          </div>
+          <Button
             type="button"
+            size="lg"
             onClick={form.abrirParaCrear}
-            className="group inline-flex items-center justify-center gap-2 px-4 py-2.5 text-white font-medium bg-blue-700 hover:bg-blue-800 rounded-lg shadow-sm hover:shadow transition-all duration-200 active:scale-[0.98] cursor-pointer"
+            className="hover:bg-emerald-700"
           >
-            <span className="text-sm font-semibold tracking-wide">Nuevo artículo</span>
-          </button>
+            <span className="text-lg leading-none">+</span> Nuevo artículo
+          </Button>
         </div>
 
         {formDescuento.modalAbierto && (
@@ -687,166 +694,216 @@ function Articulos() {
         )}
 
         {form.modalAbierto && (
-          <div className="fixed inset-0 z-100 bg-slate-900/40 backdrop-blur-sm flex justify-center items-center p-3 sm:p-0">
-            <div className="bg-white border border-slate-200/80 shadow-sm rounded-xl w-full max-w-4xl h-auto max-h-[90vh] flex flex-col overflow-hidden">
-              <header className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-                <div>
-                  <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
-                    <EditIcon className="w-4 h-4 text-blue-500" />
-                    {form.dataArticulos.idvararticulo ? "Editar Artículo" : "Nuevo Artículo"}
-                  </h3>
-                </div>
-                <button
-                  type="button"
-                  onClick={form.cerrar}
-                  className="text-slate-400 hover:text-slate-600 p-1.5 rounded-md hover:bg-slate-100 cursor-pointer"
-                >
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </header>
-
-              <div className="flex flex-col flex-1 overflow-hidden">
-                <div className="p-6 overflow-y-auto flex-1 text-slate-800 space-y-6">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-
-                    <CampoSelect
-                      label="Categoria"
-                      icon={FolderIcon}
-                      name="categoria"
-                      value={form.dataArticulos.articulo.categoria}
-                      onChange={form.actualizarCampo}
-                      opciones={catalogos.categoria}
-                      getId={(c) => c.idcategoria}
-                      getLabel={(c) => c.padre ? `${c.padre.nombre} > ${c.nombre}` : c.nombre}
-                    />
-
-                    <CampoSelect
-                      label="Marca"
-                      icon={BookmarkIcon}
-                      name="marca"
-                      value={form.dataArticulos.articulo.marca}
-                      onChange={form.actualizarCampo}
-                      opciones={catalogos.marca}
-                      getId={(m) => m.idmarca}
-                      getLabel={(m) => m.nombre}
-                    />
-
-                    <CampoTexto
-                      label="Nombre"
-                      icon={TagIcon}
-                      name="nombre"
-                      value={form.dataArticulos.articulo.nombre}
-                      onChange={form.actualizarCampo}
-                    />
-
-                    <CampoTexto
-                      label="Descripción"
-                      icon={AlignLeftIcon}
-                      name="descripcion"
-                      value={form.dataArticulos.articulo.descripcion}
-                      onChange={form.actualizarCampo}
-                    />
-
-                    <CampoTexto
-                      label="Precio base"
-                      icon={DollarIcon}
-                      name="precio_base"
-                      value={formatoMiles(form.dataArticulos.articulo.precio_base)}
-                      onChange={form.actualizarCampo}
-                    />
-
-                    <CampoSelect
-                      label="Prenda"
-                      icon={BookmarkIcon}
-                      name="prendas"
-                      value={form.dataArticulos.articulo.prendas}
-                      onChange={form.actualizarCampo}
-                      opciones={catalogos.prenda}
-                      getId={(p) => p.idprenda}
-                      getLabel={(p) => p.nombre}
-                    />
-
-                    <SelectorTallas
-                      tallas={tallasPorPrenda}
-                      seleccionadas={Object.keys(form.dataArticulos.variantesPorTalla)}
-                      prendaSeleccionada={form.dataArticulos.articulo.prendas}
-                      onToggle={form.alternarTalla}
-                    />
-
-                    {tallasPorPrenda
-                      .filter((t) => form.dataArticulos.variantesPorTalla[t.idtalla])
-                      .map((t) => (
-                        <FilaVarianteTalla
-                          key={t.idtalla}
-                          talla={t}
-                          datos={form.dataArticulos.variantesPorTalla[t.idtalla]}
-                          colores={catalogos.color}
-                          onChange={(campo, valor) => form.actualizarCampoVariante(t.idtalla, campo, valor)}
-                        />
-                      ))
-                    }
-
-                    <CampoSelect
-                      label="Impuestos"
-                      icon={ScaleIcon}
-                      name="impuestos"
-                      value={form.dataArticulos.articulo.impuestos}
-                      onChange={form.actualizarCampo}
-                      opciones={catalogos.impuesto}
-                      getId={(i) => i.idimpuesto}
-                      getLabel={(i) => `${i.nombre} - ${i.porcentaje}`}
-                    />
-
-                    <div className="relative mt-2">
-                      <label className="absolute left-3 -top-2.5 bg-white px-1.5 text-xs font-semibold text-slate-500 z-10 flex items-center gap-1">
-                        <ImageIcon className="w-3.5 h-3.5" /> Fotos
-                      </label>
-                      <input
-                        type="file"
-                        multiple
-                        accept="image/*"
-                        onChange={form.seleccionarFotos}
-                        className="w-full bg-slate-50/30 rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-4 focus:ring-emerald-500/10 focus:bg-white"
-                      />
-                      {form.fotosExistentes.length > 0 && (
-                        <div className="flex flex-wrap gap-3 mt-3">
-                          {form.fotosExistentes.map((f, indice)=> (
-                            <img  
-                              key={f.idfoto}
-                              src={f.urlfoto}
-                              alt={`Foto existente ${indice + 1}`}
-                              className="w-20 h-20 object-cover rounded-lg border border-slate-200 shadow-sm"
-                            />
-                          ))}
-                        </div>
-                      )}
-                      {form.fotos.length > 0 && (
-                        <div className="flex flex-wrap gap-3 mt-3">
-                          {form.fotos.map((file, indice) => (
-                            <img
-                              key={indice}
-                              src={URL.createObjectURL(file)}
-                              alt={`Foto seleccionada ${indice + 1}`}
-                              className="w-20 h-20 object-cover rounded-lg border border-slate-200 shadow-sm"
-                            />
-                          ))}
-                        </div>
-                      )}
-                    </div>
+          <div className="fixed inset-0 z-100 flex items-center justify-center bg-zinc-950/40 p-3 backdrop-blur-sm sm:p-6">
+            <div className="flex max-h-[92vh] w-full max-w-6xl flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-xl">
+              <header className="flex items-center justify-between border-b border-zinc-100 px-6 py-4">
+                <div className="flex items-center gap-3">
+                  <span className="flex size-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100">
+                    <EditIcon className="size-4" />
+                  </span>
+                  <div>
+                    <h3 className="text-lg font-semibold leading-tight tracking-tight">
+                      {form.dataArticulos.idvararticulo ? "Editar artículo" : "Nuevo artículo"}
+                    </h3>
+                    <p className="text-sm text-muted-foreground">Completa los datos y revisa la vista previa.</p>
                   </div>
                 </div>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon-sm"
+                  onClick={form.cerrar}
+                  aria-label="Cerrar"
+                  className="text-muted-foreground"
+                >
+                  <svg className="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </Button>
+              </header>
 
-                <footer className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-3">
-                  <button
+              <div className="flex flex-1 flex-col overflow-hidden">
+                <div className="grid flex-1 gap-0 overflow-y-auto lg:grid-cols-[1fr_21rem] lg:overflow-hidden">
+                  {/* ───── Formulario (2 columnas) ───── */}
+                  <div className="space-y-8 p-6 lg:overflow-y-auto">
+                    <SeccionFormulario titulo="Información general">
+                      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                        <CampoTexto
+                          label="Nombre"
+                          icon={TagIcon}
+                          name="nombre"
+                          value={form.dataArticulos.articulo.nombre}
+                          onChange={form.actualizarCampo}
+                        />
+
+                        <CampoTexto
+                          label="Precio base"
+                          icon={DollarIcon}
+                          name="precio_base"
+                          value={formatoMiles(form.dataArticulos.articulo.precio_base)}
+                          onChange={form.actualizarCampo}
+                        />
+
+                        <CampoSelect
+                          label="Categoria"
+                          icon={FolderIcon}
+                          name="categoria"
+                          value={form.dataArticulos.articulo.categoria}
+                          onChange={form.actualizarCampo}
+                          opciones={catalogos.categoria}
+                          getId={(c) => c.idcategoria}
+                          getLabel={(c) => c.padre ? `${c.padre.nombre} > ${c.nombre}` : c.nombre}
+                        />
+
+                        <CampoSelect
+                          label="Marca"
+                          icon={BookmarkIcon}
+                          name="marca"
+                          value={form.dataArticulos.articulo.marca}
+                          onChange={form.actualizarCampo}
+                          opciones={catalogos.marca}
+                          getId={(m) => m.idmarca}
+                          getLabel={(m) => m.nombre}
+                        />
+
+                        <CampoSelect
+                          label="Prenda"
+                          icon={BookmarkIcon}
+                          name="prendas"
+                          value={form.dataArticulos.articulo.prendas}
+                          onChange={form.actualizarCampo}
+                          opciones={catalogos.prenda}
+                          getId={(p) => p.idprenda}
+                          getLabel={(p) => p.nombre}
+                        />
+
+                        <CampoSelect
+                          label="Impuestos"
+                          icon={ScaleIcon}
+                          name="impuestos"
+                          value={form.dataArticulos.articulo.impuestos}
+                          onChange={form.actualizarCampo}
+                          opciones={catalogos.impuesto}
+                          getId={(i) => i.idimpuesto}
+                          getLabel={(i) => `${i.nombre} - ${i.porcentaje}`}
+                        />
+
+                        <div className="sm:col-span-2">
+                          <CampoTexto
+                            label="Descripción"
+                            icon={AlignLeftIcon}
+                            name="descripcion"
+                            value={form.dataArticulos.articulo.descripcion}
+                            onChange={form.actualizarCampo}
+                            multilinea
+                          />
+                        </div>
+                      </div>
+                    </SeccionFormulario>
+
+                    <SeccionFormulario titulo="Tallas y variantes">
+                      <div className="grid grid-cols-1 gap-4">
+                        <SelectorTallas
+                          tallas={tallasPorPrenda}
+                          seleccionadas={Object.keys(form.dataArticulos.variantesPorTalla)}
+                          prendaSeleccionada={form.dataArticulos.articulo.prendas}
+                          onToggle={form.alternarTalla}
+                        />
+
+                        {tallasPorPrenda
+                          .filter((t) => form.dataArticulos.variantesPorTalla[t.idtalla])
+                          .map((t) => (
+                            <FilaVarianteTalla
+                              key={t.idtalla}
+                              talla={t}
+                              datos={form.dataArticulos.variantesPorTalla[t.idtalla]}
+                              colores={catalogos.color}
+                              onChange={(campo, valor) => form.actualizarCampoVariante(t.idtalla, campo, valor)}
+                            />
+                          ))
+                        }
+                      </div>
+                    </SeccionFormulario>
+
+                    <SeccionFormulario titulo="Fotos">
+                      <div className="grid gap-2">
+                        <Label className="gap-1.5">
+                          <ImageIcon className="size-3.5 text-muted-foreground" /> Imágenes del artículo
+                        </Label>
+                        <input
+                          type="file"
+                          multiple
+                          accept="image/*"
+                          onChange={form.seleccionarFotos}
+                          className="w-full cursor-pointer rounded-xl border border-dashed border-zinc-300 bg-zinc-50/60 px-3.5 py-3 text-sm outline-none transition-colors file:mr-3 file:cursor-pointer file:rounded-lg file:border-0 file:bg-zinc-950 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-white hover:border-zinc-400 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
+                        />
+                        {form.fotosExistentes.length > 0 && (
+                          <div className="mt-2 flex flex-wrap gap-3">
+                            {form.fotosExistentes.map((f, indice)=> (
+                              <img
+                                key={f.idfoto}
+                                src={f.urlfoto}
+                                alt={`Foto existente ${indice + 1}`}
+                                className="size-20 rounded-xl border border-zinc-200 bg-zinc-100 object-cover shadow-sm"
+                              />
+                            ))}
+                          </div>
+                        )}
+                        {form.fotos.length > 0 && (
+                          <div className="mt-2 flex flex-wrap gap-3">
+                            {form.fotos.map((file, indice) => (
+                              <img
+                                key={indice}
+                                src={URL.createObjectURL(file)}
+                                alt={`Foto seleccionada ${indice + 1}`}
+                                className="size-20 rounded-xl border border-emerald-300 bg-zinc-100 object-cover shadow-sm"
+                              />
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </SeccionFormulario>
+                  </div>
+
+                  {/* ───── Vista previa ───── */}
+                  <aside className="border-t border-zinc-100 bg-zinc-50/70 p-6 lg:overflow-y-auto lg:border-t-0 lg:border-l">
+                    <p className="mb-3 text-sm font-semibold">Vista previa</p>
+                    <VistaPreviaArticulo
+                      foto={
+                        form.fotos.length > 0
+                          ? URL.createObjectURL(form.fotos[0])
+                          : form.fotosExistentes[0]?.urlfoto
+                      }
+                      nombre={form.dataArticulos.articulo.nombre}
+                      descripcion={form.dataArticulos.articulo.descripcion}
+                      precio={formatoMiles(form.dataArticulos.articulo.precio_base)}
+                      marca={catalogos.marca.find((m) => String(m.idmarca) === String(form.dataArticulos.articulo.marca))?.nombre}
+                      prenda={catalogos.prenda.find((p) => String(p.idprenda) === String(form.dataArticulos.articulo.prendas))?.nombre}
+                      tallas={tallasPorPrenda
+                        .filter((t) => form.dataArticulos.variantesPorTalla[t.idtalla])
+                        .map((t) => t.codigo)}
+                    />
+                  </aside>
+                </div>
+
+                <footer className="flex items-center justify-end gap-3 border-t border-zinc-100 bg-white px-6 py-4">
+                  <Button
                     type="button"
+                    variant="outline"
+                    size="lg"
+                    onClick={form.cerrar}
+                  >
+                    Cancelar
+                  </Button>
+                  <Button
+                    type="button"
+                    size="lg"
                     onClick={form.guardar}
                     disabled={form.cargando}
-                    className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 shadow-sm transition-all cursor-pointer"
+                    className="hover:bg-emerald-700"
                   >
-                    <SaveIcon className="w-4 h-4" /> <span>{form.cargando ? "Guardando..." : "Guardar"}</span>
-                  </button>
+                    <SaveIcon className="size-4" /> <span>{form.cargando ? "Guardando..." : "Guardar"}</span>
+                  </Button>
                 </footer>
               </div>
             </div>
@@ -854,52 +911,62 @@ function Articulos() {
         )}
 
         {/* BARRA DE FILTROS */}
-        <FiltrosBar 
-          filtros={filtros} 
-          onChange={actualizarFiltro} 
-          catalogos={catalogos} 
+        <FiltrosBar
+          filtros={filtros}
+          onChange={actualizarFiltro}
+          catalogos={catalogos}
         />
 
         {seleccionados.length > 0 &&(
-          <div className="px-6 pb-2">
-            <button
+          <div className="mt-4 flex flex-col items-start justify-between gap-3 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 sm:flex-row sm:items-center">
+            <p className="text-sm font-medium text-emerald-900">
+              {seleccionados.length} {seleccionados.length === 1 ? "variante seleccionada" : "variantes seleccionadas"}
+            </p>
+            <Button
+              size="sm"
               onClick={() => formDescuento.abrirModalDescuentoMasivo(seleccionados)}
-              className="bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-emerald-700 transition"
+              className="bg-emerald-600 text-white hover:bg-emerald-700"
             >
               Aplicar descuento a {seleccionados.length} variantes
-            </button>
+            </Button>
           </div>
         )}
 
-        <TablaVariantes
-          variantes={variantes}
-          onEditar={form.abrirParaEditar}
-          onEliminar={prepararEliminar}
-          onAgregarDescuento={formDescuento.abrirModalDescuento}
-          seleccionados={seleccionados}
-          onToggleSeleccionado={toggleSeleccion}
-          onToggleSelecionarTodo={toggleSelecionarTodo}
-        />
+        <div className="mt-4 overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
+          <TablaVariantes
+            variantes={variantes}
+            onEditar={form.abrirParaEditar}
+            onEliminar={prepararEliminar}
+            onAgregarDescuento={formDescuento.abrirModalDescuento}
+            seleccionados={seleccionados}
+            onToggleSeleccionado={toggleSeleccion}
+            onToggleSelecionarTodo={toggleSelecionarTodo}
+          />
 
-        <div className="flex items-center justify-between px-6 py-4 bg-white border-t border-slate-200 rounded-b-xl shadow-sm">
-          <button
-            onClick={paginaAnterior}
-            disabled={!hayAnterior}
-            className="px-4 py-2 text-sm font-semibold text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          >
-            Anterior
-          </button>
+          <div className="flex items-center justify-between border-t border-zinc-100 bg-zinc-50/60 px-5 py-3">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={paginaAnterior}
+              disabled={!hayAnterior}
+              className="bg-white"
+            >
+              Anterior
+            </Button>
 
-          <span className="text-sm font-medium text-slate-600">
-            Pagina {filtros.page}
-          </span>
-          <button
-            onClick={paginaSiguiente}
-            disabled={!haySiguiente}
-            className="px-4 py-2 text-sm font-semibold text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          >
-            Siguiente
-          </button>
+            <span className="text-sm font-medium text-muted-foreground">
+              Página {filtros.page}
+            </span>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={paginaSiguiente}
+              disabled={!haySiguiente}
+              className="bg-white"
+            >
+              Siguiente
+            </Button>
+          </div>
         </div>
       </main>
 
@@ -923,79 +990,142 @@ function Articulos() {
 }
 
 // BLOQUE 6 COMPONENTES DE UI MODALES Y FORMULARIOS
+
+//BLOQUE VISUAL PARA AGRUPAR CAMPOS DEL FORMULARIO
+function SeccionFormulario({ titulo, children }) {
+  return (
+    <section>
+      <h4 className="mb-4 border-b border-zinc-100 pb-2 text-sm font-semibold">{titulo}</h4>
+      {children}
+    </section>
+  );
+}
+
+//TARJETA DE VISTA PREVIA (solo lee valores, no modifica nada)
+function VistaPreviaArticulo({ foto, nombre, descripcion, precio, marca, prenda, tallas }) {
+  return (
+    <div className="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm lg:sticky lg:top-0">
+      <div className="flex aspect-[4/5] items-center justify-center bg-zinc-100">
+        {foto ? (
+          <img src={foto} alt="Vista previa" className="size-full object-cover" />
+        ) : (
+          <div className="flex flex-col items-center gap-2 text-zinc-400">
+            <ImageIcon className="size-8" />
+            <span className="text-xs">Sin foto todavía</span>
+          </div>
+        )}
+      </div>
+      <div className="space-y-2 p-4">
+        {(marca || prenda) && (
+          <p className="text-xs font-medium text-muted-foreground">
+            {[marca, prenda].filter(Boolean).join(" · ")}
+          </p>
+        )}
+        <h5 className="truncate text-sm font-semibold uppercase tracking-wide">
+          {nombre || "Nombre del artículo"}
+        </h5>
+        <p className="line-clamp-2 text-sm text-muted-foreground">
+          {descripcion || "La descripción aparecerá aquí."}
+        </p>
+        <p className="text-lg font-bold tracking-tight">
+          $ {precio || "0"}
+        </p>
+        {tallas.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 pt-1">
+            {tallas.map((codigo) => (
+              <span key={codigo} className="rounded-md border border-zinc-300 px-2 py-0.5 text-xs font-medium">
+                {codigo}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 //MODAL PARA APLICAR DESCUENTO A UNA VARIANTE
 function ModalDescuento({ descuento, onChange, onGuardar, onCerrar, cargando, desplegarForm, onToggleForm, historial, onEditarDescuento, onEliminarDescuento, onToggleEstado }) {
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex justify-center items-center p-3">
-      <div className="bg-white border border-slate-200 shadow-lg rounded-xl w-full max-w-2xl overflow-hidden max-h-[90vh] flex flex-col">
-        <header className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-          <h3 className="text-md font-bold text-slate-800 flex items-center gap-2">
-            <TagIcon className="w-4 h-4 text-emerald-600" />
-            Gestión de Descuentos
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/40 p-3 backdrop-blur-sm">
+      <div className="flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-xl">
+        <header className="flex items-center justify-between border-b border-zinc-100 px-6 py-4">
+          <h3 className="flex items-center gap-3 text-lg font-semibold tracking-tight">
+            <span className="flex size-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100">
+              <TagIcon className="size-4" />
+            </span>
+            Gestión de descuentos
           </h3>
-          <button type="button" onClick={onCerrar} className="text-slate-400 hover:text-slate-600 cursor-pointer">
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-sm"
+            onClick={onCerrar}
+            aria-label="Cerrar"
+            className="text-muted-foreground"
+          >
             ✕
-          </button>
+          </Button>
         </header>
 
-        <div className="overflow-y-auto flex-1 p-6 pb-2">
+        <div className="flex-1 overflow-y-auto p-6 pb-2">
           {historial && historial.length > 0 ? (
-            <div className="bg-emerald-50 rounded-lg border border-emerald-100 overflow-hidden mb-4">
-              <div className="px-4 py-3 border-b border-emerald-100 bg-emerald-100/50">
-                <h4 className="text-emerald-800 font-bold">Historial de Descuentos</h4>
+            <div className="mb-4 overflow-hidden rounded-xl border border-zinc-200">
+              <div className="border-b border-zinc-200 bg-zinc-50 px-4 py-3">
+                <h4 className="text-sm font-semibold">Historial de descuentos</h4>
               </div>
               <div className="overflow-x-auto">
-                <table className="w-full text-sm text-left">
-                  <thead className="text-xs text-emerald-800 uppercase bg-emerald-100/30">
+                <table className="w-full text-left text-sm">
+                  <thead className="bg-white text-xs text-muted-foreground">
                     <tr>
-                      <th className="px-4 py-2">Nombre</th>
-                      <th className="px-4 py-2">Valor</th>
-                      <th className="px-4 py-2">Vigencia</th>
-                      <th className="px-4 py-2">Estado</th>
-                      <th className="px-4 py-2 text-right">Acciones</th>
+                      <th className="px-4 py-2 font-medium">Nombre</th>
+                      <th className="px-4 py-2 font-medium">Valor</th>
+                      <th className="px-4 py-2 font-medium">Vigencia</th>
+                      <th className="px-4 py-2 font-medium">Estado</th>
+                      <th className="px-4 py-2 text-right font-medium">Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
                     {historial.map((item) => (
-                      <tr key={item.iddescuento} className="border-b border-emerald-50/50 hover:bg-emerald-100/30">
-                        <td className="px-4 py-2 font-medium text-emerald-900">{item.nombre}</td>
-                        <td className="px-4 py-2 text-emerald-700">
+                      <tr key={item.iddescuento} className="border-t border-zinc-100 hover:bg-zinc-50">
+                        <td className="px-4 py-2.5 font-medium">{item.nombre}</td>
+                        <td className="px-4 py-2.5 text-zinc-700">
                           {item.valor} {item.tipo === 'porcentaje' ? '%' : '$'}
                         </td>
-                        <td className="px-4 py-2 text-emerald-700 text-xs">
+                        <td className="px-4 py-2.5 text-xs text-muted-foreground">
                           {item.valido_desde} a {item.valido_hasta}
                         </td>
-                        <td className="px-4 py-2">
+                        <td className="px-4 py-2.5">
                           <button
                             type="button"
                             onClick={() => onToggleEstado(item)}
                             title={item.estado ? "Inactivar descuento" : "Activar descuento"}
-                            className={`px-2 py-0.5 rounded-full text-[10px] font-bold cursor-pointer transition-colors ${
-                              item.estado 
-                                ? 'bg-emerald-200 text-emerald-800 hover:bg-emerald-300' 
-                                : 'bg-slate-200 text-slate-600 hover:bg-slate-300'
+                            className={`cursor-pointer rounded-full px-2.5 py-0.5 text-[11px] font-semibold transition-colors ${
+                              item.estado
+                                ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
+                                : 'bg-zinc-200 text-zinc-600 hover:bg-zinc-300'
                             }`}
                           >
-                            {item.estado ? 'ACTIVO' : 'INACTIVO'}
+                            {item.estado ? 'Activo' : 'Inactivo'}
                           </button>
                         </td>
-                        <td className="px-4 py-2 text-right">
+                        <td className="px-4 py-2.5 text-right">
                           <div className="flex items-center justify-end gap-2">
                             <button
                               type="button"
                               onClick={() => onEditarDescuento(item)}
-                              className="text-blue-500 hover:text-blue-700 p-1 bg-white rounded shadow-sm border border-slate-200 cursor-pointer"
+                              className="flex size-8 cursor-pointer items-center justify-center rounded-lg border border-zinc-200 bg-white text-zinc-500 transition-colors hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
                               title="Editar"
                             >
-                              <EditIcon className="w-3.5 h-3.5" />
+                              <EditIcon className="size-3.5" />
                             </button>
                             <button
                               type="button"
                               onClick={() => onEliminarDescuento(item)}
-                              className="text-red-500 hover:text-red-700 p-1 bg-white rounded shadow-sm border border-slate-200 cursor-pointer"
+                              className="flex size-8 cursor-pointer items-center justify-center rounded-lg border border-zinc-200 bg-white text-zinc-500 transition-colors hover:border-red-200 hover:bg-red-50 hover:text-red-600"
                               title="Eliminar"
                             >
-                              <TrashIcon className="w-3.5 h-3.5" />
+                              <TrashIcon className="size-3.5" />
                             </button>
                           </div>
                         </td>
@@ -1006,8 +1136,8 @@ function ModalDescuento({ descuento, onChange, onGuardar, onCerrar, cargando, de
               </div>
             </div>
           ) : (
-            <div className="bg-slate-50 p-4 rounded-lg border border-slate-100 mb-4 text-center">
-              <p className="text-sm text-slate-500">No hay historial de descuentos para esta variante.</p>
+            <div className="mb-4 rounded-xl border border-dashed border-zinc-300 p-6 text-center">
+              <p className="text-sm text-muted-foreground">No hay historial de descuentos para esta variante.</p>
             </div>
           )}
 
@@ -1015,25 +1145,25 @@ function ModalDescuento({ descuento, onChange, onGuardar, onCerrar, cargando, de
             <button
               type="button"
               onClick={onToggleForm}
-              className="text-sm font-semibold text-emerald-600 hover:text-emerald-800 underline cursor-pointer"
+              className="cursor-pointer text-sm font-semibold text-emerald-700 underline-offset-4 hover:underline"
             >
               {desplegarForm ? "Ocultar formulario" : "+ Agregar nuevo descuento"}
             </button>
           </div>
         </div>
-        
+
         {desplegarForm && (
-          <form onSubmit={onGuardar} className="p-6 space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <CampoTexto 
-                label="Nombre Descuento"
+          <form onSubmit={onGuardar} className="space-y-4 border-t border-zinc-100 p-6">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <CampoTexto
+                label="Nombre del descuento"
                 icon={TagIcon}
                 name="nombre"
                 value={descuento.nombre}
                 onChange={onChange}
                 type="text"
               />
-              <CampoTexto 
+              <CampoTexto
                 label="Tipo (ej. porcentaje)"
                 icon={AlignLeftIcon}
                 name="tipo"
@@ -1041,8 +1171,8 @@ function ModalDescuento({ descuento, onChange, onGuardar, onCerrar, cargando, de
                 onChange={onChange}
                 type="text"
               />
-              <CampoTexto 
-                label="Porcentaje o Valor"
+              <CampoTexto
+                label="Porcentaje o valor"
                 icon={DollarIcon}
                 name="valor"
                 value={descuento.valor}
@@ -1050,49 +1180,49 @@ function ModalDescuento({ descuento, onChange, onGuardar, onCerrar, cargando, de
                 type="number"
               />
               <CampoTexto
-                label="Válido Desde" 
-                icon={HashIcon} 
-                name="valido_desde"    
-                value={descuento.valido_desde} 
-                onChange={onChange} 
+                label="Válido desde"
+                icon={HashIcon}
+                name="valido_desde"
+                value={descuento.valido_desde}
+                onChange={onChange}
                 type="date"
               />
               <CampoTexto
-                label="Válido Hasta" 
-                icon={HashIcon} 
-                name="valido_hasta"    
-                value={descuento.valido_hasta} 
-                onChange={onChange} 
+                label="Válido hasta"
+                icon={HashIcon}
+                name="valido_hasta"
+                value={descuento.valido_hasta}
+                onChange={onChange}
                 type="date"
               />
               <CampoTexto
-                label="Cantidad de artículos" 
-                icon={BoxIcon} 
+                label="Cantidad de artículos"
+                icon={BoxIcon}
                 name="cantidad_inicial"
-                value={descuento.cantidad_inicial} 
-                onChange={onChange} 
+                value={descuento.cantidad_inicial}
+                onChange={onChange}
                 type="number"
               />
             </div>
 
-            <div className="flex justify-end gap-2 pt-4 border-t border-slate-100">
-              <button
-                type="button" 
+            <div className="flex justify-end gap-2 border-t border-zinc-100 pt-4">
+              <Button
+                type="button"
+                variant="outline"
                 onClick={onCerrar}
-                className="px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100 rounded-lg"
-                >
+              >
                 Cancelar
-              </button>
-              <button
-                type="submit" 
+              </Button>
+              <Button
+                type="submit"
                 disabled={cargando}
-                className="px-4 py-2 text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg disabled:opacity-50"
-                >
-                {cargando ? "Guardando..." : "Guardar Descuento"}
-              </button>
+                className="hover:bg-emerald-700"
+              >
+                {cargando ? "Guardando..." : "Guardar descuento"}
+              </Button>
             </div>
-        </form>
-      )}
+          </form>
+        )}
       </div>
     </div>
   );
@@ -1101,80 +1231,102 @@ function ModalDescuento({ descuento, onChange, onGuardar, onCerrar, cargando, de
 //FILA DE INPUTS PARA UNA TALLA MARCADA (sku, color, stock, precio extra)
 function FilaVarianteTalla({ talla, datos, colores, onChange }) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-5 gap-2.5 p-3 border border-slate-200 rounded-lg bg-slate-50/40 items-center">
-      <span className="text-sm font-semibold text-slate-600 self-center">
-        Talla {talla.codigo}
+    <div className="grid grid-cols-1 items-center gap-3 rounded-xl border border-zinc-200 bg-zinc-50/60 p-3 sm:grid-cols-[4rem_1fr_1fr_7rem_8rem]">
+      <span className="inline-flex h-9 w-fit items-center justify-center rounded-lg bg-zinc-950 px-3 text-sm font-semibold text-white">
+        {talla.codigo}
       </span>
 
-      <select
+      <SelectNativo
+        icon={PaletteIcon}
         value={datos.color}
         onChange={(e) => onChange("color", e.target.value)}
-        className="rounded-md border border-slate-300 px-2 py-1.5 text-sm"
+        className="h-9 rounded-lg"
       >
         <option value="">Color...</option>
         {colores.map((c) => <option key={c.idcolor} value={c.idcolor}>{c.nombre}</option>)}
-      </select>
+      </SelectNativo>
 
-      <input
+      <InputIcono
+        icon={BarcodeIcon}
         type="text" placeholder="SKU"
         value={datos.sku}
         onChange={(e) => onChange("sku", e.target.value)}
-        className="rounded-md border border-slate-300 px-2 py-1.5 text-sm"
+        className="h-9 rounded-lg"
       />
 
-      <input
+      <InputIcono
+        icon={BoxIcon}
         type="number" placeholder="Stock"
         value={datos.stock}
         onChange={(e) => onChange("stock", e.target.value)}
-        className="rounded-md border border-slate-300 px-2 py-1.5 text-sm"
+        className="h-9 rounded-lg"
       />
 
-      <input
-        type="number" placeholder="Precio Extra"
+      <InputIcono
+        icon={DollarIcon}
+        type="number" placeholder="Extra $"
         value={datos.precio_extra}
         onChange={(e) => onChange("precio_extra", e.target.value)}
-        className="rounded-md border border-slate-300 px-2 py-1.5 text-sm"
+        className="h-9 rounded-lg"
       />
     </div>
   );
 }
 
 //INPUT DE TEXTO REUSABLE PARA EL FORMULARIO
-function CampoTexto({ label, icon: Icon, name, value, onChange, type = "text" }) {
+function CampoTexto({ label, icon: Icon, name, value, onChange, type = "text", multilinea = false }) {
+  const id = `campo-${name}`;
   return (
-    <div className="relative mt-2">
-      <label className="absolute left-3 -top-2.5 bg-white px-1.5 text-xs font-semibold text-slate-500 z-10 flex items-center gap-1">
-        <Icon className="w-3.5 h-3.5" /> {label}
-      </label>
-      <input
-        type={type}
-        name={name}
-        value={value}
-        onChange={onChange}
-        className="w-full bg-slate-50/30 rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-800 outline-none transition-all focus:border-blue-500 focus:ring-4 focus:ring-emerald-500/10 focus:bg-white"
-      />
+    <div className="grid gap-2">
+      {multilinea ? (
+        <>
+          <Label htmlFor={id} className="gap-1.5">
+            <Icon className="size-3.5 text-emerald-600" /> {label}
+          </Label>
+          <Textarea
+            id={id}
+            name={name}
+            value={value}
+            onChange={onChange}
+            rows={3}
+            className="rounded-xl bg-white"
+          />
+        </>
+      ) : (
+        <>
+          <Label htmlFor={id}>{label}</Label>
+          <InputIcono
+            icon={Icon}
+            id={id}
+            type={type}
+            name={name}
+            value={value}
+            onChange={onChange}
+          />
+        </>
+      )}
     </div>
   );
 }
 
 //SELECT REUSABLE PARA EL FORMULARIO
 function CampoSelect({ label, icon: Icon, name, value, onChange, opciones, getId, getLabel }) {
+  const id = `campo-${name}`;
   return (
-    <div className="relative mt-2">
-      <label className="absolute left-3 -top-2.5 bg-white px-1.5 text-xs font-semibold text-slate-500 z-10 flex items-center gap-1">
-        <Icon className="w-3.5 h-3.5" /> {label}
-      </label>
-      <select
+    <div className="grid gap-2">
+      <Label htmlFor={id}>{label}</Label>
+      <SelectNativo
+        icon={Icon}
+        id={id}
         name={name}
         value={value}
         onChange={onChange}
-        className="w-full bg-slate-50/30 rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-800 outline-none transition-all focus:border-blue-500 focus:ring-4 focus:ring-emerald-500/10 focus:bg-white"
       >
         <option value="">Selecciona {label.toLowerCase()}...</option>
         {opciones.map((o) => (
           <option key={getId(o)} value={getId(o)}>{getLabel(o)}</option>
         ))}
-      </select>
+      </SelectNativo>
     </div>
   );
 }
@@ -1182,16 +1334,16 @@ function CampoSelect({ label, icon: Icon, name, value, onChange, opciones, getId
 //CHECKBOX MULTIPLE DE TALLAS
 function SelectorTallas({ tallas, seleccionadas, prendaSeleccionada, onToggle }) {
   return (
-    <div className="relative mt-2">
-      <label className="absolute left-3 -top-2.5 bg-white px-1.5 text-xs font-semibold text-slate-500 z-10 flex items-center gap-1">
-        <RulerIcon className="w-3.5 h-3.5" /> Tallas
-      </label>
-      <div className="w-full bg-slate-50/30 rounded-lg border border-slate-200 px-3 py-2 flex flex-wrap gap-2 min-h-[42px] items-center">
+    <div className="grid gap-2">
+      <Label className="gap-1.5">
+        <RulerIcon className="size-3.5 text-muted-foreground" /> Tallas disponibles
+      </Label>
+      <div className="flex min-h-11 flex-wrap items-center gap-2 rounded-xl border border-zinc-200 bg-zinc-50/60 p-2">
         {tallas.length > 0 ? (
           tallas.map((t) => (
             <label
               key={t.idtalla}
-              className="flex items-center gap-2 text-sm text-slate-700 bg-white px-3 py-1.5 rounded-md border border-slate-200 cursor-pointer hover:bg-slate-100"
+              className="cursor-pointer select-none rounded-lg border border-zinc-200 bg-white px-3.5 py-1.5 text-sm font-medium text-zinc-700 transition-colors hover:border-zinc-300 hover:bg-zinc-50 has-[:checked]:border-zinc-950 has-[:checked]:bg-zinc-950 has-[:checked]:text-white has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-50 has-[:focus-visible]:ring-[3px] has-[:focus-visible]:ring-ring/50"
             >
               <input
                 type="checkbox"
@@ -1199,13 +1351,13 @@ function SelectorTallas({ tallas, seleccionadas, prendaSeleccionada, onToggle })
                 checked={seleccionadas.includes(t.idtalla)}
                 onChange={onToggle}
                 disabled={!prendaSeleccionada}
-                className="w-4 h-4 text-emerald-600 border-slate-300 focus:ring-emerald-500"
+                className="sr-only"
               />
-              <span className="font-medium">{t.codigo}</span>
+              {t.codigo}
             </label>
           ))
         ) : (
-          <p className="text-xs text-slate-400">
+          <p className="px-1 text-sm text-muted-foreground">
             {prendaSeleccionada
               ? "No hay tallas registradas para esta prenda."
               : "Selecciona primero una prenda para ver sus tallas."}
@@ -1221,125 +1373,128 @@ function FiltrosBar({ filtros, onChange, catalogos }) {
   const [mostrarAvanzados, setMostrarAvanzados] = useState(false);
 
   return (
-    <div className="px-4 sm:px-6 pb-2 mt-10">
-      <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/60 mb-2 transition-all">
-        
-        {/* ENCABEZADO Y FILTRO PRINCIPAL */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-2">
-          <div className="flex-1 w-full">
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 ml-1">Buscar Artículo</label>
-            <input
+    <div className="mt-8 rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">
+
+      {/* ENCABEZADO Y FILTRO PRINCIPAL */}
+      <div className="flex flex-col justify-between gap-3 md:flex-row md:items-end">
+        <div className="grid w-full flex-1 gap-2">
+          <Label htmlFor="filtro-buscar">Buscar artículo</Label>
+          <InputIcono
+            icon={SearchIcon}
+              id="filtro-buscar"
               type="text"
               name="buscar"
               value={filtros.buscar}
               onChange={onChange}
-              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-colors"
-              placeholder="Buscar por Nombre, SKU, marca..."
+                            placeholder="Buscar por nombre, SKU, marca..."
             />
-          </div>
-          <button
-            onClick={() => setMostrarAvanzados(!mostrarAvanzados)}
-            className="flex-shrink-0 px-5 py-2.5 bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-800 rounded-xl text-sm font-semibold transition-colors flex items-center justify-center gap-2"
-          >
-            {mostrarAvanzados ? "Ocultar Avanzados ▲" : "Filtros Avanzados ▼"}
-          </button>
         </div>
-
-        {/* FILTROS AVANZADOS (OCULTOS POR DEFECTO) */}
-        {mostrarAvanzados && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mt-5 pt-5 border-t border-slate-100">
-            <SelectFiltro
-              label="Marca" 
-              name="marca" 
-              value={filtros.marca} 
-              onChange={onChange}
-              opciones={catalogos.marca} 
-              getId={(m) => m.idmarca} 
-              getLabel={(m) => m.nombre}
-              placeholderTodos="Todas las marcas"
-            />
-
-            <SelectFiltro
-              label="Prendas" 
-              name="prendas" 
-              value={filtros.prendas} 
-              onChange={onChange}
-              opciones={catalogos.prenda} 
-              getId={(p) => p.idprenda} 
-              getLabel={(p) => p.nombre}
-              placeholderTodos="Todas las prendas"
-            />
-
-            <SelectFiltro
-              label="Categoría" 
-              name="categoria" 
-              value={filtros.categoria} 
-              onChange={onChange}
-              opciones={catalogos.categoria} 
-              getId={(c) => c.idcategoria} 
-              getLabel={(c) => c.nombre}
-              placeholderTodos="Todas las cat."
-            />
-
-            <div>
-              <label className="block text-xs font-semibold text-slate-500 mb-1.5 ml-1">Color / Talla</label>
-              <div className="flex gap-2">
-                <select
-                  name="color" 
-                  value={filtros.color} 
-                  onChange={onChange}
-                  className="w-1/2 px-2 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:bg-white focus:border-emerald-500"
-                >
-                  <option value="">Color</option>
-                  {catalogos.color.map((c) => <option key={c.idcolor} value={c.idcolor}>{c.nombre}</option>)}
-                </select>
-
-                <select
-                  name="talla" 
-                  value={filtros.talla} 
-                  onChange={onChange}
-                  className="w-1/2 px-2 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:bg-white focus:border-emerald-500"
-                >
-                  <option value="">Talla</option>
-                  {catalogos.talla.map((t) => <option key={t.idtalla} value={t.idtalla}>{t.codigo}</option>)}
-                </select>
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold text-slate-500 mb-1.5 ml-1">Estado</label>
-              <select
-                name="estado" 
-                value={filtros.estado} 
-                onChange={onChange}
-                className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:bg-white focus:border-emerald-500"
-              >
-                <option value="">Cualquiera</option>
-                <option value="true">Activos</option>
-                <option value="false">Inactivos</option>
-              </select>
-            </div>
-          </div>
-        )}
+        <Button
+          variant="outline"
+          size="lg"
+          onClick={() => setMostrarAvanzados(!mostrarAvanzados)}
+          className="shrink-0"
+        >
+          <SlidersIcon className="size-4" />
+          {mostrarAvanzados ? "Ocultar filtros" : "Más filtros"}
+        </Button>
       </div>
+
+      {/* FILTROS AVANZADOS (OCULTOS POR DEFECTO) */}
+      {mostrarAvanzados && (
+        <div className="mt-5 grid grid-cols-1 gap-4 border-t border-zinc-100 pt-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+          <SelectFiltro
+            label="Marca"
+            icon={TagIcon}
+            name="marca"
+            value={filtros.marca}
+            onChange={onChange}
+            opciones={catalogos.marca}
+            getId={(m) => m.idmarca}
+            getLabel={(m) => m.nombre}
+            placeholderTodos="Todas las marcas"
+          />
+
+          <SelectFiltro
+            label="Prendas"
+            icon={BookmarkIcon}
+            name="prendas"
+            value={filtros.prendas}
+            onChange={onChange}
+            opciones={catalogos.prenda}
+            getId={(p) => p.idprenda}
+            getLabel={(p) => p.nombre}
+            placeholderTodos="Todas las prendas"
+          />
+
+          <SelectFiltro
+            label="Categoría"
+            icon={FolderIcon}
+            name="categoria"
+            value={filtros.categoria}
+            onChange={onChange}
+            opciones={catalogos.categoria}
+            getId={(c) => c.idcategoria}
+            getLabel={(c) => c.nombre}
+            placeholderTodos="Todas las cat."
+          />
+
+          <SelectFiltro
+            label="Color"
+            icon={PaletteIcon}
+            name="color"
+            value={filtros.color}
+            onChange={onChange}
+            opciones={catalogos.color}
+            getId={(c) => c.idcolor}
+            getLabel={(c) => c.nombre}
+            placeholderTodos="Todos los colores"
+          />
+
+          <SelectFiltro
+            label="Talla"
+            icon={RulerIcon}
+            name="talla"
+            value={filtros.talla}
+            onChange={onChange}
+            opciones={catalogos.talla}
+            getId={(t) => t.idtalla}
+            getLabel={(t) => t.codigo}
+            placeholderTodos="Todas las tallas"
+          />
+
+          <div className="grid gap-2">
+            <Label>Estado</Label>
+            <SelectNativo
+              icon={CheckIcon}
+              name="estado"
+              value={filtros.estado}
+              onChange={onChange}
+            >
+              <option value="">Cualquiera</option>
+              <option value="true">Activos</option>
+              <option value="false">Inactivos</option>
+            </SelectNativo>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
 //SELECT REUSABLE PARA LA BARRA DE FILTROS
-function SelectFiltro({ label, name, value, onChange, opciones, getId, getLabel, placeholderTodos }) {
+function SelectFiltro({ label, icon, name, value, onChange, opciones, getId, getLabel, placeholderTodos }) {
   return (
-    <div>
-      <label className="block text-xs font-semibold text-slate-500 mb-1.5 ml-1">{label}</label>
-      <select
-        name={name} 
-        value={value} 
+    <div className="grid gap-2">
+      <Label>{label}</Label>
+      <SelectNativo
+        name={name}
+        value={value}
         onChange={onChange}
-        className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:bg-white focus:border-emerald-500"
       >
         <option value="">{placeholderTodos}</option>
         {opciones.map((o) => <option key={getId(o)} value={getId(o)}>{getLabel(o)}</option>)}
-      </select>
+      </SelectNativo>
     </div>
   );
 }
@@ -1349,29 +1504,29 @@ function TablaVariantes({ variantes, onEditar, onEliminar, onAgregarDescuento, s
   const todosSeleccionados = variantes.length > 0 && seleccionados.length === variantes.length;
 
   return (
-    <div className="w-full overflow-x-auto px-4 sm:px-6 pb-6">
-      <table className="w-full min-w-[800px] text-sm border-separate border-spacing-0 rounded-xl overflow-hidden shadow-sm border border-gray-200/90 mt-5">
+    <div className="w-full overflow-x-auto">
+      <table className="w-full min-w-[900px] border-separate border-spacing-0 text-sm">
         <thead>
-          <tr className="bg-slate-50 text-slate-600 text-xs uppercase tracking-wider">
-            <th className="px-4 py-3.5 w-10 text-center border-b-2 border-slate-200">
-              <input 
-                type="checkbox" 
+          <tr className="bg-zinc-50 text-xs text-muted-foreground">
+            <th className="w-10 border-b border-zinc-200 px-4 py-3 text-center">
+              <input
+                type="checkbox"
                 checked={todosSeleccionados}
                 onChange={onToggleSelecionarTodo}
-                className="w-4 h-4 text-emerald-600 rounded border-slate-300 cursor-pointer"
+                className="size-4 cursor-pointer rounded border-zinc-300 accent-emerald-600"
                 title="Seleccionar todos"
               />
             </th>
-            <th className="px-5 py-3.5 text-left font-semibold border-b-2 border-slate-200">Foto</th>
-            <th className="px-5 py-3.5 text-left font-semibold border-b-2 border-slate-200">Nombre / Variante</th>
-            <th className="px-5 py-3.5 text-left font-semibold border-b-2 border-slate-200">Clasificación</th>
-            <th className="px-5 py-3.5 text-left font-semibold border-b-2 border-slate-200">Descripción</th>
-            <th className="px-5 py-3.5 text-left font-semibold border-b-2 border-slate-200">Inventario</th>
-            <th className="px-5 py-3.5 text-right font-semibold border-b-2 border-slate-200">Precios</th>
-            <th className="px-5 py-3.5 text-center font-semibold border-b-2 border-slate-200">Acciones</th>
+            <th className="border-b border-zinc-200 px-4 py-3 text-left font-medium">Foto</th>
+            <th className="border-b border-zinc-200 px-4 py-3 text-left font-medium">Nombre / variante</th>
+            <th className="border-b border-zinc-200 px-4 py-3 text-left font-medium">Clasificación</th>
+            <th className="border-b border-zinc-200 px-4 py-3 text-left font-medium">Descripción</th>
+            <th className="border-b border-zinc-200 px-4 py-3 text-left font-medium">Inventario</th>
+            <th className="border-b border-zinc-200 px-4 py-3 text-right font-medium">Precios</th>
+            <th className="border-b border-zinc-200 px-4 py-3 text-center font-medium">Acciones</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-slate-100">
+        <tbody>
           {variantes.map((data, index) => (
             <FilaVariante
               key={data.idvararticulo}
@@ -1386,111 +1541,118 @@ function TablaVariantes({ variantes, onEditar, onEliminar, onAgregarDescuento, s
           ))}
         </tbody>
       </table>
+      {variantes.length === 0 && (
+        <p className="py-14 text-center text-sm text-muted-foreground">No se encontraron artículos.</p>
+      )}
     </div>
   );
 }
 
 //FILA INDIVIDUAL DE LA TABLA DE VARIANTES
 function FilaVariante({ data, index, onEditar, onEliminar, onAgregarDescuento, seleccionados, onToggleSeleccionado }) {
+  const celda = "border-b border-zinc-100 px-4 py-3";
   return (
-    <tr className={`transition-colors hover:bg-slate-50/80 ${index % 2 === 0 ? "bg-white" : "bg-slate-50/30"}`}>
-      <td className="px-4 py-2 text-center aling-middle">
-        <input 
-          type="checkbox" 
+    <tr className={`transition-colors hover:bg-zinc-50 ${seleccionados ? "bg-emerald-50/50" : "bg-white"}`}>
+      <td className={`${celda} text-center align-middle`}>
+        <input
+          type="checkbox"
           checked={seleccionados}
           onChange={onToggleSeleccionado}
-          className="w-4 h-4 text-emerald-600 rounded border-slate-300 cursor-pointer"
+          className="size-4 cursor-pointer rounded border-zinc-300 accent-emerald-600"
         />
       </td>
-      <td className="px-4 py-2">
+      <td className={celda}>
         <img
           src={data.foto}
           alt={data.urlfoto}
-          className="w-16 h-16 object-cover rounded-lg border border-slate-200 shadow-sm"
+          className="size-16 rounded-xl border border-zinc-200 bg-zinc-100 object-cover shadow-sm"
         />
       </td>
-      <td className="px-4 py-2 align-top">
-        <p className="font-medium text-slate-900">{data.articulo.prendas?.nombre}</p>
-        <p className="font-medium text-slate-900">{data.articulo.nombre}</p>
-        <p className="text-slate-400 text-xs mt-1">
-          <span className="font-medium text-slate-500">Marca:</span> {data.articulo.marca.nombre}
+      <td className={`${celda} align-top`}>
+        <p className="text-xs font-medium text-muted-foreground">{data.articulo.prendas?.nombre}</p>
+        <p className="font-semibold">{data.articulo.nombre}</p>
+        <p className="mt-1 text-xs text-muted-foreground">
+          <span className="font-medium text-zinc-600">Marca:</span> {data.articulo.marca.nombre}
         </p>
 
-        <div className="flex flex-wrap gap-1 mt-2">
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs bg-blue-50 text-blue-700 font-medium border border-blue-100/70">
-            <PaletteIcon className="w-3 h-3 text-blue-500" /> {data.color.nombre}
+        <div className="mt-2 flex flex-wrap gap-1.5">
+          <span className="inline-flex items-center gap-1 rounded-md border border-blue-100 bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700">
+            <PaletteIcon className="size-3" /> {data.color.nombre}
           </span>
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs bg-slate-100 text-slate-700 font-medium border border-slate-200">
-            <RulerIcon className="w-3 h-3 text-slate-500" /> {data.talla.codigo}
+          <span className="inline-flex items-center gap-1 rounded-md border border-zinc-200 bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-700">
+            <RulerIcon className="size-3" /> {data.talla.codigo}
           </span>
         </div>
       </td>
 
-      <td className="px-4 py-2 align-top">
-        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs bg-emerald-50 text-emerald-700 font-medium border border-emerald-100 mb-1">
-          <FolderIcon className="w-3 h-3 text-emerald-600" /> {data.articulo.categoria.nombre}
+      <td className={`${celda} align-top`}>
+        <span className="mb-1 inline-flex items-center gap-1 rounded-md border border-emerald-100 bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700">
+          <FolderIcon className="size-3" /> {data.articulo.categoria.nombre}
         </span>
-        <p className="text-slate-400 text-xs mt-1">
-          <span className="font-medium text-slate-500">Impuesto:</span> {data.articulo.impuestos.nombre} ({data.articulo.impuestos.porcentaje}%)
+        <p className="mt-1 text-xs text-muted-foreground">
+          <span className="font-medium text-zinc-600">Impuesto:</span> {data.articulo.impuestos.nombre} ({data.articulo.impuestos.porcentaje}%)
         </p>
       </td>
 
-      <td className="px-4 py-2 align-top max-w-[180px]">
-        <p className="text-slate-500 text-xs leading-relaxed line-clamp-3">
-          {data.articulo.descripcion || <span className="italic text-slate-300">Sin descripción</span>}
+      <td className={`${celda} max-w-[200px] align-top`}>
+        <p className="line-clamp-3 text-xs leading-relaxed text-muted-foreground">
+          {data.articulo.descripcion || <span className="italic text-zinc-300">Sin descripción</span>}
         </p>
       </td>
 
-      <td className="px-4 py-2 align-top">
-        <p className="text-slate-500 text-xs">
-          <span className="font-medium text-slate-600">SKU:</span>{" "}
-          <span className="font-mono text-slate-700">{data.sku}</span>
+      <td className={`${celda} align-top`}>
+        <p className="text-xs text-muted-foreground">
+          <span className="font-medium text-zinc-600">SKU:</span>{" "}
+          <span className="font-mono text-zinc-800">{data.sku}</span>
         </p>
         <p className="mt-1.5">
-          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium ${data.stock > 10 ? "bg-emerald-50 text-emerald-700 border border-emerald-200" : data.stock > 0 ? "bg-amber-50 text-amber-700 border border-amber-200" : "bg-red-50 text-red-700 border border-red-200"}`}>
-            <BoxIcon className="w-3 h-3" /> {data.stock} disp.
+          <span className={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-medium ${data.stock > 10 ? "border border-emerald-200 bg-emerald-50 text-emerald-700" : data.stock > 0 ? "border border-amber-200 bg-amber-50 text-amber-700" : "border border-red-200 bg-red-50 text-red-700"}`}>
+            <BoxIcon className="size-3" /> {data.stock} disp.
           </span>
         </p>
       </td>
 
-      <td className="px-4 py-2 align-top text-right">
+      <td className={`${celda} text-right align-top tabular-nums`}>
         {data.precio_con_descuento_activo && Number(data.precio_con_descuento_activo) < Number(data.precio_final) ? (
           <>
-            <p className="font-bold text-emerald-600 text-sm">${Number(data.precio_con_descuento_activo).toLocaleString()}</p>
-            <p className="text-slate-400 text-xs line-through mt-0.5">${Number(data.precio_final).toLocaleString()}</p>
+            <p className="text-sm font-bold text-emerald-700">${Number(data.precio_con_descuento_activo).toLocaleString()}</p>
+            <p className="mt-0.5 text-xs text-zinc-400 line-through">${Number(data.precio_final).toLocaleString()}</p>
           </>
         ) : (
-          <p className="font-semibold text-slate-900 text-sm">${Number(data.precio_final).toLocaleString()}</p>
+          <p className="text-sm font-semibold">${Number(data.precio_final).toLocaleString()}</p>
         )}
-        <p className="text-slate-400 text-[10px] mt-1">Base: ${Number(data.articulo.precio_base).toLocaleString()}</p>
+        <p className="mt-1 text-[11px] text-muted-foreground">Base: ${Number(data.articulo.precio_base).toLocaleString()}</p>
         {Number(data.precio_extra) > 0 && (
-           <p className="text-slate-400 text-[10px]">+ Extra: ${Number(data.precio_extra).toLocaleString()}</p>
+           <p className="text-[11px] text-muted-foreground">+ Extra: ${Number(data.precio_extra).toLocaleString()}</p>
         )}
       </td>
 
-      <td className="px-4 py-2 align-top">
+      <td className={`${celda} align-top`}>
         <div className="flex items-center justify-center gap-1.5">
           <button
             type="button"
             onClick={() => onAgregarDescuento(data)}
             title="Agregar descuento"
-            className="p-1.5 text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors cursor-pointer"
+            aria-label="Agregar descuento"
+            className="flex size-8 cursor-pointer items-center justify-center rounded-lg border border-zinc-200 text-emerald-600 transition-colors hover:border-emerald-200 hover:bg-emerald-50"
           >
-            <TagIcon className="w-4 h-4" />
+            <TagIcon className="size-3.5" />
           </button>
           <button
             onClick={() => onEditar(data)}
             title="Editar"
-            className="w-8 h-8 rounded-md flex items-center justify-center text-slate-400 hover:text-blue-600 hover:bg-blue-50 border border-slate-200 hover:border-blue-200 transition-all cursor-pointer"
+            aria-label="Editar"
+            className="flex size-8 cursor-pointer items-center justify-center rounded-lg border border-zinc-200 text-zinc-500 transition-colors hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
           >
-            <EditIcon className="w-3.5 h-3.5" />
+            <EditIcon className="size-3.5" />
           </button>
           <button
             onClick={() => onEliminar(data)}
             title="Eliminar"
-            className="w-8 h-8 rounded-md flex items-center justify-center text-slate-400 hover:text-red-600 hover:bg-red-50 border border-slate-200 hover:border-red-200 transition-all cursor-pointer"
+            aria-label="Eliminar"
+            className="flex size-8 cursor-pointer items-center justify-center rounded-lg border border-zinc-200 text-zinc-500 transition-colors hover:border-red-200 hover:bg-red-50 hover:text-red-600"
           >
-            <TrashIcon className="w-3.5 h-3.5" />
+            <TrashIcon className="size-3.5" />
           </button>
         </div>
       </td>

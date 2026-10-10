@@ -9,6 +9,10 @@ import { getTipoDoc } from "../services/catalogo.service";
 import { crearDireccion, actualizarDireccion, obtenerTodos, eliminarDireccion } from "../services/direcciones.service";
 
 import { UserIcon, IdCardIcon, PhoneIcon, MailIcon, MapPinIcon, HomeIcon, BuildingIcon, GlobeIcon, HashIcon, EditIcon, TrashIcon, SaveIcon } from "../components/Icons";
+import { Button } from "@/components/ui/button";
+import { InputIcono, SelectIcono } from "../components/CamposConIcono";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 
 
 // BLOQUE 1 DE CONFIGURACIONES Y UTILIDADES
@@ -211,19 +215,40 @@ function Perfil(){
     };
 
     return (
-        <div className="flex flex-col min-h-screen gap-4">
+        <div className="flex flex-col min-h-screen">
             <NavBar />
-            <div className="py-6 px-4">
-                <h2 className="text-center font-bold text-2xl tracking-tight text-slate-800">
-                    Hola <span className="text-blue-600 font-bold">{usuarioForm.formData.nombres} {usuarioForm.formData.apellidos}</span> esta es la vista
-                    de perfil
-                </h2>
-                <p className="text-center text-xs text-slate-500 mt-1">
-                    Gestiona tu informacion personal y datos de contacto de la cuenta
-                </p>
-            </div>
+            <main className="flex-1">
+                <section className="relative overflow-hidden bg-zinc-950 text-white">
+                    <div className="pointer-events-none absolute -top-24 left-[6%] size-[30rem] rounded-full bg-emerald-500/35 blur-3xl" />
+                    <div className="pointer-events-none absolute -bottom-28 right-[4%] size-[30rem] rounded-full bg-blue-600/35 blur-3xl" />
+                    <div
+                        className="pointer-events-none absolute inset-0 opacity-[0.07]"
+                        style={{
+                            backgroundImage:
+                                "linear-gradient(to right, #fff 1px, transparent 1px), linear-gradient(to bottom, #fff 1px, transparent 1px)",
+                            backgroundSize: "44px 44px",
+                        }}
+                    />
+                    <div className="relative mx-auto flex w-full max-w-6xl flex-col items-start gap-6 px-4 pb-32 pt-10 sm:flex-row sm:items-center sm:px-6 sm:pt-14 sm:pb-36">
+                        <div className="flex size-20 shrink-0 items-center justify-center rounded-full border-4 border-white/20 bg-white/10 shadow-xl backdrop-blur sm:size-24">
+                            <UserIcon className="size-10 text-white/80 sm:size-12" />
+                        </div>
+                        <div>
+                            <p className="text-sm font-medium text-emerald-300">Mi perfil</p>
+                            <h1 className="mt-1 text-3xl font-bold leading-tight tracking-tight sm:text-5xl">
+                                Hola, <span className="text-emerald-300">{usuarioForm.formData.nombres} {usuarioForm.formData.apellidos}</span>
+                            </h1>
+                            <p className="mt-3 max-w-xl text-base text-white/70">
+                                Esta es la vista de perfil. Gestiona tu información personal y los datos de contacto de tu cuenta.
+                            </p>
+                        </div>
+                    </div>
 
-            <main className="grow flex items-start justify-center p-4 w-full max-w-5xl mx-auto">
+                    {/* difuminado inferior: el encabezado se funde con el fondo de la página */}
+                    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-44 bg-gradient-to-b from-transparent via-background/70 to-background" />
+                </section>
+
+                <div className="relative mx-auto -mt-16 w-full max-w-6xl px-4 pb-10 sm:px-6 sm:pb-12">
                 <TarjetaUsuario
                     formData={usuarioForm.formData}
                     tiposDocumento={usuarioForm.tiposDocumento}
@@ -234,7 +259,7 @@ function Perfil(){
                 />
 
                 {modalUbicacion && (
-                    <ModalDireccion 
+                    <ModalDireccion
                         direccion={direccion}
                         onCerrar={() => setModalUbicacion(false)}
                         onEliminar={prepararEliminar}
@@ -242,18 +267,19 @@ function Perfil(){
                 )}
 
                 {modalConfirmarAbierto && (
-                    <ModalConfirmar 
+                    <ModalConfirmar
                         datosAMostrar={itemEliminar ? itemEliminar.direccion : ""}
                         onCancelar={() => setModalConfirmarAbierto(false)}
                         onConfirmar={confirmarEliminacion}
                         cargando={direccion.cargando}
 
-                    /> 
+                    />
                 )}
+                </div>
             </main>
 
             {notificacion.abierto && (
-                <ModalMensaje 
+                <ModalMensaje
                     abierto={notificacion.abierto}
                     mensaje={notificacion.mensaje}
                     tipo={notificacion.tipo}
@@ -267,29 +293,49 @@ function Perfil(){
 // BLOQUE 6 COMPONENTES UI TARGETA DE USUARIOS
 function TarjetaUsuario({ formData, tiposDocumento, cargando, onChange, onGuardar, onAbrirDirecciones }){
     return (
-        <div className="w-full bg-white rounded-xl border border-slate-200/80 shadow-sm flex flex-col md:flex-row overflow-hidden">
-            <div className="w-full md:w-1/3 bg-slate-50/60 p-8 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-slate-100">
-                <div className="relative w-36 h-36 rounded-full border-2 border-blue-500/20 bg-slate-100 flex items-center justify-center shadow-inner group transition-all">
-                    <svg className="w-20 h-20 text-slate-400 group-hover:text-blue-500 transition-colors duration-200" viewBox="0 0 640 640" fill="currentColor">
-                        <path d="M240 192C240 147.8 275.8 112 320 112C364.2 112 400 147.8 400 192C400 236.2 364.2 272 320 272C275.8 272 240 236.2 240 192zM448 192C448 121.3 390.7 64 320 64C249.3 64 192 121.3 192 192C192 262.7 249.3 320 320 320C390.7 320 448 262.7 448 192zM144 544C144 473.3 201.3 416 272 416L368 416C438.7 416 496 473.3 496 544L496 552C496 565.3 506.7 576 520 576C533.3 576 544 565.3 544 552L544 544C544 446.8 465.2 368 368 368L272 368C174.8 368 96 446.8 96 544L96 552C96 565.3 106.7 576 120 576C133.3 576 144 565.3 144 552L144 544z"/>
-                    </svg>
-                </div>
-                <span className="mt-4 text-center text-slate-800 text-sm font-semibold tracking-wide uppercase">
-                    {formData.nombres} {formData.apellidos}
-                </span>
-                <span className="text-xs text-slate-400 mt-0.5">Usuario del Sistema</span>
-            </div>
+        <div className="grid items-start gap-6 lg:grid-cols-[18rem_1fr]">
+            {/* ───── Sidebar ───── */}
+            <aside className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm lg:sticky lg:top-24">
+                <div className="relative flex flex-col px-5 py-6">
+                    <p className="text-base font-semibold tracking-tight">
+                        {formData.nombres} {formData.apellidos}
+                    </p>
+                    <div className="mt-3 space-y-2 text-sm text-muted-foreground">
+                        <p className="flex items-center gap-2 truncate"><MailIcon className="size-4 shrink-0 text-emerald-600" /> <span className="truncate">{formData.email}</span></p>
+                        <p className="flex items-center gap-2"><PhoneIcon className="size-4 shrink-0 text-emerald-600" /> {formData.telefono}</p>
+                    </div>
 
-            <div className="w-full md:w-2/3 p-8 bg-white">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <CampoPerfil 
+                    <nav className="mt-6 grid w-full gap-1 border-t border-zinc-100 pt-4">
+                        <span className="flex items-center gap-3 rounded-xl bg-zinc-950 px-3.5 py-2.5 text-sm font-medium text-white">
+                            <UserIcon className="size-4" /> Datos personales
+                        </span>
+                        <button
+                            type="button"
+                            onClick={onAbrirDirecciones}
+                            className="flex cursor-pointer items-center gap-3 rounded-xl px-3.5 py-2.5 text-left text-sm font-medium text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-950"
+                        >
+                            <MapPinIcon className="size-4" /> Mis direcciones
+                        </button>
+                    </nav>
+                </div>
+            </aside>
+
+            {/* ───── Datos ───── */}
+            <section className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
+                <div className="mb-6">
+                    <h2 className="text-lg font-semibold tracking-tight">Datos personales</h2>
+                    <p className="text-sm text-muted-foreground">Actualiza tu información y guarda los cambios.</p>
+                </div>
+
+                <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                    <CampoPerfil
                         label="Nombre"
                         icon={UserIcon}
                         name="nombres"
                         value={formData.nombres}
                         onChange={onChange}
                     />
-                    <CampoPerfil 
+                    <CampoPerfil
                         label={"Apellido"}
                         icon={UserIcon}
                         name="apellidos"
@@ -297,17 +343,16 @@ function TarjetaUsuario({ formData, tiposDocumento, cargando, onChange, onGuarda
                         onChange={onChange}
                     />
 
-                    <div className="relative mt-2">
-                        <label className="absolute flex items-center gap-1 left-3 -top-2.5 bg-white px-1.5 text-xs font-medium text-slate-500 z-10">
-                            <IdCardIcon className="w-3.5 h-3.5 text-slate-400" /> Tipo documento
-                        </label>
-                        <select 
+                    <div className="grid gap-2">
+                        <Label htmlFor="perfil-documento">Tipo de documento</Label>
+                        <SelectIcono
+                            icon={IdCardIcon}
+                            id="perfil-documento"
                             name="documento"
                             value={formData.documento}
                             onChange={onChange}
-                            className="w-full bg-slate-50/50 rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-800 outline-none transition-all focus:border-blue-500 focus:ring-4 focus:ring-emerald-500/10 focus:bg-white cursor-pointer" 
                         >
-                            <option value="">Seleciona una opcion...</option>
+                            <option value="">Selecciona una opción...</option>
                             {tiposDocumento?.map((tipo) => (
                                 <option
                                     key={tipo.idnumero}
@@ -316,10 +361,10 @@ function TarjetaUsuario({ formData, tiposDocumento, cargando, onChange, onGuarda
                                     {tipo.sigla}
                                 </option>
                             ))}
-                        </select>
+                        </SelectIcono>
                     </div>
-                    <CampoPerfil 
-                        label="Numero de documento"
+                    <CampoPerfil
+                        label="Número de documento"
                         icon={IdCardIcon}
                         name="numero"
                         value={formData.numero}
@@ -328,7 +373,7 @@ function TarjetaUsuario({ formData, tiposDocumento, cargando, onChange, onGuarda
                         placeholder="10029812342"
                     />
                     <CampoPerfil
-                        label="Telefono"
+                        label="Teléfono"
                         icon={PhoneIcon}
                         name="telefono"
                         value={formData.telefono}
@@ -336,7 +381,7 @@ function TarjetaUsuario({ formData, tiposDocumento, cargando, onChange, onGuarda
                         inputMode="numeric"
                         placeholder="3224390543"
                     />
-                    <CampoPerfil 
+                    <CampoPerfil
                         label="Correo electrónico"
                         icon={MailIcon}
                         name="email"
@@ -347,44 +392,45 @@ function TarjetaUsuario({ formData, tiposDocumento, cargando, onChange, onGuarda
                     />
                 </div>
 
-                <div className="flex justify-end mt-6 gap-3">
-                    <button
+                <div className="mt-8 flex flex-col-reverse justify-end gap-3 border-t border-zinc-100 pt-6 sm:flex-row">
+                    <Button
                         type="button"
+                        variant="outline"
+                        size="lg"
                         onClick={onAbrirDirecciones}
-                        className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-all cursor-pointer"
                     >
-                        <MapPinIcon className="w-4 h-4" /> Mis direcciones
-                    </button>
-                    <button
+                        <MapPinIcon className="size-4" /> Mis direcciones
+                    </Button>
+                    <Button
                         type="button"
+                        size="lg"
                         disabled={cargando}
                         onClick={onGuardar}
-                        className={`group inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white active:scale-[0.98] shadow-sm hover:shadow transition-all cursor-pointer ${cargando ? 'bg-slate-400 cursor-not-allowed' : 'bg-emerald-600 hover:bg-emerald-700'}`}
+                        className="hover:bg-emerald-700"
                     >
-                        <SaveIcon className="w-4 h-4" />
-                        <span>{cargando ? 'Guardando...' : 'Guardar'}</span>
-                    </button>
+                        <SaveIcon className="size-4" />
+                        <span>{cargando ? 'Guardando...' : 'Guardar cambios'}</span>
+                    </Button>
                 </div>
-            </div>
-        </div>  
+            </section>
+        </div>
     );
 }
 
 //INPUT REUSABLE DEL FORMULARIO DE USUARIOS
 function CampoPerfil({ label, icon: Icon, name, value, onChange, type="text", inputMode, placeholder }){
     return (
-        <div className="relative mt-2">
-            <label className="absolute flex items-center gap-1 left-3 -top-2.5 bg-white px-1.5 text-xs font-medium text-slate-500 z-10">
-                <Icon className="w-3.5 h-3.5 text-slate-400" /> {label}
-            </label>
-            <input 
+        <div className="grid gap-2">
+            <Label htmlFor={`perfil-${name}`}>{label}</Label>
+            <InputIcono
+                icon={Icon}
+                id={`perfil-${name}`}
                 type={type}
                 inputMode={inputMode}
                 name={name}
                 value={value}
                 onChange={onChange}
                 placeholder={placeholder}
-                className="w-full bg-slate-50/50 rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-800 outline-none transition-all focus:border-blue-500 focus:ring-4 focus:ring-emerald-500/10 focus:bg-white" 
             />
         </div>
     );
@@ -393,34 +439,40 @@ function CampoPerfil({ label, icon: Icon, name, value, onChange, type="text", in
 //BLOQUE 7 COMPONENTES DE UI
 function ModalDireccion ({ direccion, onCerrar, onEliminar }){
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-fade-in">
-            <div className="w-full max-w-3xl bg-white rounded-xl shadow-xl border border-slate-200/60 overflow-hidden flex flex-col animate-scale-up max-h-[90vh]">
-                <header className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-                    <div>
-                        <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
-                            <MapPinIcon className="w-5 h-5 text-emerald-600" /> Mis direcciones
-                        </h3>
-                        <p className="text-xs text-slate-400 mt-0.5">Gestiona tus lugares de entrega y residencia.</p>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/40 p-4 backdrop-blur-sm">
+            <div className="flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-xl">
+                <header className="flex items-center justify-between border-b border-zinc-100 px-6 py-5">
+                    <div className="flex items-center gap-3">
+                        <span className="flex size-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100">
+                            <MapPinIcon className="size-5" />
+                        </span>
+                        <div>
+                            <h3 className="text-lg font-semibold leading-tight tracking-tight">Mis direcciones</h3>
+                            <p className="text-sm text-muted-foreground">Gestiona tus lugares de entrega y residencia.</p>
+                        </div>
                     </div>
-                    <button
+                    <Button
                         type="button"
+                        variant="ghost"
+                        size="icon-sm"
                         onClick={onCerrar}
-                        className="text-slate-400 hover:text-slate-600 p-1.5 rounded-md hover:bg-slate-100 transition-colors cursor-pointer"
+                        aria-label="Cerrar"
+                        className="text-muted-foreground"
                     >
-                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg className="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                         </svg>
-                    </button>
+                    </Button>
                 </header>
 
                 <div className="flex-1 overflow-y-auto p-6">
                     {direccion.desplegarForm && <FormularioDireccion direccion={direccion} />}
-                    
+
                     <div className="flex flex-col gap-3">
                         {direccion.listaDirecciones.length === 0 ? (
-                            <div className="text-center py-12">
-                                <MapPinIcon className="w-10 h-10 text-gray-300 mx-auto mb-3" />
-                                <p className="text-gray-400 text-sm">No tienes direcciones guardadas.</p>
+                            <div className="flex flex-col items-center rounded-xl border border-dashed border-zinc-300 py-12 text-center">
+                                <MapPinIcon className="mb-3 size-9 text-zinc-300" />
+                                <p className="text-sm text-muted-foreground">No tienes direcciones guardadas.</p>
                             </div>
                         ):(
                             direccion.listaDirecciones.map((dir) => (
@@ -434,31 +486,32 @@ function ModalDireccion ({ direccion, onCerrar, onEliminar }){
                         )}
                     </div>
                 </div>
-                <footer className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-3">
-                    <button
+                <footer className="flex flex-col-reverse items-stretch justify-end gap-3 border-t border-zinc-100 bg-zinc-50/70 px-6 py-4 sm:flex-row sm:items-center">
+                    <Button
                         type="button"
+                        variant="outline"
                         onClick={direccion.nuevaDireccion}
-                        className="px-4 py-2 rounded-lg text-sm font-semibold text-slate-600 bg-white border border-slate-200 hover:bg-slate-50 transition-all cursor-pointer flex items-center gap-2"
+                        className="bg-white"
                     >
-                        <svg    
-                            xmlns="http://www.w3.org/2000/svg" 
-                            width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
                         >
                             <path d="M5 12h14"/>
                             <path d="M12 5v14"/>
                         </svg>
                         Nueva dirección
-                    </button>
-                    <button 
+                    </Button>
+                    <Button
                         type="button"
                         onClick={direccion.guardar}
                         disabled={direccion.cargando}
-                        className={`group inline-flex items-center justify-center gap-2 px-5 py-2 rounded-lg text-sm font-semibold text-white active:scale-[0.98] shadow-sm hover:shadow transition-all cursor-pointer ${direccion.cargando ? 'bg-slate-400 cursor-not-allowed' : 'bg-emerald-600 hover:bg-emerald-700'}`}
+                        className="hover:bg-emerald-700"
                     >
-                        <SaveIcon className="w-4 h-4" />
+                        <SaveIcon className="size-4" />
                         <span>{direccion ? 'Guardar': 'Guardando..'}</span>
-                    </button>
+                    </Button>
                 </footer>
             </div>
         </div>
@@ -469,12 +522,12 @@ function FormularioDireccion({ direccion }){
     const {formDirecciones: f, actualizarCampo, cerraFormulario } = direccion;
 
     return (
-        <div className="mb-6 bg-gray-50 border border-gray-200 rounded-2xl p-5">
-            <h4 className="text-sm font-bold text-gray-700 mb-5 uppercase tracking-wider">
-                {f.iddireccion ? 'Editar direccion': 'Nueva direccion'}
+        <div className="mb-6 rounded-xl border border-zinc-200 bg-zinc-50/70 p-5">
+            <h4 className="mb-5 text-sm font-semibold">
+                {f.iddireccion ? 'Editar dirección': 'Nueva dirección'}
             </h4>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                <CampoDireccion 
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+                <CampoDireccion
                     label="Destinatario"
                     icon={UserIcon}
                     name="nombre_destinatario"
@@ -482,15 +535,15 @@ function FormularioDireccion({ direccion }){
                     onChange={actualizarCampo}
                     placeholder="Juanito alimaña"
                 />
-                <CampoDireccion 
-                    label="Direccion"
+                <CampoDireccion
+                    label="Dirección"
                     icon={MapPinIcon}
                     name="direccion"
                     value={f.direccion}
                     onChange={actualizarCampo}
                     placeholder="Calle 5 # 1b - 35"
                 />
-                <CampoDireccion 
+                <CampoDireccion
                     label="Residencia"
                     icon={HomeIcon}
                     name="residencia"
@@ -498,7 +551,7 @@ function FormularioDireccion({ direccion }){
                     onChange={actualizarCampo}
                     placeholder="Apto 401"
                 />
-                <CampoDireccion 
+                <CampoDireccion
                     label="Barrio"
                     icon={MapPinIcon}
                     name="barrio"
@@ -506,7 +559,7 @@ function FormularioDireccion({ direccion }){
                     onChange={actualizarCampo}
                     placeholder="Santa Rita"
                 />
-                <CampoDireccion 
+                <CampoDireccion
                     label="Ciudad"
                     icon={BuildingIcon}
                     name="ciudad"
@@ -514,7 +567,7 @@ function FormularioDireccion({ direccion }){
                     onChange={actualizarCampo}
                     placeholder="Medellin"
                 />
-                <CampoDireccion 
+                <CampoDireccion
                     label="Departamento"
                     icon={BuildingIcon}
                     name="departamento"
@@ -530,8 +583,8 @@ function FormularioDireccion({ direccion }){
                     onChange={actualizarCampo}
                     placeholder="Colombia"
                 />
-                <CampoDireccion 
-                    label="Codigo postal"
+                <CampoDireccion
+                    label="Código postal"
                     icon={HashIcon}
                     name="codigo_postal"
                     value={f.codigo_postal}
@@ -540,28 +593,30 @@ function FormularioDireccion({ direccion }){
                     placeholder="050022"
                 />
 
-                <div className="flex items-center gap-3 pt-2">
-                    <input 
+                <div className="flex items-center gap-3 sm:pt-7">
+                    <input
                         type="checkbox"
                         name="principal"
                         id="principal_check"
                         onChange={actualizarCampo}
                         checked={f.principal}
-                        className="w-4 h-4 text-emerald-600 border-slate-300 rounded focus:ring-emerald-500"
+                        className="size-4 cursor-pointer rounded border-zinc-300 accent-emerald-600"
                     />
-                    <label htmlFor="principal_check" className="text-sm font-medium text-slate-600 cursor-pointer">
+                    <label htmlFor="principal_check" className="cursor-pointer text-sm font-medium text-zinc-700">
                         ¿Es tu dirección principal?
                     </label>
                 </div>
             </div>
-            <div className="flex justify-end mt-4">
-                <button
+            <div className="mt-5 flex justify-end">
+                <Button
                     type="button"
+                    variant="outline"
+                    size="sm"
                     onClick={cerraFormulario}
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-gray-600 bg-white border border-gray-200 hover:bg-gray-100 transition-all cursor-pointer"
+                    className="bg-white"
                 >
                     Cancelar
-                </button>
+                </Button>
             </div>
         </div>
     );
@@ -569,18 +624,17 @@ function FormularioDireccion({ direccion }){
 
 function CampoDireccion({ label, icon: Icon, name, value, onChange, inputMode, placeholder }){
     return (
-        <div className="relative">
-            <label className="absolute flex items-center gap-1 left-4 -top-3 bg-gray-50 px-2 text-xs font-semibold text-slate-500 z-10">
-                <Icon className="w-3 h-3" />{label}
-            </label>
-            <input 
+        <div className="grid gap-2">
+            <Label htmlFor={`dir-${name}`}>{label}</Label>
+            <InputIcono
+                icon={Icon}
+                id={`dir-${name}`}
                 type="text"
                 inputMode={inputMode}
                 name={name}
                 value={value}
                 onChange={onChange}
-                className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 bg-white"
-                placeholder={placeholder} 
+                placeholder={placeholder}
             />
         </div>
     )
@@ -588,44 +642,52 @@ function CampoDireccion({ label, icon: Icon, name, value, onChange, inputMode, p
 
 function TarjetaDireccion({ direccion, onEditar, onEliminar }){
     return (
-        <div className="bg-gray-50 border border-gray-200 p-4 rounded-xl flex justify-between items-start gap-4 hover:border-emerald-300 hover:bg-emerald-50/30 transition-all">
+        <div className="flex items-start justify-between gap-4 rounded-xl border border-zinc-200 bg-white p-4 transition-colors hover:border-emerald-300 hover:bg-emerald-50/30">
             <div className="flex gap-3">
-                <div className="w-8 h-8 rounded-lg bg-white border border-gray-200 flex items-center justify-center shrink-0 mt-0.5">
-                    <MapPinIcon className="w-4 h-4 text-emerald-500" />
+                <div className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
+                    <MapPinIcon className="size-4" />
                 </div>
                 <div>
-                    <p className="font-semibold text-gray-800 text-sm">
+                    <p className="text-sm font-semibold">
                         {direccion.nombre_destinatario}
                     </p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-sm text-muted-foreground">
                         {direccion.direccion}, {direccion.ciudad}, {direccion.departamento}
                     </p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-sm text-muted-foreground">
                         Barrio: {direccion.barrio} · CP {direccion.codigo_postal}
                     </p>
-                    {direccion.principal && 
-                        <span className="inline-block mt-1 text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-medium border border-emerald-200">
+                    {direccion.principal &&
+                        <Badge variant="outline" className="mt-2 border-emerald-200 bg-emerald-50 text-emerald-700">
                             Principal
-                        </span>
+                        </Badge>
                     }
                 </div>
             </div>
-                <div className="flex gap-2 shrink-0">
-                    <button
-                        onClick={onEditar}
-                        title="Editar"
-                        className="w-8 h-8 rounded-lg flex items-center justify-center text-white bg-blue-600 hover:bg-blue-700 active:scale-[0.98] shadow-sm hover:shadow transition-all cursor-pointer"
-                    >
-                        <EditIcon className="w-4 h-4" />
-                    </button>
-                    <button
-                        onClick={onEliminar}
-                        title="Eliminar"
-                        className="w-8 h-8 rounded-lg flex items-center justify-center text-red-500 bg-red-50 hover:bg-red-100 border border-red-100 transition-all cursor-pointer"
-                    >
-                        <TrashIcon className="w-4 h-4" />
-                    </button>
-                </div>
+            <div className="flex shrink-0 gap-2">
+                <Button
+                    type="button"
+                    variant="outline"
+                    size="icon-sm"
+                    onClick={onEditar}
+                    title="Editar"
+                    aria-label="Editar"
+                    className="text-zinc-600 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                >
+                    <EditIcon className="size-4" />
+                </Button>
+                <Button
+                    type="button"
+                    variant="outline"
+                    size="icon-sm"
+                    onClick={onEliminar}
+                    title="Eliminar"
+                    aria-label="Eliminar"
+                    className="text-zinc-600 hover:border-red-200 hover:bg-red-50 hover:text-red-600"
+                >
+                    <TrashIcon className="size-4" />
+                </Button>
+            </div>
         </div>
     );
 }

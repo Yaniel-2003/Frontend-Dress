@@ -8,6 +8,11 @@ import { useCarrito } from "../../context/CarritoContext";
 import { getOneVariante, getFotosVAriantes } from "../../services/articulo.service";
 import ModalMensaje from "../../components/ModalMensajes";
 import { agregarCarrito } from "../../services/carrito.service";
+import { ChevronLeftIcon, ChevronRightIcon, PercentIcon, TagIcon, RulerIcon, PaletteIcon, BarcodeIcon, FolderIcon, AlignLeftIcon } from "../../components/Icons";
+import { ShoppingCart } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
 
 function useMensajeTemporal(duracionMs = 1000) {
     const [abierto, setAbierto] = useState(false);
@@ -71,125 +76,217 @@ function DetallesArticulos(){
     if(!articulo) return (
         <div className="flex flex-col min-h-screen">
             <NavBar/>
-            <main className="flex-1 flex items-center justify-center text-slate-400 text-sm font-medium">
+            <main className="flex flex-1 items-center justify-center text-sm font-medium text-muted-foreground">
                 Cargando...
             </main>
             <Footer/>
         </div>
     );
-    
-    
-    
+
+
+
     const {articulo: producto, color, talla, sku, historial_descuentos, stock, foto, precio_final} = articulo
     const {marca, categoria, descripcion, nombre } = producto;
     const { genero } = categoria;
-    
+
     const hayDescuento = articulo.precio_con_descuento_activo && Number(articulo.precio_con_descuento_activo) < Number(precio_final);
-    
+
+    // Valores derivados solo para mostrar
+    const ahorro = hayDescuento ? Number(precio_final) - Number(articulo.precio_con_descuento_activo) : 0;
+    const porcentajeAhorro = hayDescuento ? Math.round((ahorro / Number(precio_final)) * 100) : 0;
+    const precioMostrado = hayDescuento ? articulo.precio_con_descuento_activo : precio_final;
+
     return (
         <div className="flex flex-col min-h-screen">
             <NavBar/>
-            <main className="flex-1 w-full max-w-5xl mx-auto px-4 py-10">
-                <div className="flex flex-col sm:flex-row gap-8 items-center sm:items-start justify-center">
-                    <div className="flex flex-row sm:flex-col gap-4 order-2 sm:order-1 flex-wrap sm:flex-nowrap justify-center sm:max-h-96 sm:overflow-y-auto sm:pr-1">
-                        {varFotos.map((f) => (
-                            <img
-                                key={f.idfoto}
-                                src={f.urlfoto}
-                                alt={nombre}
-                                onClick={() => setFotoSelecionada(f.urlfoto)}
-                                className={`w-20 h-20 rounded-2xl object-cover cursor-pointer border-2 hover:opacity-80 transition-all duration-200 ${fotoSelecionada === f.urlfoto ? "border-emerald-600" : "border-transparent"}`}
-                            />
-                        ))}
+            <main className="mx-auto w-full max-w-6xl flex-1 px-4 pb-28 pt-6 sm:px-6 sm:pt-8 lg:pb-12">
+                <Link
+                    to="/home"
+                    className="group mb-6 inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                >
+                    <ChevronLeftIcon className="size-4 transition-transform group-hover:-translate-x-0.5" />
+                    Volver al catálogo
+                </Link>
+
+                <div className="grid gap-8 lg:grid-cols-[1.1fr_1fr] lg:gap-14">
+                    {/* ───── Galería ───── */}
+                    <div className="flex flex-col gap-4 sm:flex-row lg:sticky lg:top-24 lg:self-start">
+                        <div className="order-2 flex flex-row flex-wrap justify-center gap-3 sm:order-1 sm:max-h-[34rem] sm:flex-col sm:flex-nowrap sm:justify-start sm:overflow-y-auto sm:pr-1">
+                            {varFotos.map((f) => (
+                                <img
+                                    key={f.idfoto}
+                                    src={f.urlfoto}
+                                    alt={nombre}
+                                    onClick={() => setFotoSelecionada(f.urlfoto)}
+                                    className={`size-20 shrink-0 cursor-pointer rounded-xl border-2 bg-zinc-100 object-cover transition-all duration-200 hover:opacity-80 ${fotoSelecionada === f.urlfoto ? "border-emerald-600 ring-2 ring-emerald-600/20" : "border-transparent"}`}
+                                />
+                            ))}
+                        </div>
+
+                        <div className="relative order-1 w-full overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm sm:order-2">
+                            {hayDescuento && (
+                                <Badge className="absolute left-4 top-4 z-10 gap-1 border-0 bg-emerald-600 px-3 py-1.5 text-sm font-bold text-white shadow-lg">
+                                    <PercentIcon className="size-3.5" />
+                                    -{porcentajeAhorro}%
+                                </Badge>
+                            )}
+                            {fotoSelecionada ? (
+                                <img
+                                    src={fotoSelecionada}
+                                    alt={nombre}
+                                    className="aspect-[4/5] w-full object-cover transition-opacity duration-300"
+                                />
+                            ):(
+                                <img
+                                    src={foto}
+                                    alt={nombre}
+                                    className="aspect-[4/5] w-full object-cover transition-opacity duration-300"
+                                />
+                            )}
+                        </div>
                     </div>
 
-                    <div className="order-1 sm:order-2 w-full max-w-md rounded-2xl overflow-hidden shadow-xl bg-white">
-                        {fotoSelecionada ? (
-                            <img
-                                src={fotoSelecionada}
-                                alt={nombre}
-                                className="w-full h-96 object-cover transition-opacity duration-300"
-                            />
-                        ):(
-                            <img
-                                src={foto}
-                                alt={nombre}
-                                className="w-full h-96 object-cover transition-opacity duration-300"
-                            />
-                        )}
-                    </div>
-                </div>
+                    {/* ───── Información de compra ───── */}
+                    <div>
+                        <div className="flex flex-wrap gap-2">
+                            <Badge variant="secondary" className="gap-1.5 px-3 py-1 text-xs">
+                                <TagIcon className="size-3" /> {marca.nombre}
+                            </Badge>
+                            <Badge variant="outline" className="px-3 py-1 text-xs">{genero.nombre}</Badge>
+                        </div>
 
-                <div className="mt-10 max-w-2xl mx-auto text-center sm:text-left">
-                    <h1 className="text-2xl font-bold text-slate-800">{nombre}</h1>
+                        <h1 className="mt-4 text-3xl font-bold leading-tight tracking-tight sm:text-5xl">{nombre}</h1>
 
-                    <div className="flex flex-wrap gap-2 mt-4 justify-center sm:justify-start">
-                        <span className="px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">{marca.nombre}</span>
-                        <span className="px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">{genero.nombre}</span>
-                    </div>
+                        {/* Precio */}
+                        <div className="mt-6 rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">
+                            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                                <span className={`text-4xl font-bold tracking-tight tabular-nums sm:text-5xl ${hayDescuento ? "text-emerald-700" : ""}`}>
+                                    $ {Number(precioMostrado).toLocaleString()}
+                                </span>
+                                {hayDescuento && (
+                                    <span className="text-lg text-zinc-400 line-through tabular-nums">$ {Number(precio_final).toLocaleString()}</span>
+                                )}
+                            </div>
+                            {hayDescuento && (
+                                <p className="mt-2 inline-flex items-center gap-1.5 rounded-lg bg-emerald-50 px-2.5 py-1 text-sm font-semibold text-emerald-700">
+                                    <PercentIcon className="size-3.5" />
+                                    Ahorras $ {ahorro.toLocaleString()}
+                                </p>
+                            )}
 
-                    <div className="mt-5 space-y-3">
-                        <div className="flex items-center gap-3 justify-center sm:justify-start">
-                            <span className="text-xs font-semibold uppercase tracking-wide text-slate-400 w-14">Talla</span>
-                            <div className="flex flex-wrap gap-2">
-                                {[talla].map((t) => (
-                                    <span
-                                        key={t.idtalla}
-                                        className="w-9 h-9 flex items-center justify-center rounded-lg border border-slate-200 text-sm font-semibold text-slate-700"
-                                    >
-                                        {t.codigo}
+                            {/* Disponibilidad */}
+                            <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-zinc-100 pt-4 text-sm">
+                                <span className={`inline-flex items-center gap-2 font-medium ${stock > 10 ? "text-emerald-700" : stock > 0 ? "text-amber-600" : "text-red-600"}`}>
+                                    <span className={`size-2 rounded-full ${stock > 10 ? "bg-emerald-500" : stock > 0 ? "bg-amber-500" : "bg-red-500"}`} />
+                                    {stock > 10 ? `Disponible · ${stock} unidades` : stock > 0 ? `¡Date prisa! Solo quedan ${stock}` : "Agotado"}
+                                </span>
+                                {historial_descuentos.length > 0 && historial_descuentos.map((h) => (
+                                    <span key={h.idartdescuento} className="inline-flex items-center gap-1.5 text-muted-foreground">
+                                        <PercentIcon className="size-3.5 text-emerald-600" />
+                                        Quedan {h.cantidad_restante} de {h.cantidad_inicial} con descuento
                                     </span>
                                 ))}
                             </div>
                         </div>
-                        <div className="flex items-center gap-3 justify-center sm:justify-start">
-                            <span className="text-xs font-semibold uppercase tracking-wide text-slate-400 w-14">Color</span>
-                            <div className="flex flex-wrap gap-2">
-                                {[color].map((c) => (
-                                    <span
-                                        key={c.idcolor}
-                                        title={c.nombre}
-                                        className="w-7 h-7 rounded-full border border-slate-200 shadow-sm"
-                                        style={{ backgroundColor: c.hex_code }}
-                                    />
-                                ))}
+
+                        {/* Talla y color */}
+                        <div className="mt-6 space-y-5">
+                            <div className="flex items-center gap-4">
+                                <span className="flex w-20 items-center gap-1.5 text-sm font-medium text-muted-foreground">
+                                    <RulerIcon className="size-4" /> Talla
+                                </span>
+                                <div className="flex flex-wrap gap-2">
+                                    {[talla].map((t) => (
+                                        <span
+                                            key={t.idtalla}
+                                            className="flex size-11 items-center justify-center rounded-xl border-2 border-zinc-950 bg-white text-sm font-bold"
+                                        >
+                                            {t.codigo}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-4">
+                                <span className="flex w-20 items-center gap-1.5 text-sm font-medium text-muted-foreground">
+                                    <PaletteIcon className="size-4" /> Color
+                                </span>
+                                <div className="flex flex-wrap items-center gap-3">
+                                    {[color].map((c) => (
+                                        <span key={c.idcolor} className="flex items-center gap-2.5">
+                                            <span
+                                                title={c.nombre}
+                                                className="size-8 rounded-full border border-zinc-300 shadow-sm ring-2 ring-white ring-offset-2 ring-offset-zinc-300"
+                                                style={{ backgroundColor: c.hex_code }}
+                                            />
+                                            <span className="text-sm font-medium">{c.nombre}</span>
+                                        </span>
+                                    ))}
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div className="mt-6 flex items-baseline gap-3 justify-center sm:justify-start">
-                        {hayDescuento ? (
-                            <>
-                                <span className="text-3xl font-bold text-emerald-700">$ {Number(articulo.precio_con_descuento_activo).toLocaleString()}</span>
-                                <span className="text-lg text-slate-400 line-through">$ {Number(precio_final).toLocaleString()}</span>
-                            </>
-                        ) : (
-                            <span className="text-3xl font-bold text-slate-800">$ {Number(precio_final).toLocaleString()}</span>
-                        )}
-                    </div>
+                        {/* Acciones */}
+                        <div className="mt-8 grid gap-3 sm:grid-cols-2">
+                            <Button
+                                type="button"
+                                size="lg"
+                                onClick={() => agregarALCarrito()}
+                                className="h-12 text-base hover:bg-emerald-700"
+                            >
+                                <ShoppingCart className="size-5" />
+                                Agregar al carrito
+                            </Button>
+                            <Button
+                                type="button"
+                                size="lg"
+                                className="h-12 bg-emerald-600 text-base text-white hover:bg-emerald-700"
+                            >
+                                Comprar ahora
+                                <ChevronRightIcon className="size-5" />
+                            </Button>
+                        </div>
 
-                    <div className="flex gap-3 mt-8 justify-center sm:justify-start">
-                        <button
-                            type="button"
-                            onClick={() => agregarALCarrito()}
-                            className="px-5 py-2.5 rounded-lg text-sm font-semibold text-emerald-700 bg-white border border-emerald-600 hover:bg-emerald-50 transition-all cursor-pointer"
-                        >
-                            Agregar al carrito
-                        </button>
-                        <button
-                            type="button"
-                            className="px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-700 shadow-sm hover:shadow transition-all cursor-pointer"
-                        >
-                            Comprar
-                        </button>
-                    </div>
+                        {/* Ficha */}
+                        <div className="mt-8 overflow-hidden rounded-2xl border border-zinc-200 bg-white">
+                            <h2 className="border-b border-zinc-100 px-5 py-3 text-sm font-semibold">Detalles del producto</h2>
+                            <dl className="divide-y divide-zinc-100 text-sm">
+                                <FilaFicha icono={<TagIcon className="size-4" />} etiqueta="Marca" valor={marca.nombre} />
+                                <FilaFicha icono={<FolderIcon className="size-4" />} etiqueta="Género" valor={genero.nombre} />
+                                <FilaFicha icono={<RulerIcon className="size-4" />} etiqueta="Talla" valor={talla.codigo} />
+                                <FilaFicha icono={<PaletteIcon className="size-4" />} etiqueta="Color" valor={color.nombre} />
+                                <FilaFicha icono={<BarcodeIcon className="size-4" />} etiqueta="Referencia (SKU)" valor={sku} />
+                            </dl>
+                        </div>
 
-                    <div className="mt-10 pt-8 border-t border-slate-100 text-left">
-                        <h2 className="text-sm font-bold uppercase tracking-wide text-slate-500 mb-2">Descripción</h2>
-                        <p className="text-slate-600 leading-relaxed">{descripcion}</p>
+                        <div className="mt-6 rounded-2xl border border-zinc-200 bg-white p-5">
+                            <h2 className="mb-2 flex items-center gap-2 text-sm font-semibold">
+                                <AlignLeftIcon className="size-4 text-emerald-600" />
+                                Descripción
+                            </h2>
+                            <p className="text-sm leading-relaxed text-muted-foreground">{descripcion}</p>
+                        </div>
                     </div>
                 </div>
             </main>
+
+            {/* Barra de compra fija (solo móvil) */}
+            <div className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-between gap-3 border-t border-zinc-200 bg-white/90 py-3 pl-4 pr-24 backdrop-blur lg:hidden">
+                <div className="min-w-0">
+                    <p className="text-xs text-muted-foreground">{hayDescuento ? "Precio con descuento" : "Precio"}</p>
+                    <p className={`truncate text-xl font-bold tracking-tight tabular-nums ${hayDescuento ? "text-emerald-700" : ""}`}>
+                        $ {Number(precioMostrado).toLocaleString()}
+                    </p>
+                </div>
+                <Button
+                    type="button"
+                    onClick={() => agregarALCarrito()}
+                    className="shrink-0 hover:bg-emerald-700"
+                >
+                    <ShoppingCart className="size-4" />
+                    Agregar
+                </Button>
+            </div>
+
             <Footer/>
 
             {notificacion.abierto && (
@@ -199,6 +296,18 @@ function DetallesArticulos(){
                     tipo={notificacion.tipo}
                 />
             )}
+        </div>
+    )
+}
+
+function FilaFicha({ icono, etiqueta, valor }){
+    return (
+        <div className="flex items-center justify-between gap-4 px-5 py-3">
+            <dt className="flex items-center gap-2 text-muted-foreground">
+                <span className="text-zinc-400">{icono}</span>
+                {etiqueta}
+            </dt>
+            <dd className="font-medium">{valor}</dd>
         </div>
     )
 }

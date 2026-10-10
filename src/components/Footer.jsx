@@ -3,19 +3,18 @@ import React from "react";
 
 const Footer = () => {
     return (
-        <footer className="mt-auto border-t border-slate-200/60 bg-slate-50/50">
-            <div className="mx-auto max-w-7xl px-6 h-14 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500 font-medium">
-                
+        <footer className="mt-auto border-t border-zinc-200/70 bg-white">
+            <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-5 text-sm text-muted-foreground sm:flex-row sm:px-6">
+
                 <p className="text-center sm:text-left">
                     &copy; {new Date().getFullYear()} Yanielfer Paya. Todos los derechos reservados.
                 </p>
 
-                <div className="flex items-center gap-4">
-                    <Link to="/soporte" className="hover:text-blue-600 transition-colors">
+                <div className="flex items-center gap-5">
+                    <Link to="/soporte" className="transition-colors hover:text-emerald-700">
                         Soporte técnico
                     </Link>
-                    <span className="text-slate-300">•</span>
-                    <Link to="/privacidad" className="hover:text-blue-600 transition-colors">
+                    <Link to="/privacidad" className="transition-colors hover:text-emerald-700">
                         Privacidad
                     </Link>
                 </div>
