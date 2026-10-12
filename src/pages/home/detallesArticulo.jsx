@@ -111,8 +111,8 @@ function DetallesArticulos(){
             <main className="relative isolate flex-1">
                 {/* banda de foto: el perchero frente a la pared verde azulada */}
                 <div aria-hidden="true" className="absolute inset-x-0 top-0 -z-10 h-72 overflow-hidden sm:h-80">
-                    <img src={FOTO_DETALLE} alt="" width={1600} height={2000} className="size-full object-cover object-top opacity-80" />
-                    <div className="absolute inset-0 bg-linear-to-b from-lienzo/20 via-lienzo/70 to-lienzo" />
+                    <img src={FOTO_DETALLE} alt="" width={1600} height={2000} className="size-full object-cover object-top opacity-55" />
+                    <div className="absolute inset-0 bg-linear-to-b from-lienzo/0 from-0% via-lienzo/40 via-55% to-lienzo to-100%" />
                 </div>
 
                 <div className="mx-auto w-full max-w-6xl px-5 pt-6 pb-32 sm:px-8 sm:pt-8 lg:pb-16">

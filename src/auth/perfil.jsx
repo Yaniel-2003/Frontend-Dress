@@ -234,11 +234,11 @@ function Perfil(){
                         width={2400}
                         height={1601}
                         fetchPriority="high"
-                        className="encender-superficie absolute inset-0 -z-20 size-full object-cover object-[30%_22%] sm:object-[60%_22%]"
+                        className="encender-foto absolute inset-0 -z-20 size-full object-cover object-[30%_22%] sm:object-[60%_22%]"
                     />
                     {/* velos para que el texto se lea sobre la foto */}
-                    <div aria-hidden="true" className="absolute inset-0 -z-10 bg-linear-to-t from-lienzo via-lienzo/65 to-lienzo/15" />
-                    <div aria-hidden="true" className="absolute inset-0 -z-10 bg-linear-to-r from-lienzo/80 via-lienzo/35 to-transparent" />
+                    <div aria-hidden="true" className="absolute inset-0 -z-10 bg-linear-to-t from-lienzo from-0% via-lienzo/30 via-30% to-transparent to-60%" />
+                    <div aria-hidden="true" className="absolute inset-0 -z-10 bg-linear-to-r from-lienzo/45 from-0% via-lienzo/10 via-40% to-transparent to-60%" />
 
                     <div className="mx-auto flex min-h-[min(52svh,28rem)] w-full max-w-7xl flex-col justify-end px-5 pt-24 pb-10 sm:px-8 sm:pb-14">
                         <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center">
@@ -501,7 +501,7 @@ function ModalDireccion ({ direccion, onCerrar, onEliminar }){
                     </Button>
                 </header>
 
-                <div className="flex-1 overflow-y-auto overscroll-contain p-6 sm:px-8 [scrollbar-color:rgb(244_239_230/0.2)_transparent]">
+                <div className="flex-1 overflow-y-auto overscroll-contain p-6 sm:px-8 [scrollbar-color:rgb(11_11_12/0.2)_transparent]">
                     {direccion.desplegarForm && <FormularioDireccion direccion={direccion} />}
 
                     <div className="flex flex-col gap-3">

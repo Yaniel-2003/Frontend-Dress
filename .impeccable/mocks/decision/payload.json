@@ -1,0 +1,73 @@
+{
+  "title": "Composición del home",
+  "question": "El mundo visual ya está fijado por el login (negro, Bodoni, foto, esmeralda). Elige cómo se organiza el home.",
+  "options": [
+    {
+      "id": "vitrina-nocturna",
+      "label": "Vitrina nocturna",
+      "kicker": "THE ROLL",
+      "lineage": "un escaparate de boutique iluminado de noche",
+      "thesis": "El home entero es el escaparate encendido: la tienda vista desde la calle, de noche.",
+      "palette": ["#0b0b0c", "#f4efe6", "#d9a85b", "#34d399"],
+      "materials": ["foto de la tienda a sangre", "tarjetas como cajas de vitrina iluminadas"],
+      "viewport": "Foto del perchero a pantalla completa con luz cálida; titular Bodoni grande abajo a la izquierda y el buscador como una barra de luz dentro del cristal; debajo arranca la selección en fondo oscuro.",
+      "risk": "Un catálogo largo en fondo oscuro pesa, y las fotos de producto con fondo blanco se ven como recortes pegados.",
+      "raised": [
+        { "from": "brodovitch-bazaar", "raise": "Titulares Bodoni a escala de display con mucho aire, y el filtro activo marcado con una línea fina en vez de una pastilla." }
+      ],
+      "html": ".impeccable/mocks/decision/vitrina-nocturna.html"
+    },
+    {
+      "id": "lookbook",
+      "label": "Lookbook en doble página",
+      "lineage": "un lookbook impreso de temporada",
+      "thesis": "La portada es una doble página: la foto posa a la izquierda y la tienda responde a la derecha.",
+      "palette": ["#fafafa", "#09090b", "#d9a85b", "#047857"],
+      "materials": ["papel claro", "foto a página completa", "tipografía Bodoni"],
+      "viewport": "Izquierda, la foto de la tienda a página completa; derecha, titular Bodoni, buscador y dos prendas destacadas; debajo, filas editoriales que alternan una prenda grande con dos pequeñas.",
+      "risk": "Más lento para llegar a la cuadrícula completa del catálogo.",
+      "html": ".impeccable/mocks/decision/lookbook.html"
+    },
+    {
+      "id": "escaparate",
+      "label": "Escaparate y percha",
+      "lineage": "la fachada de la tienda y el perchero de entrada",
+      "thesis": "Una banda de foto como fachada y, enseguida, el catálogo en un perchero con filtros siempre a mano.",
+      "palette": ["#fafafa", "#09090b", "#d9a85b", "#047857"],
+      "materials": ["banda fotográfica", "barra de filtros fija", "cuadrícula limpia"],
+      "viewport": "Banda de foto de 60% de alto con titular Bodoni y buscador sobre el velo; justo debajo, la barra de filtros fija y la selección en un carril horizontal.",
+      "risk": "Es la composición más cercana a lo que hace cualquier tienda en línea.",
+      "html": ".impeccable/mocks/decision/escaparate.html"
+    },
+    {
+      "id": "brodovitch-bazaar",
+      "label": "Doble página Bazaar",
+      "verdict": "declined",
+      "lineage": "Harper's Bazaar bajo Brodovitch",
+      "thesis": "Foto y titular coreografiados a través del pliegue.",
+      "palette": ["#f7f3ec", "#1c1c1c", "#c8102e"],
+      "materials": ["papel cálido", "Didot de trazo fino"],
+      "viewport": "Dobles páginas que se pasan como revista.",
+      "case": "Ya está casi contenido en el lookbook; traería un rojo y un papel que no son tu marca.",
+      "kept": "Display serif a gran escala con aire y selección por línea fina.",
+      "risk": "Navegar por páginas en vez de scroll estorba en una tienda.",
+      "hero": "https://impeccable.style/worlds/cards/brand-identity-canon-brodovitch-bazaar-spread-hero.webp"
+    },
+    {
+      "id": "drawcord-cape",
+      "label": "Capa con cordón",
+      "verdict": "declined",
+      "lineage": "capa de seda que se transforma al tirar del cordón",
+      "thesis": "Un plano que se recoge en volumen.",
+      "palette": ["#0d0d0d", "#c9a227", "#4a4f57"],
+      "materials": ["seda negra", "cordón dorado"],
+      "viewport": "Una capa que se transforma.",
+      "case": "Bonita pero no ayuda a encontrar y comprar prendas.",
+      "kept": "Un solo acento cálido usado como control.",
+      "risk": "Interacción de demostración, no de compra.",
+      "hero": "https://impeccable.style/worlds/cards/textiles-weave-drape-fashion-drawcord-transforming-cape-hero.webp"
+    }
+  ],
+  "reroll": true,
+  "steer": true
+}

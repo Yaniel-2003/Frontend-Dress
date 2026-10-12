@@ -98,12 +98,12 @@
   html { scroll-behavior: smooth; }
 }
 
-/* ───── Home: la foto del escaparate se asienta una sola vez al cargar ───── */
-@keyframes encender-vitrina {
+/* ───── Fotos de cabecera (home, perfil): se asientan una sola vez al cargar ───── */
+@keyframes encender-foto {
   from { transform: scale(1.06); filter: brightness(0.55); }
   to   { transform: scale(1);    filter: brightness(1); }
 }
-.encender-vitrina { animation: encender-vitrina 1.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.encender-foto { animation: encender-foto 1.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
 @media (prefers-reduced-motion: reduce) {
-  .encender-vitrina { animation: none; }
+  .encender-foto { animation: none; }
 }

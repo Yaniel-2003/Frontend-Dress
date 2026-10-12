@@ -671,7 +671,7 @@ function Articulos() {
             height={1600}
             className="absolute inset-0 -z-20 size-full object-cover object-[50%_40%]"
           />
-          <div aria-hidden="true" className="absolute inset-0 -z-10 bg-linear-to-r from-white via-white/95 to-white/55 sm:via-white/75 sm:to-white/10" />
+          <div aria-hidden="true" className="absolute inset-0 -z-10 bg-linear-to-r from-white from-0% via-white/85 via-45% to-white/30 sm:via-white/65 sm:via-35% sm:to-transparent sm:to-70%" />
           <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <h1 className="font-display text-4xl leading-tight font-normal sm:text-5xl">Artículos</h1>

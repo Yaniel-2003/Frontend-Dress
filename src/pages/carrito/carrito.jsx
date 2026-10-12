@@ -139,7 +139,7 @@ function Carrito() {
         <div className="flex min-h-screen flex-col bg-lienzo text-tinta selection:text-tinta">
             <NavBar />
             <main className="relative isolate flex-1">
-                <BandaFoto src={FOTO_CARRITO} posicion="object-[50%_35%]" opacidad="opacity-25" />
+                <BandaFoto src={FOTO_CARRITO} posicion="object-[50%_35%]" opacidad="opacity-70" />
 
                 <div className="mx-auto w-full max-w-6xl px-5 pt-8 pb-20 sm:px-8 sm:pt-10">
                     <PasosCompra actual={1} />

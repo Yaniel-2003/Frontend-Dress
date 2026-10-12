@@ -34,7 +34,7 @@ function MiCarrito(){
                     height={800}
                     className="absolute inset-0 -z-20 size-full object-cover object-[50%_35%]"
                 />
-                <div aria-hidden="true" className="absolute inset-0 -z-10 bg-linear-to-t from-lienzo via-lienzo/75 to-lienzo/10" />
+                <div aria-hidden="true" className="absolute inset-0 -z-10 bg-linear-to-t from-lienzo from-0% via-lienzo/75 via-45% to-transparent to-90%" />
                 <SheetClose
                     aria-label="Cerrar mi carrito"
                     className="absolute top-4 right-4 flex size-10 cursor-pointer items-center justify-center rounded-full bg-lienzo/70 text-tinta ring-1 ring-tinta/20 backdrop-blur-md transition-colors hover:bg-lienzo focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
@@ -49,7 +49,7 @@ function MiCarrito(){
                 </SheetDescription>
             </header>
 
-            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pt-2 pb-4 [scrollbar-color:rgb(244_239_230/0.2)_transparent]">
+            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pt-2 pb-4 [scrollbar-color:rgb(11_11_12/0.2)_transparent]">
                 {miCarrito.length === 0 ? (
                     <div className="mx-2 mt-6 flex flex-col items-center gap-3 border-y border-tinta/10 py-14 text-center">
                         <span className="flex size-12 items-center justify-center rounded-full bg-linear-to-br from-esmeralda/25 to-azul/25 text-emerald-700 ring-1 ring-esmeralda/30">

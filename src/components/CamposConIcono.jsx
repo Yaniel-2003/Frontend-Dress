@@ -16,7 +16,7 @@ const claseIcono = (tono) => cn(claseIconoBase, TONOS_ICONO[tono] ?? TONOS_ICONO
 
 // Campo sobre noche: fondo oscuro translúcido, borde de crema, foco esmeralda
 export const CLASE_CAMPO_NOCHE =
-    "border-tinta/15 bg-lienzo/60 text-tinta shadow-none placeholder:text-tinta/35 focus-visible:border-esmeralda focus-visible:ring-esmeralda/30";
+    "border-tinta/15 bg-lienzo/60 text-tinta shadow-none placeholder:text-tinta/50 focus-visible:border-esmeralda focus-visible:ring-esmeralda/30";
 
 // <InputIcono icon={MailIcon} type="email" ... accion={<Button/>} />
 export function InputIcono({ icon: Icon, className, accion, tono = "claro", ...props }) {

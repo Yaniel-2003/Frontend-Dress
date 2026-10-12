@@ -1,0 +1,588 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-12T01:43:38Z",
+  "title": "Design System: Dress Shopy",
+  "extensions": {
+    "colorMeta": {
+      "lienzo": {
+        "role": "neutral",
+        "displayName": "Lienzo (page white)",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#242425",
+          "#3f3f41",
+          "#5d5d5f",
+          "#808081",
+          "#a4a4a6",
+          "#cacacc",
+          "#fafafa"
+        ]
+      },
+      "superficie": {
+        "role": "neutral",
+        "displayName": "Superficie (box white)",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#242425",
+          "#3f3f41",
+          "#5d5d5f",
+          "#808081",
+          "#a4a4a6",
+          "#cacacc",
+          "#ffffff"
+        ]
+      },
+      "tinta": {
+        "role": "neutral",
+        "displayName": "Tinta (ink)",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#242425",
+          "#3f3f41",
+          "#5d5d5f",
+          "#808081",
+          "#a4a4a6",
+          "#cacacc",
+          "#eeeef0"
+        ]
+      },
+      "esmeralda": {
+        "role": "primary",
+        "displayName": "Identity Emerald",
+        "tonalRamp": [
+          "#022c22",
+          "#064e3b",
+          "#047857",
+          "#059669",
+          "#10b981",
+          "#34d399",
+          "#a7f3d0",
+          "#ecfdf5"
+        ]
+      },
+      "azul": {
+        "role": "secondary",
+        "displayName": "Identity Blue",
+        "tonalRamp": [
+          "#172554",
+          "#1e3a8a",
+          "#1d4ed8",
+          "#3b82f6",
+          "#60a5fa",
+          "#93c5fd",
+          "#bfdbfe",
+          "#eff6ff"
+        ]
+      },
+      "emerald-texto": {
+        "role": "secondary",
+        "displayName": "Emerald Text (emerald-700)",
+        "tonalRamp": [
+          "#022c22",
+          "#064e3b",
+          "#047857",
+          "#059669",
+          "#10b981",
+          "#34d399",
+          "#a7f3d0",
+          "#ecfdf5"
+        ]
+      },
+      "emerald-foco": {
+        "role": "secondary",
+        "displayName": "Emerald Focus (emerald-600)",
+        "tonalRamp": [
+          "#022c22",
+          "#064e3b",
+          "#047857",
+          "#059669",
+          "#10b981",
+          "#34d399",
+          "#a7f3d0",
+          "#ecfdf5"
+        ]
+      },
+      "sky-info": {
+        "role": "tertiary",
+        "displayName": "Info Sky (sky-700)",
+        "tonalRamp": [
+          "#082f49",
+          "#0c4a6e",
+          "#0369a1",
+          "#0ea5e9",
+          "#38bdf8",
+          "#7dd3fc",
+          "#bae6fd",
+          "#f0f9ff"
+        ]
+      },
+      "sky-tint": {
+        "role": "tertiary",
+        "displayName": "Sky Tint (sky-400)",
+        "tonalRamp": [
+          "#082f49",
+          "#0c4a6e",
+          "#0369a1",
+          "#0ea5e9",
+          "#38bdf8",
+          "#7dd3fc",
+          "#bae6fd",
+          "#f0f9ff"
+        ]
+      },
+      "ring": {
+        "role": "neutral",
+        "displayName": "Focus Emerald",
+        "tonalRamp": [
+          "#000f07",
+          "#012c1c",
+          "#034c33",
+          "#056f4c",
+          "#089769",
+          "#24c188",
+          "#5be8ad",
+          "#c1ffe0"
+        ]
+      },
+      "background": {
+        "role": "neutral",
+        "displayName": "Daylight Ground",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#242424",
+          "#404040",
+          "#5d5d5d",
+          "#808080",
+          "#a4a4a4",
+          "#cacaca",
+          "#eeeeee"
+        ]
+      },
+      "foreground": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "tonalRamp": [
+          "#0b0b0d",
+          "#242426",
+          "#3f3f42",
+          "#5d5d60",
+          "#808083",
+          "#a4a4a7",
+          "#cacacd",
+          "#eeeef1"
+        ]
+      },
+      "card": {
+        "role": "neutral",
+        "displayName": "Card White",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#242424",
+          "#404040",
+          "#5d5d5d",
+          "#808080",
+          "#a4a4a4",
+          "#cacaca",
+          "#eeeeee"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted Zinc",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#242425",
+          "#404040",
+          "#5d5d5e",
+          "#808081",
+          "#a4a4a5",
+          "#cacacb",
+          "#eeeeef"
+        ]
+      },
+      "muted-foreground": {
+        "role": "neutral",
+        "displayName": "Muted Text",
+        "tonalRamp": [
+          "#0b0a11",
+          "#23232b",
+          "#3f3f47",
+          "#5d5d65",
+          "#7f7f88",
+          "#a3a3ad",
+          "#c9c9d3",
+          "#ededf8"
+        ]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Hairline Zinc",
+        "tonalRamp": [
+          "#0b0b0d",
+          "#242426",
+          "#3f3f42",
+          "#5d5d60",
+          "#808082",
+          "#a4a4a7",
+          "#cacacd",
+          "#eeeef1"
+        ]
+      },
+      "destructive": {
+        "role": "error",
+        "displayName": "Error Red",
+        "tonalRamp": [
+          "#1f0000",
+          "#4b0103",
+          "#7c0208",
+          "#b20110",
+          "#e4312e",
+          "#fe7366",
+          "#ffb5ac",
+          "#ffe9e5"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Home hero headline over the veiled store photo."
+      },
+      "display-panel": {
+        "displayName": "Display panel",
+        "purpose": "Auth editorial panel headline (white on the dark pre-login panel); 3.75rem at xl."
+      },
+      "headline-page": {
+        "displayName": "Page headline",
+        "purpose": "Page titles at 36px, 48px from sm: cart, order, profile greeting, item detail, Artículos."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Home section titles (36px from sm); cart sheet and filter modal titles at 30px."
+      },
+      "title-serif": {
+        "displayName": "Serif title",
+        "purpose": "Detail panel titles and profile section/modal titles."
+      },
+      "title-panel": {
+        "displayName": "Panel title",
+        "purpose": "Cart summary title and order receipt row names at tinta 80%."
+      },
+      "title-page": {
+        "displayName": "Page title (sans)",
+        "purpose": "Daylight auth headings (registro, forgotPass, resetPass)."
+      },
+      "title-form": {
+        "displayName": "Form title",
+        "purpose": "Login form heading."
+      },
+      "title-product": {
+        "displayName": "Product title",
+        "purpose": "Product name under a vitrine card and in receipt lines; truncated."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Descriptions, helper text, footer."
+      },
+      "body-lede": {
+        "displayName": "Lede",
+        "purpose": "Hero and profile sentence (16px, 18px from sm), tinta 75%."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Form labels, nav links, chip text; legends at 600."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Brand above line items, qty × unit, savings lines, Principal."
+      },
+      "micro": {
+        "displayName": "Micro (11px)",
+        "purpose": "Counters and badges only, plus compact cart-sheet tags."
+      },
+      "price": {
+        "displayName": "Price",
+        "purpose": "Card prices, tabular; struck originals at 14px tinta 60%."
+      },
+      "price-total": {
+        "displayName": "Price total",
+        "purpose": "Cart sheet total; cart summary at 1.5rem→1.875rem weight 500."
+      },
+      "price-receipt": {
+        "displayName": "Receipt total",
+        "purpose": "Closing total of the order receipt only; the one Gilda price."
+      }
+    },
+    "shadows": [
+      {
+        "name": "capsule-glass",
+        "value": "0 18px 48px -24px rgb(24 24 27 / 0.12)",
+        "purpose": "Home search capsule at rest, over lienzo 60% with backdrop blur and a tinta-20% ring."
+      },
+      {
+        "name": "capsule-glass-focus",
+        "value": "0 0 0 6px rgb(52 211 153 / 0.12), 0 0 48px -12px rgb(96 165 250 / 0.45)",
+        "purpose": "Search capsule on focus-within, with a 2px esmeralda ring at 70%."
+      },
+      {
+        "name": "float",
+        "value": "0 10px 15px -3px rgb(24 24 27 / 0.1), 0 4px 6px -4px rgb(24 24 27 / 0.1)",
+        "purpose": "Carousel arrows and offer tags; the floating cart uses zinc-900 at 25%."
+      },
+      {
+        "name": "modal",
+        "value": "0 20px 25px -5px rgb(24 24 27 / 0.1), 0 8px 10px -6px rgb(24 24 27 / 0.1), 0 0 0 1px rgb(11 11 12 / 0.1)",
+        "purpose": "Filter and address modals over a zinc-950 40% blurred backdrop."
+      },
+      {
+        "name": "vitrine-tint",
+        "value": "radial-gradient(90% 55% at 15% 0%, rgb(52 211 153 / 0.18), transparent 70%), radial-gradient(80% 50% at 100% 100%, rgb(96 165 250 / 0.16), transparent 70%); mix-blend-mode: multiply; opacity 0.6 (1 on hover)",
+        "purpose": "Inner emerald and blue tint of white vitrine cards."
+      },
+      {
+        "name": "daylight-card",
+        "value": "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
+        "purpose": "Daylight auth and Artículos cards with a 1px zinc border."
+      }
+    ],
+    "motion": [
+      {
+        "name": "encender-vitrina",
+        "value": "1.6s cubic-bezier(0.16, 1, 0.3, 1) both; from scale(1.06) brightness(0.55) to scale(1) brightness(1)",
+        "purpose": "Defined for the home and profile hero photos; currently unwired (the images use the undefined class encender-superficie). Disabled under prefers-reduced-motion."
+      },
+      {
+        "name": "card-light",
+        "value": "300ms on opacity (frame ::before and tint ::after)",
+        "purpose": "Vitrine card gradient frame and inner tint switch on at hover/focus."
+      },
+      {
+        "name": "ver-detalle",
+        "value": "300ms opacity and translate; translate-y 8px to 0 under motion-safe",
+        "purpose": "Ver detalle pill appears over the card photo."
+      },
+      {
+        "name": "nav-hairline",
+        "value": "transform 300ms, scale-x 0 to 1 from left",
+        "purpose": "Emerald hairline under the active nav link."
+      },
+      {
+        "name": "carousel-slide",
+        "value": "transform 500ms ease-out, 312px stride",
+        "purpose": "Offer carousel step."
+      },
+      {
+        "name": "identity-hover",
+        "value": "filter: brightness(1.1)",
+        "purpose": "Hover on gradient identity buttons."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      },
+      {
+        "name": "xl",
+        "value": "1280px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Identity Button",
+      "kind": "button",
+      "refersTo": "button-identidad",
+      "description": "The one primary action per view: emerald-to-blue gradient, tinta text.",
+      "html": "<div class=\"ds-l\"><button class=\"ds-btn-id\">Continuar con la compra <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"m9 18 6-6-6-6\"/></svg></button></div>",
+      "css": ".ds-l{background:var(--lienzo,#fafafa);padding:24px;font-family:Inter,ui-sans-serif,sans-serif;color:var(--tinta,#0b0b0c)}.ds-btn-id{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border:0;border-radius:12px;background:linear-gradient(to right,var(--esmeralda,#34d399),var(--azul,#60a5fa));color:var(--tinta,#0b0b0c);font:600 16px/1 Inter,ui-sans-serif,sans-serif;cursor:pointer;transition:filter .15s,box-shadow .15s}.ds-btn-id:hover{filter:brightness(1.1)}.ds-btn-id:focus-visible{outline:none;box-shadow:0 0 0 3px rgb(52 211 153/.5)}.ds-btn-id:disabled{opacity:.5}"
+    },
+    {
+      "name": "Tinta Button",
+      "kind": "button",
+      "refersTo": "button-tinta",
+      "description": "Dark accent: Filtros, profile primary actions; carousel arrows share the fill.",
+      "html": "<div class=\"ds-l\"><button class=\"ds-btn-t\">Guardar cambios</button></div>",
+      "css": ".ds-l{background:var(--lienzo,#fafafa);padding:24px;font-family:Inter,ui-sans-serif,sans-serif;color:var(--tinta,#0b0b0c)}.ds-btn-t{display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 16px;border:0;border-radius:12px;background:var(--tinta,#0b0b0c);color:var(--lienzo,#fafafa);font:600 14px/1 Inter,ui-sans-serif,sans-serif;cursor:pointer;transition:background .15s}.ds-btn-t:hover{background:#27272a}.ds-btn-t:focus-visible{outline:2px solid #059669;outline-offset:2px}"
+    },
+    {
+      "name": "Primary Button (daylight auth)",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Ink action button on the pre-login auth form; hover shifts to emerald-700.",
+      "html": "<button class=\"ds-btn-primary\">Iniciar sesión</button>",
+      "css": ".ds-btn-primary{display:inline-flex;align-items:center;justify-content:center;height:44px;padding:0 24px;border:0;border-radius:12px;background:var(--primary,#09090b);color:var(--primary-foreground,#fafafa);font:500 14px/1 Inter,ui-sans-serif,system-ui,sans-serif;box-shadow:0 1px 3px 0 rgb(0 0 0/.1),0 1px 2px -1px rgb(0 0 0/.1);transition:all .15s;cursor:pointer}.ds-btn-primary:hover{background:#047857}.ds-btn-primary:focus-visible{outline:none;box-shadow:0 0 0 3px rgb(16 185 129/.5)}"
+    },
+    {
+      "name": "Search Capsule",
+      "kind": "input",
+      "refersTo": "search-capsule",
+      "description": "Home hero search: glass capsule on white with emerald-700 icon, input and dark Filtros button with emerald count badge.",
+      "html": "<div class=\"ds-l\"><div class=\"ds-cap\"><svg class=\"ds-cap-icon\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><circle cx=\"11\" cy=\"11\" r=\"8\"/><path d=\"m21 21-4.3-4.3\"/></svg><input class=\"ds-cap-input\" type=\"search\" placeholder=\"Busca una prenda…\" aria-label=\"Buscar prendas\"><button class=\"ds-cap-btn\" type=\"button\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6\"/></svg>Filtros<span class=\"ds-cap-count\">2</span></button></div></div>",
+      "css": ".ds-l{background:var(--lienzo,#fafafa);padding:24px;font-family:Inter,ui-sans-serif,sans-serif;color:var(--tinta,#0b0b0c)}.ds-cap{display:flex;align-items:center;gap:8px;max-width:520px;padding:6px 6px 6px 16px;border-radius:16px;background:rgb(250 250 250/.6);backdrop-filter:blur(12px);box-shadow:0 18px 48px -24px rgb(24 24 27/.12),0 0 0 1px rgb(11 11 12/.2);transition:box-shadow .15s}.ds-cap:focus-within{box-shadow:0 0 0 2px rgb(52 211 153/.7),0 0 0 6px rgb(52 211 153/.12),0 0 48px -12px rgb(96 165 250/.45)}.ds-cap-icon{flex-shrink:0;color:#047857}.ds-cap-input{flex:1;min-width:0;height:48px;border:0;background:transparent;color:var(--tinta,#0b0b0c);font:400 15px Inter,ui-sans-serif,sans-serif;outline:none}.ds-cap-input::placeholder{color:rgb(11 11 12/.5)}.ds-cap-btn{display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 16px;border:0;border-radius:12px;background:var(--tinta,#0b0b0c);color:var(--lienzo,#fafafa);font:600 14px/1 Inter,ui-sans-serif,sans-serif;cursor:pointer;transition:background .15s}.ds-cap-btn:hover{background:#27272a}.ds-cap-btn:focus-visible{outline:2px solid #059669;outline-offset:2px}.ds-cap-count{display:flex;align-items:center;justify-content:center;height:20px;min-width:20px;padding:0 6px;border-radius:9999px;background:var(--esmeralda,#34d399);color:var(--tinta,#0b0b0c);font:700 11px/1 Inter,sans-serif;font-variant-numeric:tabular-nums}"
+    },
+    {
+      "name": "Store Field",
+      "kind": "input",
+      "refersTo": "input-tienda",
+      "description": "Labeled 44px field on post-login forms (tono=\"noche\" prop, now light) with a leading icon; emerald focus.",
+      "html": "<div class=\"ds-l\"><label class=\"ds-nf\"><span class=\"ds-nf-label\">Correo</span><span class=\"ds-nf-wrap\"><svg class=\"ds-nf-icon\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"2\" y=\"4\" width=\"20\" height=\"16\" rx=\"2\"/><path d=\"m22 7-10 6L2 7\"/></svg><input class=\"ds-nf-input\" type=\"email\" placeholder=\"correo@ejemplo.com\"></span></label></div>",
+      "css": ".ds-l{background:var(--lienzo,#fafafa);padding:24px;font-family:Inter,ui-sans-serif,sans-serif;color:var(--tinta,#0b0b0c)}.ds-nf{display:grid;gap:8px;max-width:360px}.ds-nf-label{font-size:14px;font-weight:500;color:rgb(11 11 12/.8)}.ds-nf-wrap{position:relative}.ds-nf-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:rgb(11 11 12/.6);transition:color .15s}.ds-nf-wrap:focus-within .ds-nf-icon{color:#047857}.ds-nf-input{width:100%;height:44px;padding:8px 14px 8px 40px;border:1px solid rgb(11 11 12/.15);border-radius:12px;background:rgb(250 250 250/.6);color:var(--tinta,#0b0b0c);font-size:14px;outline:none;transition:box-shadow .15s,border-color .15s}.ds-nf-input::placeholder{color:rgb(11 11 12/.6)}.ds-nf-input:focus-visible{border-color:var(--esmeralda,#34d399);box-shadow:0 0 0 3px rgb(52 211 153/.3)}"
+    },
+    {
+      "name": "NavBar",
+      "kind": "nav",
+      "refersTo": "nav-bar",
+      "description": "Sticky lienzo band; active link marked by an emerald hairline; dark logo with emerald-600 word.",
+      "html": "<nav class=\"ds-nav\"><span class=\"ds-nav-logo\">Dress <em>Shopy</em></span><div class=\"ds-nav-links\"><a href=\"#\" class=\"ds-nav-link is-active\">Inicio</a><a href=\"#\" class=\"ds-nav-link\">Artículos</a><a href=\"#\" class=\"ds-nav-link\">Perfil</a></div></nav>",
+      "css": ".ds-nav{display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 32px;background:var(--lienzo,#fafafa);border-bottom:1px solid rgb(11 11 12/.1);font-family:Inter,ui-sans-serif,sans-serif}.ds-nav-logo{color:var(--tinta,#0b0b0c);font-weight:600;font-size:18px;letter-spacing:-.025em}.ds-nav-logo em{font-style:normal;color:#059669}.ds-nav-links{display:flex;gap:32px}.ds-nav-link{position:relative;padding:8px 4px;font-size:14px;font-weight:500;color:rgb(11 11 12/.6);text-decoration:none;transition:color .15s;border-radius:2px}.ds-nav-link::after{content:\"\";position:absolute;left:4px;right:4px;bottom:-2px;height:1px;background:var(--esmeralda,#34d399);transform:scaleX(0);transform-origin:left;transition:transform .3s}.ds-nav-link:hover,.ds-nav-link.is-active{color:var(--tinta,#0b0b0c)}.ds-nav-link.is-active::after{transform:scaleX(1)}.ds-nav-link:focus-visible{outline:2px solid #059669;outline-offset:4px}"
+    },
+    {
+      "name": "Filter Chip",
+      "kind": "chip",
+      "refersTo": "chip-filtro",
+      "description": "44px pill checkbox on the white filter sheet; checked shows emerald tint, border and emerald-700 check.",
+      "html": "<div class=\"ds-l\" style=\"background:#fff\"><label class=\"ds-chip\"><input type=\"checkbox\">Talla M<svg class=\"ds-chip-check\" width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 13l4 4L19 7\"/></svg></label> <label class=\"ds-chip\"><input type=\"checkbox\" checked><span class=\"ds-chip-sw\" style=\"background:#111\"></span>Negro<svg class=\"ds-chip-check\" width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 13l4 4L19 7\"/></svg></label></div>",
+      "css": ".ds-l{background:var(--lienzo,#fafafa);padding:24px;font-family:Inter,ui-sans-serif,sans-serif;color:var(--tinta,#0b0b0c)}.ds-chip{position:relative;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border:1px solid rgb(11 11 12/.15);border-radius:9999px;background:rgb(11 11 12/.03);color:rgb(11 11 12/.8);font:400 14px Inter,ui-sans-serif,sans-serif;cursor:pointer;user-select:none;transition:border-color .15s,background .15s,color .15s}.ds-chip input{position:absolute;opacity:0;width:1px;height:1px}.ds-chip:hover{border-color:rgb(11 11 12/.35);color:var(--tinta,#0b0b0c)}.ds-chip:has(:checked){border-color:rgb(52 211 153/.7);background:rgb(52 211 153/.15);color:var(--tinta,#0b0b0c)}.ds-chip-check{display:none;color:#047857}.ds-chip:has(:checked) .ds-chip-check{display:block}.ds-chip:has(:focus-visible){box-shadow:0 0 0 3px rgb(52 211 153/.5)}.ds-chip-sw{width:14px;height:14px;border-radius:9999px;box-shadow:0 0 0 1px rgb(11 11 12/.3)}"
+    },
+    {
+      "name": "Vitrine Card",
+      "kind": "card",
+      "refersTo": "vitrina-card",
+      "description": "Signature product card on white: gradient frame and multiplied emerald/blue tint switch on at hover; Ver detalle pill; text below.",
+      "html": "<div class=\"ds-l\"><a href=\"#\" class=\"ds-vc\"><div class=\"ds-vc-frame\"><div class=\"ds-vc-box\"><span class=\"ds-tag\">-20%</span><span class=\"ds-vc-pill\">Ver detalle <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"m9 18 6-6-6-6\"/></svg></span></div></div><h3 class=\"ds-vc-name\">Vestido lino</h3><p class=\"ds-vc-desc\">Corte midi, tirantes finos</p><p class=\"ds-vc-price\"><span class=\"ds-vc-off\">$ 72.000</span> <s>$ 90.000</s></p><p class=\"ds-vc-save\">Ahorras $ 18.000</p></a></div>",
+      "css": ".ds-l{background:var(--lienzo,#fafafa);padding:24px;font-family:Inter,ui-sans-serif,sans-serif;color:var(--tinta,#0b0b0c)}.ds-vc{display:block;width:220px;color:inherit;text-decoration:none;border-radius:16px}.ds-vc:focus-visible{outline:2px solid #059669;outline-offset:4px}.ds-vc-frame{position:relative;padding:1px;border-radius:16px;background:rgb(11 11 12/.1)}.ds-vc-frame::before{content:\"\";position:absolute;inset:0;border-radius:16px;background:linear-gradient(to bottom right,rgb(52 211 153/.85),rgb(52 211 153/.2),rgb(96 165 250/.85));opacity:0;transition:opacity .3s;pointer-events:none}.ds-vc:hover .ds-vc-frame::before,.ds-vc:focus-visible .ds-vc-frame::before{opacity:1}.ds-vc-box{position:relative;aspect-ratio:4/5;border-radius:15px;background:var(--superficie,#fff);overflow:hidden}.ds-vc-box::after{content:\"\";position:absolute;inset:0;background:radial-gradient(90% 55% at 15% 0%,rgb(52 211 153/.18),transparent 70%),radial-gradient(80% 50% at 100% 100%,rgb(96 165 250/.16),transparent 70%);mix-blend-mode:multiply;opacity:.6;transition:opacity .3s;pointer-events:none}.ds-vc:hover .ds-vc-box::after{opacity:1}.ds-vc-pill{position:absolute;left:12px;right:12px;bottom:12px;z-index:1;display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-radius:12px;background:rgb(250 250 250/.75);backdrop-filter:blur(12px);box-shadow:0 0 0 1px rgb(11 11 12/.15);font-size:14px;font-weight:500;opacity:0;transform:translateY(8px);transition:opacity .3s,transform .3s}.ds-vc-pill svg{color:#047857}.ds-vc:hover .ds-vc-pill,.ds-vc:focus-visible .ds-vc-pill{opacity:1;transform:none}.ds-vc-name{margin:16px 0 0;font-size:15px;font-weight:500}.ds-vc-desc{margin:2px 0 0;font-size:14px;color:rgb(11 11 12/.6)}.ds-vc-price{margin:8px 0 0;font-variant-numeric:tabular-nums}.ds-vc-off{font-size:18px;font-weight:600;color:#047857}.ds-vc-price s{font-size:14px;color:rgb(11 11 12/.6)}.ds-vc-save{margin:2px 0 0;font-size:12px;color:#0369a1;font-variant-numeric:tabular-nums}.ds-tag{position:absolute;top:12px;left:12px;z-index:1;padding:4px 10px;border-radius:9999px;background:linear-gradient(to right,var(--esmeralda,#34d399),var(--azul,#60a5fa));color:var(--tinta,#0b0b0c);font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;box-shadow:0 10px 15px -3px rgb(24 24 27/.1)}@media (prefers-reduced-motion:reduce){.ds-vc-pill{transform:none}}"
+    },
+    {
+      "name": "Checkout Steps",
+      "kind": "custom",
+      "refersTo": "",
+      "description": "Two-step indicator Carrito → Confirmar: done in emerald-700, active as a gradient dot.",
+      "html": "<div class=\"ds-l\"><ol class=\"ds-steps\"><li class=\"is-done\"><span class=\"ds-dot\"><svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 13l4 4L19 7\"/></svg></span>Carrito<span class=\"ds-line\"></span></li><li class=\"is-active\"><span class=\"ds-dot\">2</span>Confirmar</li></ol></div>",
+      "css": ".ds-l{background:var(--lienzo,#fafafa);padding:24px;font-family:Inter,ui-sans-serif,sans-serif;color:var(--tinta,#0b0b0c)}.ds-steps{display:flex;gap:12px;margin:0;padding:0;list-style:none;font-size:14px}.ds-steps li{display:flex;align-items:center;gap:8px;color:rgb(11 11 12/.6)}.ds-dot{display:flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:9999px;font-size:12px;font-weight:600;font-variant-numeric:tabular-nums;box-shadow:0 0 0 1px rgb(11 11 12/.25)}.ds-steps .is-done{color:#047857}.ds-steps .is-done .ds-dot{background:rgb(52 211 153/.15);box-shadow:0 0 0 1px rgb(52 211 153/.4)}.ds-steps .is-active{color:var(--tinta,#0b0b0c)}.ds-steps .is-active .ds-dot{background:linear-gradient(to bottom right,var(--esmeralda,#34d399),var(--azul,#60a5fa));color:var(--tinta,#0b0b0c);box-shadow:none}.ds-line{display:block;width:40px;height:1px;margin-left:4px;background:rgb(52 211 153/.6)}"
+    },
+    {
+      "name": "Order Receipt",
+      "kind": "custom",
+      "refersTo": "receipt-row",
+      "description": "Order page: single-column receipt with hairline rows, serif row names, radio address rows, typographic item list and a Gilda closing total.",
+      "html": "<div class=\"ds-l\"><div class=\"ds-rc\"><section class=\"ds-rc-row\"><h2 class=\"ds-rc-name\">Enviar a</h2><div role=\"radiogroup\" class=\"ds-rc-list\"><button type=\"button\" role=\"radio\" aria-checked=\"true\" class=\"ds-rc-addr is-on\"><span class=\"ds-rc-radio\"><span></span></span><span><span class=\"ds-rc-who\">Laura Gómez <em>Principal</em></span><span class=\"ds-rc-line\">Calle 45 #12-30, Bogotá</span></span></button><button type=\"button\" role=\"radio\" aria-checked=\"false\" class=\"ds-rc-addr\"><span class=\"ds-rc-radio\"></span><span><span class=\"ds-rc-who\">Oficina</span><span class=\"ds-rc-line\">Cra 7 #71-21, Bogotá</span></span></button></div></section><section class=\"ds-rc-row\"><h2 class=\"ds-rc-name\">Tu pedido<small>1 unidad</small></h2><ul class=\"ds-rc-list\"><li class=\"ds-rc-item\"><span class=\"ds-rc-th\"></span><span class=\"ds-rc-meta\"><b>Vestido lino</b><span>Talla M · Negro · 1 × $ 72.000</span></span><span class=\"ds-rc-sum\">$ 72.000</span></li></ul></section><section class=\"ds-rc-row ds-rc-end\"><h2 class=\"ds-rc-name\">Total</h2><div class=\"ds-rc-close\"><p class=\"ds-rc-total\">$ 72.000</p><div class=\"ds-rc-actions\"><button class=\"ds-btn-id\">Confirmar compra</button><a href=\"#\" class=\"ds-rc-back\">Volver al carrito</a></div></div></section></div></div>",
+      "css": ".ds-l{background:var(--lienzo,#fafafa);padding:24px;font-family:Inter,ui-sans-serif,sans-serif;color:var(--tinta,#0b0b0c)}.ds-rc{max-width:56rem;border-top:1px solid rgb(11 11 12/.15)}.ds-rc-row{display:grid;grid-template-columns:9rem minmax(0,1fr);gap:32px;padding:24px 0;border-bottom:1px solid rgb(11 11 12/.15)}.ds-rc-end{border-bottom:0;align-items:center}.ds-rc-name{margin:0;font:400 20px/1.4 'Gilda Display',ui-serif,Georgia,serif;color:rgb(11 11 12/.8)}.ds-rc-name small{display:block;margin-top:4px;font:400 14px Inter,sans-serif;color:rgb(11 11 12/.6)}.ds-rc-list{margin:0;padding:0;list-style:none}.ds-rc-list>*+*{border-top:1px solid rgb(11 11 12/.1)}.ds-rc-addr{display:flex;align-items:flex-start;gap:16px;width:100%;padding:12px 0;border:0;background:none;color:inherit;text-align:left;font:inherit;cursor:pointer}.ds-rc-addr:focus-visible{outline:2px solid #059669;outline-offset:-2px}.ds-rc-radio{display:flex;align-items:center;justify-content:center;flex-shrink:0;width:20px;height:20px;margin-top:2px;border-radius:9999px;box-shadow:0 0 0 1px rgb(11 11 12/.35)}.ds-rc-addr:hover .ds-rc-radio{box-shadow:0 0 0 1px rgb(11 11 12/.6)}.is-on .ds-rc-radio{background:linear-gradient(to bottom right,var(--esmeralda,#34d399),var(--azul,#60a5fa));box-shadow:none}.ds-rc-radio span{width:8px;height:8px;border-radius:9999px;background:var(--lienzo,#fafafa)}.ds-rc-who{display:block;font-size:16px;font-weight:500;color:rgb(11 11 12/.8)}.is-on .ds-rc-who{color:var(--tinta,#0b0b0c)}.ds-rc-who em{margin-left:12px;font-style:normal;font-size:12px;letter-spacing:.025em;color:#047857}.ds-rc-line{display:block;margin-top:2px;font-size:14px;color:rgb(11 11 12/.6)}.is-on .ds-rc-line{color:rgb(11 11 12/.75)}.ds-rc-item{display:flex;align-items:center;gap:16px;padding:10px 0}.ds-rc-th{width:40px;height:50px;flex-shrink:0;border-radius:6px;background:rgb(11 11 12/.05);box-shadow:0 0 0 1px rgb(11 11 12/.1)}.ds-rc-meta{flex:1;min-width:0;display:grid;font-size:14px;color:rgb(11 11 12/.6);font-variant-numeric:tabular-nums}.ds-rc-meta b{font-size:15px;font-weight:500;color:var(--tinta,#0b0b0c)}.ds-rc-sum{font-size:15px;font-weight:500;font-variant-numeric:tabular-nums}.ds-rc-close{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px}.ds-rc-total{margin:0;font:400 36px/1 'Gilda Display',ui-serif,Georgia,serif;font-variant-numeric:tabular-nums}.ds-rc-actions{display:flex;align-items:center;gap:8px}.ds-btn-id{height:48px;min-width:14rem;padding:0 28px;border:0;border-radius:12px;background:linear-gradient(to right,var(--esmeralda,#34d399),var(--azul,#60a5fa));color:var(--tinta,#0b0b0c);font:600 16px/1 Inter,sans-serif;cursor:pointer}.ds-btn-id:hover{filter:brightness(1.1)}.ds-btn-id:focus-visible{outline:none;box-shadow:0 0 0 3px rgb(52 211 153/.5)}.ds-rc-back{display:inline-flex;align-items:center;min-height:44px;padding:0 8px;font-size:14px;font-weight:500;color:rgb(11 11 12/.7);text-decoration:none;text-underline-offset:4px}.ds-rc-back:hover{color:var(--tinta,#0b0b0c);text-decoration:underline}@media (max-width:640px){.ds-rc-row{grid-template-columns:1fr;gap:12px}.ds-rc-actions{flex-direction:column;align-items:stretch;width:100%}}"
+    },
+    {
+      "name": "Info Tag",
+      "kind": "chip",
+      "refersTo": "tag-info",
+      "description": "Sky informational tag on white: savings and discount counters.",
+      "html": "<div class=\"ds-l\"><span class=\"ds-info\"><svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"M19 5 5 19\"/><circle cx=\"6.5\" cy=\"6.5\" r=\"2.5\"/><circle cx=\"17.5\" cy=\"17.5\" r=\"2.5\"/></svg>-15%</span></div>",
+      "css": ".ds-l{background:var(--lienzo,#fafafa);padding:24px;font-family:Inter,ui-sans-serif,sans-serif;color:var(--tinta,#0b0b0c)}.ds-info{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:9999px;background:rgb(56 189 248/.1);box-shadow:0 0 0 1px rgb(56 189 248/.25);color:#0369a1;font-size:12px;font-variant-numeric:tabular-nums}"
+    },
+    {
+      "name": "Floating Cart",
+      "kind": "button",
+      "refersTo": "floating-cart",
+      "description": "56px dark tinta circle, white cart icon, emerald badge with dark number; opens the cart sheet.",
+      "html": "<div class=\"ds-l\"><button class=\"ds-fc\" aria-label=\"Abrir mi carrito\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"8\" cy=\"21\" r=\"1\"/><circle cx=\"19\" cy=\"21\" r=\"1\"/><path d=\"M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12\"/></svg><span class=\"ds-fc-badge\">3</span></button></div>",
+      "css": ".ds-l{background:var(--lienzo,#fafafa);padding:24px;font-family:Inter,ui-sans-serif,sans-serif;color:var(--tinta,#0b0b0c)}.ds-fc{position:relative;display:flex;align-items:center;justify-content:center;width:56px;height:56px;border:0;border-radius:9999px;background:var(--tinta,#0b0b0c);color:#fff;box-shadow:0 10px 15px -3px rgb(24 24 27/.25),0 4px 6px -4px rgb(24 24 27/.25);cursor:pointer;transition:background-color .2s}.ds-fc:hover{background:#27272a}.ds-fc:focus-visible{outline:2px solid #059669;outline-offset:2px}.ds-fc-badge{position:absolute;top:-4px;right:-4px;display:flex;align-items:center;justify-content:center;height:20px;min-width:20px;padding:0 6px;border-radius:9999px;background:var(--esmeralda,#34d399);color:var(--tinta,#0b0b0c);font:700 11px/1 Inter,sans-serif;font-variant-numeric:tabular-nums;box-shadow:0 0 0 2px #fff}"
+    },
+    {
+      "name": "Inline Error",
+      "kind": "custom",
+      "refersTo": "",
+      "description": "Inline form alert under fields.",
+      "html": "<div class=\"ds-alert\" role=\"alert\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 8v4M12 16h.01\"/></svg><p>Correo o contraseña incorrectos. Revísalos e inténtalo de nuevo.</p></div>",
+      "css": ".ds-alert{display:flex;align-items:flex-start;gap:10px;max-width:360px;padding:12px 14px;border:1px solid rgb(220 38 38/.2);border-radius:12px;background:rgb(220 38 38/.05);color:#dc2626;font:400 14px/1.43 Inter,ui-sans-serif,sans-serif}.ds-alert svg{flex-shrink:0;margin-top:1px}.ds-alert p{margin:0}"
+    }
+  ],
+  "narrative": {
+    "northStar": "La vitrina iluminada",
+    "overview": "**Creative North Star: \"La vitrina iluminada\"**\n\nThe storefront is the boutique's shop window in daylight: a soft white ground (lienzo), pure white boxes for garments and panels (superficie), near-black ink for type (tinta), and the shop's identity light, emerald running into blue, on everything that acts or is selected. Gilda Display carries headlines; Inter carries every control, price and label. Real store photographs head the pages, washed into white by a bottom veil so dark serif headlines sit on them; they are never a SaaS collage.\n\nThe light world ships on every view after login: the storefront home (`src/pages/home/home.jsx`) with its filter modal, item detail (`src/pages/home/detallesArticulo.jsx`), the cart sheet opened from the floating cart (`src/pages/carrito/miCarrito.jsx`), the cart page (`src/pages/carrito/carrito.jsx`), the order receipt (`src/pages/orden/orden.jsx`), the profile (`src/auth/perfil.jsx`), Artículos (`src/pages/articulos/articulos.jsx`), and the shared chrome (`NavBar.jsx`, `Footer.jsx`, `compra/PiezasCompra.jsx`). The user chose it because a store should not tire the eyes of its buyers. The pre-login auth pages (`login.jsx`, `registro.jsx`, `forgotPass.jsx`, `resetPass.jsx`) keep their daylight form beside `AuthLayout.jsx`'s dark editorial photo panel; they were not part of the change. History: until this pass the post-login views were a night world (noche ground, crema type, vitrina boxes); those tokens are gone from the code.\n\nThis document supersedes `design-system.md` (the earlier light SaaS conventions) wherever they conflict. That file's daylight values (radius, field sizes, labels above inputs) still describe the auth form and Artículos, but its gray focus ring is now emerald, gradients are the identity mark as well as photo veils, and Gilda Display joins Inter as the display face.",
+    "keyCharacteristics": [
+      "White ground, white boxes, near-black ink; emerald-to-blue light as the identity on every post-login surface.",
+      "Editorial serif display (Gilda Display, weight 400) over a neutral sans UI (Inter).",
+      "Products in white vitrine cards whose emerald-to-blue frame and multiplied inner tint switch on at hover.",
+      "Active, focus and selected states drawn in emerald: hairlines, outlines, check marks, gradient dots; emerald as text is always the darker emerald-700.",
+      "A few deliberate dark accents (Filtros, carousel arrows, size chip, profile actions, floating cart) carry weight on white.",
+      "A real store photograph heads the main pages, veiled into white."
+    ],
+    "rules": [
+      {
+        "name": "The Two Lights Rule",
+        "body": "The identity is emerald leading and blue following. Emerald may stand alone as a fill or line (badges, hairlines, chip borders); blue never appears alone, only as the far end of an emerald gradient or the second inner tint. Standalone blue is the sky informational tint, nothing else.",
+        "section": "colors"
+      },
+      {
+        "name": "The Gradient Is Identity Rule",
+        "body": "The emerald-to-blue gradient (left to right on buttons and tags; top-left to bottom-right on frames and dots) marks exactly: the primary action, the offer tag, the active checkout step, the selected radio circle, the hover frame of product cards and the detail photo frame (60% ends), and empty-state icon chips (at 25%). Text on a gradient or emerald fill is always tinta. It is never a page, section or panel background and never applied to text.",
+        "section": "colors"
+      },
+      {
+        "name": "The Dark Text on Light Fill Rule",
+        "body": "On white, the bright identity colors are fills only. Any colored text drops to its legible shade: emerald-700 for emerald text, emerald-600 for focus outlines, sky-700/800 for information, red-600 for errors.",
+        "section": "colors"
+      },
+      {
+        "name": "The Ink-by-Opacity Rule",
+        "body": "Post-login text hierarchy is tinta at stepped opacities, not extra grays: 100% headings, prices and active states; 90-95% panel titles and line-item names; 80% secondary links, labels, chip text and receipt row names; 75% ledes and selected address lines; 70% back links and sheet subtitles; 60% descriptions, meta, struck prices and inactive nav. 60% is the floor for anything read as text; lower opacities (down to 40%) are only for decorative icons, hairlines and borders.",
+        "section": "colors"
+      },
+      {
+        "name": "The Neutral Fallback Rule",
+        "body": "When the dress silhouette stands in for a missing photo or an empty state, its waist stroke is forced to currentColor (tinta 60%) so the fallback reads as neutral, not as the brand mark.",
+        "section": "colors"
+      },
+      {
+        "name": "The Serif Speaks, Sans Works Rule",
+        "body": "Gilda Display is for headlines, panel titles and receipt row names. Buttons, labels, chips, badges and nav are always Inter, and so is every price except one: the order receipt's closing total, set as a headline because it is the page's last word.",
+        "section": "typography"
+      },
+      {
+        "name": "The Micro Step Rule",
+        "body": "11px exists for numerals in badges and counters and for compact tags; anything a customer must read as a sentence starts at 12px.",
+        "section": "typography"
+      },
+      {
+        "name": "The Light Not Lift Rule",
+        "body": "A card gains attention by lighting up: the emerald-to-blue frame fades in (opacity 0 to 1, 300ms), the multiplied inner tint rises from 60% to 100%, the arrow chip fills emerald, and the \"Ver detalle\" pill fades in. The card never rises or scales; the only movement is the pill's 8px settle, under motion-safe.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Veil Rule",
+        "body": "Any text over a photo sits on a gradient veil: lienzo on post-login pages (home and profile bottom-up plus a left veil; photo bands top-down to solid lienzo; white on the Artículos header), zinc-950 at 85%/15%/55% on the pre-login auth panel.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do build new post-login surfaces on lienzo with superficie boxes and tinta text, emerald for focus, active and selected states, and the emerald-to-blue gradient for the one primary action.",
+      "Do keep bright emerald and blue as fills with tinta text on them; use emerald-700 for emerald text, emerald-600 for focus outlines, sky-700 for information and red-600 for errors.",
+      "Do build text hierarchy from tinta opacity with 60% as the floor for readable text.",
+      "Do keep blue paired with emerald; use the sky tint only for small informational tags.",
+      "Do set headlines in Gilda Display at weight 400 and everything functional in Inter; page titles at 36px, 48px from sm.",
+      "Do present products in vitrine cards: white box, 4:5 crop, tinta-10% frame that turns gradient on hover, multiplied inner tint.",
+      "Do head main pages with a store photo veiled into lienzo, and put a veil under any text on a photo.",
+      "Do mark active navigation with a 1px emerald hairline, not a filled pill.",
+      "Do build confirmation steps as a receipt: hairline rows with serif names on the left, no boxes; keep panels for the cart.",
+      "Do use the 11px micro step only for counters, badges and compact tags.",
+      "Do force the dress waist stroke to currentColor whenever the silhouette is a fallback or empty state.",
+      "Do keep 44px minimum touch targets and honor prefers-reduced-motion."
+    ],
+    "donts": [
+      "Don't set text in bright esmeralda (#34d399), azul or sky-400 on white.",
+      "Don't use blue alone as a fill, outline or glow.",
+      "Don't use the identity gradient as a page, section or panel background, or on text.",
+      "Don't reintroduce a dark page ground on post-login views; dark is reserved for the small accents named above and the pre-login auth panel.",
+      "Don't reintroduce amber as an accent; amber appears only as the low-stock warning on admin tables.",
+      "Don't set buttons, labels, badges or chips in Gilda Display.",
+      "Don't lift or scale cards on hover; light them instead.",
+      "Don't treat `design-system.md` as authority where it conflicts with this file."
+    ]
+  }
+}

@@ -337,7 +337,7 @@ Depth on white comes from tone, hairlines and a few soft shadows: white boxes on
 ### Named Rules
 **The Light Not Lift Rule.** A card gains attention by lighting up: the emerald-to-blue frame fades in (opacity 0 to 1, 300ms), the multiplied inner tint rises from 60% to 100%, the arrow chip fills emerald, and the "Ver detalle" pill fades in. The card never rises or scales; the only movement is the pill's 8px settle, under motion-safe.
 
-**The Veil Rule.** Any text over a photo sits on a gradient veil: lienzo on post-login pages (home and profile bottom-up plus a left veil; photo bands top-down to solid lienzo; white on the Artículos header), zinc-950 at 85%/15%/55% on the pre-login auth panel.
+**The Veil Rule.** Any text over a photo sits on a gradient veil: lienzo on post-login pages (home and profile bottom-up plus a left veil; photo bands top-down to solid lienzo; white on the Artículos header), zinc-950 at 85%/15%/55% on the pre-login auth panel. Veils stay low so the photo reads (user request): the top 35–65% of every post-login photo is clear and the veil only fades in toward the bottom edge or behind the text column (home: from-lienzo → lienzo/55 at 30% → transparent at 65%; photo bands: transparent → lienzo/45 at 55% → lienzo). Photos run at full opacity, except the dark teal-wall band (detail, order) at 55% so dark text above it keeps contrast, and the cart band at 70%. The photo entrance animation is `.encender-foto` (home, profile).
 
 ## Shapes
 

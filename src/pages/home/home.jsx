@@ -165,11 +165,11 @@ function Home() {
                         width={2400}
                         height={1600}
                         fetchPriority="high"
-                        className="encender-superficie absolute inset-0 -z-20 size-full object-cover object-[50%_30%]"
+                        className="encender-foto absolute inset-0 -z-20 size-full object-cover object-[50%_30%]"
                     />
                     {/* velos para que el texto se lea sobre la foto */}
-                    <div aria-hidden="true" className="absolute inset-0 -z-10 bg-linear-to-t from-lienzo via-lienzo/60 to-lienzo/5" />
-                    <div aria-hidden="true" className="absolute inset-0 -z-10 hidden bg-linear-to-r from-lienzo/70 via-lienzo/20 to-transparent lg:block" />
+                    <div aria-hidden="true" className="absolute inset-0 -z-10 bg-linear-to-t from-lienzo from-0% via-lienzo/55 via-30% to-transparent to-65%" />
+                    <div aria-hidden="true" className="absolute inset-0 -z-10 hidden bg-linear-to-r from-lienzo/60 from-0% via-lienzo/15 via-40% to-transparent to-60% lg:block" />
 
                     <div className="mx-auto flex min-h-[min(80svh,50rem)] w-full max-w-7xl flex-col justify-end px-5 pt-40 pb-12 sm:px-8 sm:pb-16">
                         <div className="grid items-end gap-12 lg:grid-cols-[minmax(0,1fr)_auto]">
@@ -184,7 +184,7 @@ function Home() {
                                     Prendas elegidas una a una. Busca por nombre o filtra por talla, color y marca.
                                 </p>
 
-                                <div className="mt-8 flex w-full max-w-xl items-center gap-2 rounded-2xl bg-lienzo/60 p-1.5 pl-4 shadow-[inset_0_1px_0_rgb(244_239_230/0.14),0_18px_48px_-24px_rgb(24_24_27/0.12)] ring-1 ring-tinta/20 backdrop-blur-md transition-[box-shadow] focus-within:ring-2 focus-within:ring-esmeralda/70 focus-within:shadow-[inset_0_1px_0_rgb(244_239_230/0.14),0_0_0_6px_rgb(52_211_153/0.12),0_0_48px_-12px_rgb(96_165_250/0.45)]">
+                                <div className="mt-8 flex w-full max-w-xl items-center gap-2 rounded-2xl bg-white/85 p-1.5 pl-4 shadow-[inset_0_1px_0_rgb(244_239_230/0.14),0_18px_48px_-24px_rgb(24_24_27/0.12)] ring-1 ring-tinta/20 backdrop-blur-md transition-[box-shadow] focus-within:ring-2 focus-within:ring-esmeralda/70 focus-within:shadow-[inset_0_1px_0_rgb(244_239_230/0.14),0_0_0_6px_rgb(52_211_153/0.12),0_0_48px_-12px_rgb(96_165_250/0.45)]">
                                     <SearchIcon className="size-[18px] shrink-0 text-emerald-700" aria-hidden="true" />
                                     <label htmlFor="buscar" className="sr-only">Buscar prendas</label>
                                     <input
@@ -579,7 +579,7 @@ function ModalFiltros({ onClose, filtros, onChange,  marca, categoria, talla, co
                         </svg>
                     </Button>
                 </header>
-                <div className="flex-1 space-y-7 overflow-y-auto overscroll-contain pr-1 [scrollbar-color:rgb(244_239_230/0.2)_transparent]">
+                <div className="flex-1 space-y-7 overflow-y-auto overscroll-contain pr-1 [scrollbar-color:rgb(11_11_12/0.2)_transparent]">
                     <SeccionFiltro titulo="Categorías" elegidos={filtros.categoria.length}>
                         {categoria?.map((cat) => (
                             <CampoCheck
