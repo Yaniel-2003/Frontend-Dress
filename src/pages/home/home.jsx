@@ -120,7 +120,7 @@ function Home() {
     const [conDescuento, sinDescuento] = datosArticulos.reduce(
         (acumulador, art) => {
             const tieneDescuento = art.descuentos_activos?.find(
-                (desc) => desc.precio_con_descuento < art.precio_final
+                (desc) => Number(desc.precio_con_descuento) < Number(art.precio_final)
             );
             if(tieneDescuento){
                 acumulador[0].push({ ...art, tieneDescuento });
@@ -451,7 +451,7 @@ function CarruselArticulosDesceunto({ datos }){
                 <h3 className="truncate text-[15px] font-medium">{datos.articulos_nombre}</h3>
                 <p className="mt-0.5 line-clamp-1 text-sm text-tinta/60">{datos.descripcion}</p>
                 <div className="mt-2">
-                    {datos.descuentos_activos && datos.descuentos_activos.length > 0 ? (
+                    {descuento ? (
                         <>
                             <div className="flex flex-wrap items-baseline gap-2">
                                 <span className="text-lg font-semibold text-emerald-700 tabular-nums">
@@ -468,7 +468,7 @@ function CarruselArticulosDesceunto({ datos }){
                             )}
                         </>
                     ) : (
-                        <span className="text-lg font-semibold tabular-nums">$ {Number(datos.precio_con_descuento_activo).toLocaleString()}</span>
+                        <span className="text-lg font-semibold tabular-nums">$ {Number(datos.precio_final).toLocaleString()}</span>
                     )}
                 </div>
             </div>

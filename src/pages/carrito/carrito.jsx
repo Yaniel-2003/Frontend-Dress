@@ -75,10 +75,17 @@ function Carrito() {
     const [itemEliminar, setItemEliminar] = useState(null);
     const [modalConfirmarAbierto, setModalConfirmarAbierto] = useState(false);
     const navigate = useNavigate();
+    const [selecionados, setSelecionados] = useState(new Set());
+
+    const itemsSelecionados = datosCarrito.filter(i => selecionados.has(i.iditmcarrito));
 
     const { cantidadCar } = useCarrito();
-
-    const total = datosCarrito.reduce((acumulador, item) => {
+    
+    useEffect(() => {
+        if(!cargando) setSelecionados(new Set(datosCarrito.map(i => i.iditmcarrito)));
+    },[cargando])
+    
+    const total = itemsSelecionados.reduce((acumulador, item) => {
         const {precio_con_descuento_activo, precio_final} = item.vararticulo;
         const hayDescuento = precio_con_descuento_activo && Number(precio_con_descuento_activo) < Number(precio_final)
 
@@ -86,7 +93,8 @@ function Carrito() {
         return acumulador + Number(precioUnitario) * item.cantidad;
     }, 0);
 
-    const descuentoTotal = datosCarrito.reduce(( acumulador, item ) => {
+
+    const descuentoTotal = itemsSelecionados.reduce(( acumulador, item ) => {
         const { precio_con_descuento_activo, precio_final } = item.vararticulo;
 
         const hayDescuento = precio_con_descuento_activo && Number(precio_con_descuento_activo) < Number(precio_final);
@@ -95,7 +103,7 @@ function Carrito() {
         return acumulador + (Number(precio_final) - Number(precio_con_descuento_activo)) * item.cantidad;
     }, 0);
 
-    const cantidadItems = datosCarrito.reduce((acumulador, item) => {
+    const cantidadItems = itemsSelecionados.reduce((acumulador, item) => {
         return acumulador + item.cantidad
     },0);
 
@@ -104,10 +112,27 @@ function Carrito() {
         setModalConfirmarAbierto(true);
     };
 
+    const alternar = (id) => setSelecionados(prev => {
+        const nuevo = new Set(prev);
+        nuevo.has(id) ? nuevo.delete(id) : nuevo.add(id);
+        return nuevo;
+    });
+
+    const alternarTodos = () => setSelecionados(prev => 
+        prev.size === datosCarrito.length ? new Set() : new Set(datosCarrito.map(i => i.iditmcarrito))
+    );
+
     const confirmarEliminarItem = async() => {
         try{
             await eliminarItemCarrito(itemEliminar.iditmcarrito);
-            eliminarItem(itemEliminar.iditmcarrito)
+            eliminarItem(itemEliminar.iditmcarrito);
+
+            setSelecionados(prev => {
+                const nuevo = new Set(prev);
+                nuevo.delete(itemEliminar.iditmcarrito);
+                return nuevo;
+            })
+
             await cantidadCar();
             notificacion.mostrar("Item eliminado del carrito", "success");
         }catch{
@@ -171,17 +196,30 @@ function Carrito() {
                                 </div>
                             )}
                             {datosCarrito.length > 0 && (
-                                <ul className="divide-y divide-tinta/[0.06] overflow-hidden rounded-3xl bg-tinta/[0.025] ring-1 ring-tinta/[0.07]">
-                                    {datosCarrito.map((item) => (
-                                        <FilaCarrito
-                                            key={item.iditmcarrito}
-                                            item={item}
-                                            prepararEliminarItem={prepararEliminarItem}
-                                            masCantidad={masCantidad}
-                                            menosCantidad={menosCantidad}
+                                <>
+                                    <label className="flex min-h-11 cursor-pointer items-center gap-3 px-1 text-sm text-tinta/70">
+                                        <input
+                                            type="checkbox"
+                                            checked={selecionados.size === datosCarrito.length}
+                                            onChange={alternarTodos}
+                                            className="size-5 shrink-0 cursor-pointer accent-emerald-600"
                                         />
-                                    ))}
-                                </ul>
+                                        Selecionar todo ({selecionados.size}/{datosCarrito.length})
+                                    </label>
+                                    <ul className="divide-y divide-tinta/[0.06] overflow-hidden rounded-3xl bg-tinta/[0.025] ring-1 ring-tinta/[0.07]">
+                                        {datosCarrito.map((item) => (
+                                            <FilaCarrito
+                                                key={item.iditmcarrito}
+                                                item={item}
+                                                prepararEliminarItem={prepararEliminarItem}
+                                                masCantidad={masCantidad}
+                                                menosCantidad={menosCantidad}
+                                                selecionado={selecionados.has(item.iditmcarrito)}
+                                                onAlternar={alternar}
+                                            />
+                                        ))}
+                                    </ul>
+                                </>
                             )}
                         </div>
 
@@ -190,7 +228,8 @@ function Carrito() {
                             subtotal={Number(total + descuentoTotal).toLocaleString()}
                             descuenoTotal={Number(descuentoTotal).toLocaleString()}
                             total={Number(total).toLocaleString()}
-                            onClick={() => navigate('/orden')}
+                            onClick={() => navigate('/orden', {state: {ids: [...selecionados]}})}
+                            deshabilitado={selecionados.size === 0}
                         />
                     </div>
                 </div>
@@ -217,7 +256,7 @@ function Carrito() {
 const claseBotonCantidad =
     "flex size-10 cursor-pointer items-center justify-center rounded-full text-tinta/70 transition-colors hover:bg-tinta/[0.08] hover:text-emerald-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600";
 
-function FilaCarrito({ item, prepararEliminarItem, masCantidad, menosCantidad }){
+function FilaCarrito({ item, prepararEliminarItem, masCantidad, menosCantidad, selecionado, onAlternar }){
     const { articulo: producto, foto, precio_con_descuento_activo, precio_final } = item.vararticulo;
     const { color, talla, historial_descuentos } = item.vararticulo
     // valores solo para mostrar
@@ -226,7 +265,20 @@ function FilaCarrito({ item, prepararEliminarItem, masCantidad, menosCantidad })
 
     return (
         <li className="flex gap-4 p-4 sm:gap-6 sm:p-6">
-            <FotoProducto src={foto} alt={producto.nombre} width={112} height={140} className="aspect-[4/5] w-24 shrink-0 rounded-2xl sm:w-28" />
+            <input 
+                type="checkbox" 
+                checked={selecionado}
+                onChange={() => onAlternar(item.iditmcarrito)}
+                aria-label={`Selecionar ${producto.nombre}`}
+                className="mt-1 size-5 shrink-0 cursor-pointer accent-emerald-600"
+            />
+            <FotoProducto 
+                src={foto} 
+                alt={producto.nombre} 
+                width={112} 
+                height={140} 
+                className="aspect-[4/5] w-24 shrink-0 rounded-2xl sm:w-28" 
+            />
 
             <div className="flex min-w-0 flex-1 flex-col">
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
@@ -294,7 +346,7 @@ function FilaCarrito({ item, prepararEliminarItem, masCantidad, menosCantidad })
 }
 
 
-function ResumenItemsCarrito({ producto, subtotal, descuenoTotal, total, onClick }){
+function ResumenItemsCarrito({ producto, subtotal, descuenoTotal, total, onClick, deshabilitado }){
 
     return (
         <aside className="w-full shrink-0 rounded-3xl bg-tinta/[0.025] p-6 ring-1 ring-tinta/[0.07] sm:p-7 lg:sticky lg:top-24 lg:w-96" aria-labelledby="titulo-resumen">
@@ -331,6 +383,7 @@ function ResumenItemsCarrito({ producto, subtotal, descuenoTotal, total, onClick
 
             <Button
                 onClick={onClick}
+                disabled={deshabilitado}
                 size="lg"
                 className={`mt-6 h-12 w-full rounded-2xl text-base ${claseBotonIdentidad}`}
             >

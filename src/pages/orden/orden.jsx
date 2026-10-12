@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import ModalMensaje from "@/components/ModalMensajes";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { BandaFoto, PasosCompra, FotoProducto, claseBotonIdentidad } from "@/components/compra/PiezasCompra";
 
@@ -50,6 +50,9 @@ function Orden(){
     const navigate = useNavigate();
     const {usuario} = useAuth();
     const { miCarrito, cantidadCar } = useCarrito();
+    const { state } = useLocation();
+    const ids = state?.ids;
+    const itemsOrden = ids ? miCarrito.filter(i => ids.includes(i.iditmcarrito)) : miCarrito;
     const notificacion = useMensajeTemporal();
 
     const [direcciones, setDirecciones] = useState([]);
@@ -77,15 +80,15 @@ function Orden(){
         cargarDireccion();
     },[usuario?.idusuario]);
 
-    const total = miCarrito.reduce((acumulador, item) => acumulador + precioUnitario(item) * item.cantidad, 0);
-    const unidades = miCarrito.reduce((acumulador, item) => acumulador + item.cantidad, 0);
+    const total = itemsOrden.reduce((acumulador, item) => acumulador + precioUnitario(item) * item.cantidad, 0);
+    const unidades = itemsOrden.reduce((acumulador, item) => acumulador + item.cantidad, 0);
 
     const confirmarCompra = async () => {
         if(!direccionSelecionada || enviado) return;
 
         setEnviado(true);
         try{
-            await crearOrden({ direccion: direccionSelecionada, cupon: null });
+            await crearOrden({ direccion: direccionSelecionada, cupon: null, items_carrito: ids });
             await cantidadCar();
 
             notificacion.mostrar("¡Compra realizada con éxito!", "success");
@@ -144,7 +147,7 @@ function Orden(){
                         </SeccionRecibo>
 
                         <SeccionRecibo titulo="Tu pedido" id="titulo-pedido" detalle={`${unidades} ${unidades === 1 ? "unidad" : "unidades"}`}>
-                            {miCarrito.length === 0 ? (
+                            {itemsOrden.length === 0 ? (
                                 <div className="text-sm text-tinta/70">
                                     <p>Tu carrito está vacío.</p>
                                     <Link to="/home" className="mt-1 inline-flex min-h-11 items-center rounded-sm font-medium text-emerald-700 underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600">
@@ -153,7 +156,7 @@ function Orden(){
                                 </div>
                             ) : (
                                 <ul className="-my-2 max-h-56 divide-y divide-tinta/10 overflow-y-auto overscroll-contain [scrollbar-color:rgb(11_11_12/0.2)_transparent]">
-                                    {miCarrito.map((item) => (
+                                    {itemsOrden.map((item) => (
                                         <FilaResumen key={item.iditmcarrito} item={item} />
                                     ))}
                                 </ul>
@@ -173,7 +176,7 @@ function Orden(){
                                         type="button"
                                         size="lg"
                                         onClick={confirmarCompra}
-                                        disabled={!direccionSelecionada || enviado || miCarrito.length === 0}
+                                        disabled={!direccionSelecionada || enviado || itemsOrden.length === 0}
                                         aria-busy={enviado}
                                         className={`h-12 px-7 text-base sm:min-w-56 ${claseBotonIdentidad}`}
                                     >
@@ -188,7 +191,7 @@ function Orden(){
                                     </Link>
                                 </div>
                             </div>
-                            {!direccionSelecionada && !cargando && miCarrito.length > 0 && (
+                            {!direccionSelecionada && !cargando && itemsOrden.length > 0 && (
                                 <p className="text-sm text-tinta/60 sm:col-start-2">Elige una dirección de envío para continuar.</p>
                             )}
                         </section>
