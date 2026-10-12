@@ -9,6 +9,7 @@ import DetallesArticulos from '../pages/home/detallesArticulo';
 import Carrito from '../pages/carrito/carrito';
 import ResetPassword from '@/auth/resetPass';
 import ForgotPassword from '@/auth/forgotPass';
+import Orden from '@/pages/orden/orden';
 
 // ESTE COMPONENTE PROTEJE LAS RUTAS PARA QUE SOLO EMTREN LOS USUARIOS LOGUEADOS 
 
@@ -71,6 +72,12 @@ const AppRouter = () => {
                     path='/olvideContraseña'
                     element={<ForgotPassword />}
                 />
+
+                <Route path='/orden' element={
+                    <ProtecttedRoute>
+                        <Orden />
+                    </ProtecttedRoute>
+                }/>
 
             </Routes>
         </BrowserRouter>

@@ -14,6 +14,9 @@ import { InputIcono, SelectIcono } from "../components/CamposConIcono";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 
+// Foto del perchero (public/imgDress). Se sirve la copia optimizada de 2400px; el original está al lado.
+const FOTO_PERFIL = "/imgDress/imgperfil-2400.jpg";
+
 
 // BLOQUE 1 DE CONFIGURACIONES Y UTILIDADES
 
@@ -215,67 +218,78 @@ function Perfil(){
         setModalConfirmarAbierto(false);
     };
 
+
+    const { nombres, apellidos } = usuarioForm.formData;
+    const iniciales = `${nombres?.[0] ?? ""}${apellidos?.[0] ?? ""}`.toUpperCase();
+
     return (
-        <div className="flex flex-col min-h-screen">
+        <div className="flex min-h-screen flex-col bg-lienzo text-tinta selection:text-tinta">
             <NavBar />
             <main className="flex-1">
-                <section className="relative overflow-hidden bg-zinc-950 text-white">
-                    <div className="pointer-events-none absolute -top-24 left-[6%] size-[30rem] rounded-full bg-emerald-500/35 blur-3xl" />
-                    <div className="pointer-events-none absolute -bottom-28 right-[4%] size-[30rem] rounded-full bg-blue-600/35 blur-3xl" />
-                    <div
-                        className="pointer-events-none absolute inset-0 opacity-[0.07]"
-                        style={{
-                            backgroundImage:
-                                "linear-gradient(to right, #fff 1px, transparent 1px), linear-gradient(to bottom, #fff 1px, transparent 1px)",
-                            backgroundSize: "44px 44px",
-                        }}
+                {/* ───── Encabezado: el perchero de la tienda, de noche ───── */}
+                <section className="relative isolate overflow-hidden" aria-labelledby="titulo-perfil">
+                    <img
+                        src={FOTO_PERFIL}
+                        alt=""
+                        width={2400}
+                        height={1601}
+                        fetchPriority="high"
+                        className="encender-superficie absolute inset-0 -z-20 size-full object-cover object-[30%_22%] sm:object-[60%_22%]"
                     />
-                    <div className="relative mx-auto flex w-full max-w-6xl flex-col items-start gap-6 px-4 pb-32 pt-10 sm:flex-row sm:items-center sm:px-6 sm:pt-14 sm:pb-36">
-                        <div className="flex size-20 shrink-0 items-center justify-center rounded-full border-4 border-white/20 bg-white/10 shadow-xl backdrop-blur sm:size-24">
-                            <UserIcon className="size-10 text-white/80 sm:size-12" />
-                        </div>
-                        <div>
-                            <p className="text-sm font-medium text-emerald-300">Mi perfil</p>
-                            <h1 className="mt-1 text-3xl font-bold leading-tight tracking-tight sm:text-5xl">
-                                Hola, <span className="text-emerald-300">{usuarioForm.formData.nombres} {usuarioForm.formData.apellidos}</span>
-                            </h1>
-                            <p className="mt-3 max-w-xl text-base text-white/70">
-                                Esta es la vista de perfil. Gestiona tu información personal y los datos de contacto de tu cuenta.
-                            </p>
+                    {/* velos para que el texto se lea sobre la foto */}
+                    <div aria-hidden="true" className="absolute inset-0 -z-10 bg-linear-to-t from-lienzo via-lienzo/65 to-lienzo/15" />
+                    <div aria-hidden="true" className="absolute inset-0 -z-10 bg-linear-to-r from-lienzo/80 via-lienzo/35 to-transparent" />
+
+                    <div className="mx-auto flex min-h-[min(52svh,28rem)] w-full max-w-7xl flex-col justify-end px-5 pt-24 pb-10 sm:px-8 sm:pb-14">
+                        <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center">
+                            <span
+                                aria-hidden="true"
+                                className="flex size-16 shrink-0 items-center justify-center rounded-full bg-lienzo/55 font-display text-2xl text-tinta ring-1 ring-tinta/25 backdrop-blur-md sm:size-20 sm:text-3xl"
+                            >
+                                {iniciales || <UserIcon className="size-8 text-tinta/70" />}
+                            </span>
+                            <div className="max-w-2xl">
+                                <h1
+                                    id="titulo-perfil"
+                                    className="font-display text-4xl leading-tight sm:text-5xl font-normal tracking-[-0.02em] text-balance"
+                                >
+                                    {nombres ? `Hola, ${nombres}.` : "Tu perfil"}
+                                </h1>
+                                <p className="mt-4 max-w-md text-base leading-relaxed text-tinta/75 sm:text-lg">
+                                    Tus datos personales y tus direcciones de entrega, en un solo lugar.
+                                </p>
+                            </div>
                         </div>
                     </div>
-
-                    {/* difuminado inferior: el encabezado se funde con el fondo de la página */}
-                    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-44 bg-gradient-to-b from-transparent via-background/70 to-background" />
                 </section>
 
-                <div className="relative mx-auto -mt-16 w-full max-w-6xl px-4 pb-10 sm:px-6 sm:pb-12">
-                <TarjetaUsuario
-                    formData={usuarioForm.formData}
-                    tiposDocumento={usuarioForm.tiposDocumento}
-                    cargando={usuarioForm.cargando}
-                    onChange={usuarioForm.actualizarCampo}
-                    onGuardar={usuarioForm.guardar}
-                    onAbrirDirecciones={() => setModalUbicacion(true)}
-                />
-
-                {modalUbicacion && (
-                    <ModalDireccion
-                        direccion={direccion}
-                        onCerrar={() => setModalUbicacion(false)}
-                        onEliminar={prepararEliminar}
+                <div className="mx-auto w-full max-w-7xl px-5 pt-10 pb-28 sm:px-8 sm:pt-14">
+                    <TarjetaUsuario
+                        formData={usuarioForm.formData}
+                        tiposDocumento={usuarioForm.tiposDocumento}
+                        cargando={usuarioForm.cargando}
+                        onChange={usuarioForm.actualizarCampo}
+                        onGuardar={usuarioForm.guardar}
+                        onAbrirDirecciones={() => setModalUbicacion(true)}
                     />
-                )}
 
-                {modalConfirmarAbierto && (
-                    <ModalConfirmar
-                        datosAMostrar={itemEliminar ? itemEliminar.direccion : ""}
-                        onCancelar={() => setModalConfirmarAbierto(false)}
-                        onConfirmar={confirmarEliminacion}
-                        cargando={direccion.cargando}
+                    {modalUbicacion && (
+                        <ModalDireccion
+                            direccion={direccion}
+                            onCerrar={() => setModalUbicacion(false)}
+                            onEliminar={prepararEliminar}
+                        />
+                    )}
 
-                    />
-                )}
+                    {modalConfirmarAbierto && (
+                        <ModalConfirmar
+                            datosAMostrar={itemEliminar ? itemEliminar.direccion : ""}
+                            onCancelar={() => setModalConfirmarAbierto(false)}
+                            onConfirmar={confirmarEliminacion}
+                            cargando={direccion.cargando}
+
+                        />
+                    )}
                 </div>
             </main>
 
@@ -291,41 +305,50 @@ function Perfil(){
     );
 }
 
+// Clases compartidas (vitrina nocturna)
+const claseCaja = "rounded-2xl bg-superficie ring-1 ring-tinta/10";
+const claseBotonCrema = "bg-tinta text-lienzo hover:bg-zinc-800 focus-visible:ring-esmeralda/50";
+const claseBotonContorno =
+    "border-tinta/20 bg-transparent text-tinta shadow-none hover:bg-tinta/10 hover:text-tinta focus-visible:ring-esmeralda/50";
+const claseEtiqueta = "text-tinta/80";
+
 // BLOQUE 6 COMPONENTES UI TARGETA DE USUARIOS
 function TarjetaUsuario({ formData, tiposDocumento, cargando, onChange, onGuardar, onAbrirDirecciones }){
     return (
-        <div className="grid items-start gap-6 lg:grid-cols-[18rem_1fr]">
-            {/* ───── Sidebar ───── */}
-            <aside className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm lg:sticky lg:top-24">
-                <div className="relative flex flex-col px-5 py-6">
-                    <p className="text-base font-semibold tracking-tight">
-                        {formData.nombres} {formData.apellidos}
-                    </p>
-                    <div className="mt-3 space-y-2 text-sm text-muted-foreground">
-                        <p className="flex items-center gap-2 truncate"><MailIcon className="size-4 shrink-0 text-emerald-600" /> <span className="truncate">{formData.email}</span></p>
-                        <p className="flex items-center gap-2"><PhoneIcon className="size-4 shrink-0 text-emerald-600" /> {formData.telefono}</p>
-                    </div>
-
-                    <nav className="mt-6 grid w-full gap-1 border-t border-zinc-100 pt-4">
-                        <span className="flex items-center gap-3 rounded-xl bg-zinc-950 px-3.5 py-2.5 text-sm font-medium text-white">
-                            <UserIcon className="size-4" /> Datos personales
-                        </span>
-                        <button
-                            type="button"
-                            onClick={onAbrirDirecciones}
-                            className="flex cursor-pointer items-center gap-3 rounded-xl px-3.5 py-2.5 text-left text-sm font-medium text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-950"
-                        >
-                            <MapPinIcon className="size-4" /> Mis direcciones
-                        </button>
-                    </nav>
+        <div className="grid items-start gap-6 lg:grid-cols-[18rem_minmax(0,1fr)] lg:gap-8">
+            {/* ───── Lateral ───── */}
+            <aside className={`${claseCaja} p-6 lg:sticky lg:top-24`}>
+                <p className="truncate text-base font-semibold tracking-tight">
+                    {formData.nombres} {formData.apellidos}
+                </p>
+                <div className="mt-3 space-y-2 text-sm text-tinta/60">
+                    <p className="flex items-center gap-2"><MailIcon className="size-4 shrink-0 text-tinta/60" aria-hidden="true" /> <span className="truncate">{formData.email}</span></p>
+                    <p className="flex items-center gap-2 tabular-nums"><PhoneIcon className="size-4 shrink-0 text-tinta/60" aria-hidden="true" /> {formData.telefono}</p>
                 </div>
+
+                {/* sección activa marcada con una línea fina de luz, como en la barra de navegación */}
+                <nav aria-label="Secciones del perfil" className="mt-6 grid gap-1 border-t border-tinta/10 pt-4">
+                    <span
+                        aria-current="page"
+                        className="relative flex min-h-11 items-center gap-3 pl-4 text-sm font-medium text-tinta before:absolute before:inset-y-2.5 before:left-0 before:w-px before:bg-esmeralda"
+                    >
+                        <UserIcon className="size-4" aria-hidden="true" /> Datos personales
+                    </span>
+                    <button
+                        type="button"
+                        onClick={onAbrirDirecciones}
+                        className="flex min-h-11 cursor-pointer items-center gap-3 rounded-sm pl-4 text-left text-sm font-medium text-tinta/60 transition-colors hover:text-tinta focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
+                    >
+                        <MapPinIcon className="size-4" aria-hidden="true" /> Mis direcciones
+                    </button>
+                </nav>
             </aside>
 
             {/* ───── Datos ───── */}
-            <section className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
-                <div className="mb-6">
-                    <h2 className="text-lg font-semibold tracking-tight">Datos personales</h2>
-                    <p className="text-sm text-muted-foreground">Actualiza tu información y guarda los cambios.</p>
+            <section aria-labelledby="titulo-datos" className={`${claseCaja} p-6 sm:p-8`}>
+                <div className="mb-8 flex flex-col gap-2 border-b border-tinta/10 pb-5 sm:flex-row sm:items-end sm:justify-between">
+                    <h2 id="titulo-datos" className="font-display text-2xl leading-tight font-normal">Datos personales</h2>
+                    <p className="text-sm text-tinta/60">Actualiza tu información y guarda los cambios.</p>
                 </div>
 
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
@@ -335,6 +358,7 @@ function TarjetaUsuario({ formData, tiposDocumento, cargando, onChange, onGuarda
                         name="nombres"
                         value={formData.nombres}
                         onChange={onChange}
+                        autoComplete="given-name"
                     />
                     <CampoPerfil
                         label={"Apellido"}
@@ -342,18 +366,20 @@ function TarjetaUsuario({ formData, tiposDocumento, cargando, onChange, onGuarda
                         name="apellidos"
                         value={formData.apellidos}
                         onChange={onChange}
+                        autoComplete="family-name"
                     />
 
                     <div className="grid gap-2">
-                        <Label htmlFor="perfil-documento">Tipo de documento</Label>
+                        <Label htmlFor="perfil-documento" className={claseEtiqueta}>Tipo de documento</Label>
                         <SelectIcono
+                            tono="noche"
                             icon={IdCardIcon}
                             id="perfil-documento"
                             name="documento"
                             value={formData.documento}
                             onChange={onChange}
                         >
-                            <option value="">Selecciona una opción...</option>
+                            <option value="">Selecciona una opción…</option>
                             {tiposDocumento?.map((tipo) => (
                                 <option
                                     key={tipo.idnumero}
@@ -379,7 +405,9 @@ function TarjetaUsuario({ formData, tiposDocumento, cargando, onChange, onGuarda
                         name="telefono"
                         value={formData.telefono}
                         onChange={onChange}
+                        type="tel"
                         inputMode="numeric"
+                        autoComplete="tel"
                         placeholder="3224390543"
                     />
                     <CampoPerfil
@@ -389,28 +417,32 @@ function TarjetaUsuario({ formData, tiposDocumento, cargando, onChange, onGuarda
                         value={formData.email}
                         onChange={onChange}
                         type="email"
-                        placeholder="prueba@gamil.com"
+                        autoComplete="email"
+                        spellCheck={false}
+                        placeholder="correo@ejemplo.com"
                     />
                 </div>
 
-                <div className="mt-8 flex flex-col-reverse justify-end gap-3 border-t border-zinc-100 pt-6 sm:flex-row">
+                <div className="mt-8 flex flex-col-reverse justify-end gap-3 border-t border-tinta/10 pt-6 sm:flex-row">
                     <Button
                         type="button"
                         variant="outline"
                         size="lg"
                         onClick={onAbrirDirecciones}
+                        className={claseBotonContorno}
                     >
-                        <MapPinIcon className="size-4" /> Mis direcciones
+                        <MapPinIcon className="size-4" aria-hidden="true" /> Mis direcciones
                     </Button>
                     <Button
                         type="button"
                         size="lg"
                         disabled={cargando}
+                        aria-busy={cargando}
                         onClick={onGuardar}
-                        className="hover:bg-emerald-700"
+                        className={claseBotonCrema}
                     >
-                        <SaveIcon className="size-4" />
-                        <span>{cargando ? 'Guardando...' : 'Guardar cambios'}</span>
+                        <SaveIcon className="size-4" aria-hidden="true" />
+                        <span>{cargando ? 'Guardando…' : 'Guardar cambios'}</span>
                     </Button>
                 </div>
             </section>
@@ -419,15 +451,18 @@ function TarjetaUsuario({ formData, tiposDocumento, cargando, onChange, onGuarda
 }
 
 //INPUT REUSABLE DEL FORMULARIO DE USUARIOS
-function CampoPerfil({ label, icon: Icon, name, value, onChange, type="text", inputMode, placeholder }){
+function CampoPerfil({ label, icon: Icon, name, value, onChange, type="text", inputMode, placeholder, autoComplete, spellCheck }){
     return (
         <div className="grid gap-2">
-            <Label htmlFor={`perfil-${name}`}>{label}</Label>
+            <Label htmlFor={`perfil-${name}`} className={claseEtiqueta}>{label}</Label>
             <InputIcono
+                tono="noche"
                 icon={Icon}
                 id={`perfil-${name}`}
                 type={type}
                 inputMode={inputMode}
+                autoComplete={autoComplete}
+                spellCheck={spellCheck}
                 name={name}
                 value={value}
                 onChange={onChange}
@@ -440,40 +475,40 @@ function CampoPerfil({ label, icon: Icon, name, value, onChange, type="text", in
 //BLOQUE 7 COMPONENTES DE UI
 function ModalDireccion ({ direccion, onCerrar, onEliminar }){
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/40 p-4 backdrop-blur-sm">
-            <div className="flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-xl">
-                <header className="flex items-center justify-between border-b border-zinc-100 px-6 py-5">
-                    <div className="flex items-center gap-3">
-                        <span className="flex size-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100">
-                            <MapPinIcon className="size-5" />
-                        </span>
-                        <div>
-                            <h3 className="text-lg font-semibold leading-tight tracking-tight">Mis direcciones</h3>
-                            <p className="text-sm text-muted-foreground">Gestiona tus lugares de entrega y residencia.</p>
-                        </div>
+        <div className="fixed inset-0 z-50 flex items-end justify-center bg-lienzo/70 text-tinta backdrop-blur-sm sm:items-center sm:p-4">
+            <div
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="titulo-direcciones"
+                className="flex max-h-[90dvh] w-full max-w-3xl flex-col overflow-hidden rounded-t-2xl bg-superficie shadow-xl shadow-zinc-900/10 ring-1 ring-tinta/10 selection:text-tinta sm:rounded-2xl"
+            >
+                <header className="flex shrink-0 items-start justify-between gap-4 border-b border-tinta/10 px-6 py-5 sm:px-8">
+                    <div>
+                        <h2 id="titulo-direcciones" className="font-display text-2xl leading-tight font-normal">Mis direcciones</h2>
+                        <p className="mt-2 text-sm text-tinta/60">Gestiona tus lugares de entrega y residencia.</p>
                     </div>
                     <Button
                         type="button"
                         variant="ghost"
-                        size="icon-sm"
+                        size="icon"
                         onClick={onCerrar}
                         aria-label="Cerrar"
-                        className="text-muted-foreground"
+                        className="-mr-2 text-tinta/60 hover:bg-tinta/10 hover:text-tinta focus-visible:ring-esmeralda/50"
                     >
-                        <svg className="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg className="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </Button>
                 </header>
 
-                <div className="flex-1 overflow-y-auto p-6">
+                <div className="flex-1 overflow-y-auto overscroll-contain p-6 sm:px-8 [scrollbar-color:rgb(244_239_230/0.2)_transparent]">
                     {direccion.desplegarForm && <FormularioDireccion direccion={direccion} />}
 
                     <div className="flex flex-col gap-3">
                         {direccion.listaDirecciones.length === 0 ? (
-                            <div className="flex flex-col items-center rounded-xl border border-dashed border-zinc-300 py-12 text-center">
-                                <MapPinIcon className="mb-3 size-9 text-zinc-300" />
-                                <p className="text-sm text-muted-foreground">No tienes direcciones guardadas.</p>
+                            <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-tinta/15 py-12 text-center">
+                                <MapPinIcon className="size-9 text-tinta/60" aria-hidden="true" />
+                                <p className="text-sm text-tinta/60">Aún no tienes direcciones guardadas. Añade una con «Nueva dirección».</p>
                             </div>
                         ):(
                             direccion.listaDirecciones.map((dir) => (
@@ -487,17 +522,18 @@ function ModalDireccion ({ direccion, onCerrar, onEliminar }){
                         )}
                     </div>
                 </div>
-                <footer className="flex flex-col-reverse items-stretch justify-end gap-3 border-t border-zinc-100 bg-zinc-50/70 px-6 py-4 sm:flex-row sm:items-center">
+                <footer className="flex shrink-0 flex-col-reverse items-stretch justify-end gap-3 border-t border-tinta/10 px-6 py-4 sm:flex-row sm:items-center sm:px-8">
                     <Button
                         type="button"
                         variant="outline"
                         onClick={direccion.nuevaDireccion}
-                        className="bg-white"
+                        className={claseBotonContorno}
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+                            aria-hidden="true"
                         >
                             <path d="M5 12h14"/>
                             <path d="M12 5v14"/>
@@ -508,10 +544,11 @@ function ModalDireccion ({ direccion, onCerrar, onEliminar }){
                         type="button"
                         onClick={direccion.guardar}
                         disabled={direccion.cargando}
-                        className="hover:bg-emerald-700"
+                        aria-busy={direccion.cargando}
+                        className={claseBotonCrema}
                     >
-                        <SaveIcon className="size-4" />
-                        <span>{direccion ? 'Guardar': 'Guardando..'}</span>
+                        <SaveIcon className="size-4" aria-hidden="true" />
+                        <span>{direccion.cargando ? 'Guardando…' : 'Guardar'}</span>
                     </Button>
                 </footer>
             </div>
@@ -523,10 +560,10 @@ function FormularioDireccion({ direccion }){
     const {formDirecciones: f, actualizarCampo, cerraFormulario } = direccion;
 
     return (
-        <div className="mb-6 rounded-xl border border-zinc-200 bg-zinc-50/70 p-5">
-            <h4 className="mb-5 text-sm font-semibold">
+        <div className="mb-6 rounded-xl bg-lienzo/40 p-5 ring-1 ring-tinta/10">
+            <h3 className="mb-5 text-sm font-semibold">
                 {f.iddireccion ? 'Editar dirección': 'Nueva dirección'}
-            </h4>
+            </h3>
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
                 <CampoDireccion
                     label="Destinatario"
@@ -534,7 +571,8 @@ function FormularioDireccion({ direccion }){
                     name="nombre_destinatario"
                     value={f.nombre_destinatario}
                     onChange={actualizarCampo}
-                    placeholder="Juanito alimaña"
+                    autoComplete="name"
+                    placeholder="Quién recibe"
                 />
                 <CampoDireccion
                     label="Dirección"
@@ -542,6 +580,7 @@ function FormularioDireccion({ direccion }){
                     name="direccion"
                     value={f.direccion}
                     onChange={actualizarCampo}
+                    autoComplete="address-line1"
                     placeholder="Calle 5 # 1b - 35"
                 />
                 <CampoDireccion
@@ -550,6 +589,7 @@ function FormularioDireccion({ direccion }){
                     name="residencia"
                     value={f.residencia}
                     onChange={actualizarCampo}
+                    autoComplete="address-line2"
                     placeholder="Apto 401"
                 />
                 <CampoDireccion
@@ -566,7 +606,8 @@ function FormularioDireccion({ direccion }){
                     name="ciudad"
                     value={f.ciudad}
                     onChange={actualizarCampo}
-                    placeholder="Medellin"
+                    autoComplete="address-level2"
+                    placeholder="Medellín"
                 />
                 <CampoDireccion
                     label="Departamento"
@@ -574,7 +615,8 @@ function FormularioDireccion({ direccion }){
                     name="departamento"
                     value={f.departamento}
                     onChange={actualizarCampo}
-                    placeholder="Cundinamarca"
+                    autoComplete="address-level1"
+                    placeholder="Antioquia"
                 />
                 <CampoDireccion
                     label="País"
@@ -582,6 +624,7 @@ function FormularioDireccion({ direccion }){
                     name="pais"
                     value={f.pais}
                     onChange={actualizarCampo}
+                    autoComplete="country-name"
                     placeholder="Colombia"
                 />
                 <CampoDireccion
@@ -591,22 +634,21 @@ function FormularioDireccion({ direccion }){
                     value={f.codigo_postal}
                     onChange={actualizarCampo}
                     inputMode="numeric"
+                    autoComplete="postal-code"
                     placeholder="050022"
                 />
 
-                <div className="flex items-center gap-3 sm:pt-7">
+                <label htmlFor="principal_check" className="flex min-h-11 cursor-pointer items-center gap-3 text-sm font-medium text-tinta/80 sm:mt-6">
                     <input
                         type="checkbox"
                         name="principal"
                         id="principal_check"
                         onChange={actualizarCampo}
                         checked={f.principal}
-                        className="size-4 cursor-pointer rounded border-zinc-300 accent-emerald-600"
+                        className="size-4 cursor-pointer accent-esmeralda"
                     />
-                    <label htmlFor="principal_check" className="cursor-pointer text-sm font-medium text-zinc-700">
-                        ¿Es tu dirección principal?
-                    </label>
-                </div>
+                    ¿Es tu dirección principal?
+                </label>
             </div>
             <div className="mt-5 flex justify-end">
                 <Button
@@ -614,7 +656,7 @@ function FormularioDireccion({ direccion }){
                     variant="outline"
                     size="sm"
                     onClick={cerraFormulario}
-                    className="bg-white"
+                    className={claseBotonContorno}
                 >
                     Cancelar
                 </Button>
@@ -623,15 +665,17 @@ function FormularioDireccion({ direccion }){
     );
 }
 
-function CampoDireccion({ label, icon: Icon, name, value, onChange, inputMode, placeholder }){
+function CampoDireccion({ label, icon: Icon, name, value, onChange, inputMode, placeholder, autoComplete }){
     return (
         <div className="grid gap-2">
-            <Label htmlFor={`dir-${name}`}>{label}</Label>
+            <Label htmlFor={`dir-${name}`} className={claseEtiqueta}>{label}</Label>
             <InputIcono
+                tono="noche"
                 icon={Icon}
                 id={`dir-${name}`}
                 type="text"
                 inputMode={inputMode}
+                autoComplete={autoComplete}
                 name={name}
                 value={value}
                 onChange={onChange}
@@ -643,48 +687,46 @@ function CampoDireccion({ label, icon: Icon, name, value, onChange, inputMode, p
 
 function TarjetaDireccion({ direccion, onEditar, onEliminar }){
     return (
-        <div className="flex items-start justify-between gap-4 rounded-xl border border-zinc-200 bg-white p-4 transition-colors hover:border-emerald-300 hover:bg-emerald-50/30">
-            <div className="flex gap-3">
-                <div className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
-                    <MapPinIcon className="size-4" />
-                </div>
-                <div>
+        <div className="flex items-start justify-between gap-4 rounded-xl bg-lienzo/40 p-4 ring-1 ring-tinta/10 transition-shadow hover:ring-tinta/25">
+            <div className="flex min-w-0 gap-3">
+                <MapPinIcon className="mt-0.5 size-4 shrink-0 text-tinta/60" aria-hidden="true" />
+                <div className="min-w-0">
                     <p className="text-sm font-semibold">
                         {direccion.nombre_destinatario}
                     </p>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-tinta/60">
                         {direccion.direccion}, {direccion.ciudad}, {direccion.departamento}
                     </p>
-                    <p className="text-sm text-muted-foreground">
-                        Barrio: {direccion.barrio} · CP {direccion.codigo_postal}
+                    <p className="text-sm text-tinta/60">
+                        Barrio: {direccion.barrio} · CP <span className="tabular-nums">{direccion.codigo_postal}</span>
                     </p>
                     {direccion.principal &&
-                        <Badge variant="outline" className="mt-2 border-emerald-200 bg-emerald-50 text-emerald-700">
+                        <Badge variant="outline" className="mt-2 border-tinta/25 text-tinta/80">
                             Principal
                         </Badge>
                     }
                 </div>
             </div>
-            <div className="flex shrink-0 gap-2">
+            <div className="flex shrink-0 gap-1">
                 <Button
                     type="button"
-                    variant="outline"
-                    size="icon-sm"
+                    variant="ghost"
+                    size="icon-lg"
                     onClick={onEditar}
                     title="Editar"
-                    aria-label="Editar"
-                    className="text-zinc-600 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                    aria-label={`Editar dirección de ${direccion.nombre_destinatario}`}
+                    className="text-tinta/60 hover:bg-tinta/10 hover:text-tinta focus-visible:ring-esmeralda/50"
                 >
                     <EditIcon className="size-4" />
                 </Button>
                 <Button
                     type="button"
-                    variant="outline"
-                    size="icon-sm"
+                    variant="ghost"
+                    size="icon-lg"
                     onClick={onEliminar}
                     title="Eliminar"
-                    aria-label="Eliminar"
-                    className="text-zinc-600 hover:border-red-200 hover:bg-red-50 hover:text-red-600"
+                    aria-label={`Eliminar dirección de ${direccion.nombre_destinatario}`}
+                    className="text-tinta/60 hover:bg-red-500/10 hover:text-red-600 focus-visible:ring-esmeralda/50"
                 >
                     <TrashIcon className="size-4" />
                 </Button>

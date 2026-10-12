@@ -1,3 +1,4 @@
+import { Plus } from "lucide-react";
 import { useState, useEffect } from "react";
 import NavBar from "../../components/NavBar";
 import Footer from "../../components/Footer";
@@ -20,6 +21,9 @@ import { getMarca, getCategoria, getImpuesto, getTalla, getColor, getPrendas } f
 
 // BLOQUE 1 CONFIGURACION Y UTILIDADES
 //ESTADO INICIAL DEL FORMULARIO DE ARTICULO
+// Foto de cabecera (public/imgDress), copia optimizada de 2400px; el original está al lado.
+const FOTO_ARTICULOS = "/imgDress/imgcloset-2400.jpg";
+
 const ESTADO_INICIAL_ARTICULO = {
   articulo: {
     marca: "", categoria: "", impuestos: "", prendas: "", nombre: "", slug: "",
@@ -657,23 +661,34 @@ function Articulos() {
   return (
     <div className="flex flex-col min-h-screen">
       <NavBar />
-      <main className="mx-auto w-full max-w-[1400px] flex-1 px-4 py-8 sm:px-6 sm:py-10">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">Artículos</h1>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Crea, edita y administra el inventario y los descuentos de tu tienda.
-            </p>
+      <main className="mx-auto w-full max-w-[1400px] flex-1 px-4 py-6 sm:px-6 sm:py-8">
+        {/* ───── Cabecera con la foto del clóset de la tienda ───── */}
+        <header className="relative isolate overflow-hidden rounded-3xl bg-white px-6 py-8 text-zinc-950 ring-1 ring-zinc-200 sm:px-10 sm:py-12">
+          <img
+            src={FOTO_ARTICULOS}
+            alt=""
+            width={2400}
+            height={1600}
+            className="absolute inset-0 -z-20 size-full object-cover object-[50%_40%]"
+          />
+          <div aria-hidden="true" className="absolute inset-0 -z-10 bg-linear-to-r from-white via-white/95 to-white/55 sm:via-white/75 sm:to-white/10" />
+          <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <h1 className="font-display text-4xl leading-tight font-normal sm:text-5xl">Artículos</h1>
+              <p className="mt-3 max-w-md text-sm leading-relaxed text-zinc-700 sm:text-base">
+                Crea, edita y administra el inventario y los descuentos de tu tienda.
+              </p>
+            </div>
+            <Button
+              type="button"
+              size="lg"
+              onClick={form.abrirParaCrear}
+              className="h-12 self-start bg-linear-to-r from-esmeralda to-azul px-6 font-semibold text-tinta shadow-lg shadow-emerald-900/15 hover:brightness-110 focus-visible:ring-esmeralda/50 sm:self-auto"
+            >
+              <Plus className="size-4" aria-hidden="true" /> Nuevo artículo
+            </Button>
           </div>
-          <Button
-            type="button"
-            size="lg"
-            onClick={form.abrirParaCrear}
-            className="hover:bg-emerald-700"
-          >
-            <span className="text-lg leading-none">+</span> Nuevo artículo
-          </Button>
-        </div>
+        </header>
 
         {formDescuento.modalAbierto && (
           <ModalDescuento
@@ -696,7 +711,7 @@ function Articulos() {
             <div className="flex max-h-[92vh] w-full max-w-6xl flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-xl">
               <header className="flex items-center justify-between border-b border-zinc-100 px-6 py-4">
                 <div className="flex items-center gap-3">
-                  <span className="flex size-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100">
+                  <span className="flex size-10 items-center justify-center rounded-xl bg-linear-to-br from-emerald-100 to-sky-100 text-emerald-700">
                     <EditIcon className="size-4" />
                   </span>
                   <div>
@@ -900,7 +915,7 @@ function Articulos() {
                     disabled={form.cargando}
                     className="hover:bg-emerald-700"
                   >
-                    <SaveIcon className="size-4" /> <span>{form.cargando ? "Guardando..." : "Guardar"}</span>
+                    <SaveIcon className="size-4" /> <span>{form.cargando ? "Guardando…" : "Guardar"}</span>
                   </Button>
                 </footer>
               </div>
@@ -916,7 +931,7 @@ function Articulos() {
         />
 
         {seleccionados.length > 0 &&(
-          <div className="mt-4 flex flex-col items-start justify-between gap-3 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 sm:flex-row sm:items-center">
+          <div className="mt-4 flex flex-col items-start justify-between gap-3 rounded-2xl border border-emerald-200 bg-linear-to-r from-emerald-50 to-sky-50 px-4 py-3 sm:flex-row sm:items-center">
             <p className="text-sm font-medium text-emerald-900">
               {seleccionados.length} {seleccionados.length === 1 ? "variante seleccionada" : "variantes seleccionadas"}
             </p>
@@ -1049,7 +1064,7 @@ function ModalDescuento({ descuento, onChange, onGuardar, onCerrar, cargando, de
       <div className="flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-xl">
         <header className="flex items-center justify-between border-b border-zinc-100 px-6 py-4">
           <h3 className="flex items-center gap-3 text-lg font-semibold tracking-tight">
-            <span className="flex size-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100">
+            <span className="flex size-9 items-center justify-center rounded-xl bg-linear-to-br from-emerald-100 to-sky-100 text-emerald-700">
               <TagIcon className="size-4" />
             </span>
             Gestión de descuentos
@@ -1062,7 +1077,9 @@ function ModalDescuento({ descuento, onChange, onGuardar, onCerrar, cargando, de
             aria-label="Cerrar"
             className="text-muted-foreground"
           >
-            ✕
+            <svg className="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
           </Button>
         </header>
 
@@ -1216,7 +1233,7 @@ function ModalDescuento({ descuento, onChange, onGuardar, onCerrar, cargando, de
                 disabled={cargando}
                 className="hover:bg-emerald-700"
               >
-                {cargando ? "Guardando..." : "Guardar descuento"}
+                {cargando ? "Guardando…" : "Guardar descuento"}
               </Button>
             </div>
           </form>
@@ -1240,7 +1257,7 @@ function FilaVarianteTalla({ talla, datos, colores, onChange }) {
         onChange={(e) => onChange("color", e.target.value)}
         className="h-9 rounded-lg"
       >
-        <option value="">Color...</option>
+        <option value="">Color…</option>
         {colores.map((c) => <option key={c.idcolor} value={c.idcolor}>{c.nombre}</option>)}
       </SelectNativo>
 
@@ -1320,7 +1337,7 @@ function CampoSelect({ label, icon: Icon, name, value, onChange, opciones, getId
         value={value}
         onChange={onChange}
       >
-        <option value="">Selecciona {label.toLowerCase()}...</option>
+        <option value="">Selecciona {label.toLowerCase()}…</option>
         {opciones.map((o) => (
           <option key={getId(o)} value={getId(o)}>{getLabel(o)}</option>
         ))}
@@ -1371,7 +1388,7 @@ function FiltrosBar({ filtros, onChange, catalogos }) {
   const [mostrarAvanzados, setMostrarAvanzados] = useState(false);
 
   return (
-    <div className="mt-8 rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">
+    <div className="mt-6 rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">
 
       {/* ENCABEZADO Y FILTRO PRINCIPAL */}
       <div className="flex flex-col justify-between gap-3 md:flex-row md:items-end">
@@ -1384,7 +1401,7 @@ function FiltrosBar({ filtros, onChange, catalogos }) {
               name="buscar"
               value={filtros.buscar}
               onChange={onChange}
-                            placeholder="Buscar por nombre, SKU, marca..."
+                            placeholder="Buscar por nombre, SKU, marca…"
             />
         </div>
         <Button
@@ -1513,6 +1530,7 @@ function TablaVariantes({ variantes, onEditar, onEliminar, onAgregarDescuento, s
                 onChange={onToggleSelecionarTodo}
                 className="size-4 cursor-pointer rounded border-zinc-300 accent-emerald-600"
                 title="Seleccionar todos"
+                aria-label="Seleccionar todas las variantes"
               />
             </th>
             <th className="border-b border-zinc-200 px-4 py-3 text-left font-medium">Foto</th>
@@ -1556,12 +1574,16 @@ function FilaVariante({ data, onEditar, onEliminar, onAgregarDescuento, seleccio
           checked={seleccionados}
           onChange={onToggleSeleccionado}
           className="size-4 cursor-pointer rounded border-zinc-300 accent-emerald-600"
+          aria-label={`Seleccionar ${data.articulo.nombre} talla ${data.talla.codigo}`}
         />
       </td>
       <td className={celda}>
         <img
           src={data.foto}
-          alt={data.urlfoto}
+          alt={data.articulo.nombre}
+          width={64}
+          height={64}
+          loading="lazy"
           className="size-16 rounded-xl border border-zinc-200 bg-zinc-100 object-cover shadow-sm"
         />
       </td>
@@ -1573,7 +1595,7 @@ function FilaVariante({ data, onEditar, onEliminar, onAgregarDescuento, seleccio
         </p>
 
         <div className="mt-2 flex flex-wrap gap-1.5">
-          <span className="inline-flex items-center gap-1 rounded-md border border-blue-100 bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700">
+          <span className="inline-flex items-center gap-1 rounded-md border border-sky-100 bg-sky-50 px-2 py-0.5 text-xs font-medium text-sky-700">
             <PaletteIcon className="size-3" /> {data.color.nombre}
           </span>
           <span className="inline-flex items-center gap-1 rounded-md border border-zinc-200 bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-700">
@@ -1631,7 +1653,7 @@ function FilaVariante({ data, onEditar, onEliminar, onAgregarDescuento, seleccio
             onClick={() => onAgregarDescuento(data)}
             title="Agregar descuento"
             aria-label="Agregar descuento"
-            className="flex size-8 cursor-pointer items-center justify-center rounded-lg border border-zinc-200 text-emerald-600 transition-colors hover:border-emerald-200 hover:bg-emerald-50"
+            className="flex size-9 cursor-pointer items-center justify-center rounded-lg border border-zinc-200 text-emerald-600 transition-colors hover:border-emerald-200 hover:bg-emerald-50 focus-visible:ring-[3px] focus-visible:ring-emerald-400/50 focus-visible:outline-none"
           >
             <TagIcon className="size-3.5" />
           </button>
@@ -1639,7 +1661,7 @@ function FilaVariante({ data, onEditar, onEliminar, onAgregarDescuento, seleccio
             onClick={() => onEditar(data)}
             title="Editar"
             aria-label="Editar"
-            className="flex size-8 cursor-pointer items-center justify-center rounded-lg border border-zinc-200 text-zinc-500 transition-colors hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+            className="flex size-9 cursor-pointer items-center justify-center rounded-lg border border-zinc-200 text-zinc-500 transition-colors hover:border-sky-200 hover:bg-sky-50 hover:text-sky-700 focus-visible:ring-[3px] focus-visible:ring-sky-400/50 focus-visible:outline-none"
           >
             <EditIcon className="size-3.5" />
           </button>
@@ -1647,7 +1669,7 @@ function FilaVariante({ data, onEditar, onEliminar, onAgregarDescuento, seleccio
             onClick={() => onEliminar(data)}
             title="Eliminar"
             aria-label="Eliminar"
-            className="flex size-8 cursor-pointer items-center justify-center rounded-lg border border-zinc-200 text-zinc-500 transition-colors hover:border-red-200 hover:bg-red-50 hover:text-red-600"
+            className="flex size-9 cursor-pointer items-center justify-center rounded-lg border border-zinc-200 text-zinc-500 transition-colors hover:border-red-200 hover:bg-red-50 hover:text-red-600 focus-visible:ring-[3px] focus-visible:ring-red-400/50 focus-visible:outline-none"
           >
             <TrashIcon className="size-3.5" />
           </button>
